@@ -1,0 +1,21 @@
+with openssl (built-in on macOS & Linux, installable on Windows)
+
+  encrypt files
+    openssl enc -aes-256-cbc -salt -in myfile.txt -out myfile.txt.enc
+
+      -aes-256-cbc → strong AES encryption
+      -salt → adds random data for stronger protection
+      It will ask for a password — you’ll need the same password to decrypt.
+
+  decrypt a file
+    openssl enc -d -aes-256-cbc -in myfile.txt.enc -out myfile_decrypted.txt
+
+      -d means decrypt.
+      Enter the same password you used when encrypting.
+
+to remember
+  once an image is encrypted with AES, there’s no way to preview it without decrypting it
+  this works for any file type (JPG, PNG, ZIP, PDF, etc.).
+  the .enc file will be unreadable without the password.
+  AES-256-CBC is strong enough for personal and professional use.
+  do not forget your password — there’s no recovery.
