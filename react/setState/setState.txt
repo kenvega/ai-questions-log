@@ -1,0 +1,21 @@
+question
+  can you give me cases where setState being async were to generate some unforeseen bugs for beginners?
+  what to avoid? and what recommendations do you have for this?
+  also does this only happens on setState for class components or also for setState for funcional components?
+
+response
+  yes, it bites both classes and function components. The root cause is batching and async scheduling.
+
+  what to avoid:
+    reading state immediately after calling a setter.
+    using non-functional updates when the next value depends on the previous.
+    expecting updated state inside the same event tick.
+    copying one piece of state from another without computing the “next” value first.
+
+  recommendations:
+    default to functional updaters when in doubt.
+    for sequences, compute once into a local variable or use usereducer.
+    observe changes in useeffect for side effects, not immediately after setstate.
+    for async callbacks and promises, always use functional updaters or refs for the latest value.
+    keep derived state out of state. derive during render.
+

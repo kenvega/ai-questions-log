@@ -1,0 +1,12 @@
+question
+  when a component re-renders because of a state change
+    the child also re-renders even though it doesn't have anything to do with that state?
+
+  can you make an example with a child that is very slow to render because of compute power
+  or maybe a child that has animation so that i can see if a re-render occurs when a parent state changes?
+
+response
+  Yes. Parent state changes trigger a new parent render
+  By default, all children render too.
+    Prevent with React.memo, stable props (useMemo/useCallback), or by moving state down.
+
