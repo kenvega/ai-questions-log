@@ -1,0 +1,21 @@
+question
+  difference between 'session' and 'terminal'
+  example context: temporary variables with EXPORT only work for a session of a terminal
+  what would be a simple way to understand them both so is easy to differentiate them
+
+response
+  short answer
+    a terminal is the app/window
+    a session is the lifetime of the shell process running inside it
+
+  simple model:
+    Terminal = the screen and keyboard pipe (iTerm2, GNOME Terminal, Windows Terminal).
+    Session = one shell process and its children (bash, zsh) from start to exit.
+
+  why your export feels “temporary”:
+    export VAR=1 marks VAR for inheritance by child processes of this shell
+    it does not propagate to other shells or other terminal tabs
+    it disappears when that shell process ends
+
+follow up question
+  what is the shell and the difference with the session
