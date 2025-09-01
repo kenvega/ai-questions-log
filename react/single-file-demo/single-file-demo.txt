@@ -1,0 +1,4 @@
+give me a single file in html that has react
+  where I have a single component
+  where I can try react that way i try stuff very quickly
+    without creating a new project

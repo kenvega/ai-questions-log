@@ -1,0 +1,3 @@
+give me a basic context example
+  explain what it does and then ask adding more complexity
+    go adding more things little by little

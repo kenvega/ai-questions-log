@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <title>React single-file playground</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- React 18 UMD + Babel (for in-browser JSX) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Your component: edit freely -->
+    <script type="text/babel">
+      function App() {
+        const [count, setCount] = React.useState(0);
+        const [text, setText] = React.useState("hello");
+
+        React.useEffect(() => {
+          document.title = `count: ${count}`;
+        }, [count]);
+
+        return (
+          <main style={{ fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif", padding: 16 }}>
+            <h1 style={{ margin: 0, fontSize: 24 }}>React quick test</h1>
+
+            <section style={{ marginTop: 16 }}>
+              <button
+                onClick={() => setCount((c) => c + 1)}
+                style={{ padding: "8px 12px", cursor: "pointer" }}
+              >
+                count: {count}
+              </button>
+            </section>
+
+            <section style={{ marginTop: 16 }}>
+              <input
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="type here"
+                style={{ padding: "8px 10px", width: "100%", maxWidth: 320, boxSizing: "border-box" }}
+              />
+              <p style={{ marginTop: 8 }}>you typed: {text}</p>
+            </section>
+
+            <section style={{ marginTop: 16, opacity: 0.7, fontSize: 12 }}>
+              <p>edit the <code>App</code> component to try ideas fast</p>
+            </section>
+          </main>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
+    </script>
+  </body>
+</html>
