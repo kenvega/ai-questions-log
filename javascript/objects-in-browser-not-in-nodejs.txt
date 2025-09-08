@@ -1,0 +1,43 @@
+question
+  there are objects that exist in browsers but they do not in nodejs
+  which are those and what are they used for?
+
+response
+  there are many objects that can be categorized like this:
+
+    Window & frames
+      window — global browsing context and namespace for Web APIs
+      frames — array-like access to child browsing contexts
+      parent — reference to the parent window of this frame
+      top — reference to the topmost window in the hierarchy
+
+    Page & navigation
+      document — DOM entry point to read and modify the page
+      location — current URL and navigation controls
+      history — session navigation stack control
+
+    Environment & display
+      navigator — user agent, platform, permissions, device capabilities
+      clientInformation — alias of navigator
+      screen — physical screen metrics
+      visualViewport — layout viewport size and scale
+
+    Web components & CSS
+      customElements — registry for defining and looking up custom elements
+      CSS — CSSOM helpers like escape, Typed OM access
+
+    Storage & offline
+      localStorage — persistent per-origin key-value storage
+      sessionStorage — per-tab session key-value storage
+      indexedDB — transactional client-side object database
+      caches — CacheStorage for request/response caching
+      Security & policies
+      trustedTypes — enforce Trusted Types to mitigate DOM XSS
+
+    UI & media
+      speechSynthesis — speech output controller
+      documentPictureInPicture — control document-level picture-in-picture
+
+    Scheduling & SPA navigation
+      scheduler — cooperative task scheduling via postTask
+      navigation — Navigation API for intercepting and handling SPA navigations
