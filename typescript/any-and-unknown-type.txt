@@ -1,0 +1,28 @@
+question
+  the any type was created for something?
+  is there any good reason to use it in any case?
+  if not then why it was created?
+  what about the other type called 'unknown'?
+
+response
+  what any does
+    disables type checking completely
+
+  why it was created
+    - to enable gradual typing and easy migration from plain javascript
+    - to interoperate with untyped third-party code and dynamically shaped data
+
+  about unknown type
+    is safer than any because with any the errors are hidden because it disables type checking
+    for unknown you can assign anything to it but you can use it unles you narrow it
+
+  example
+    function f(x: unknown) {
+      if (typeof x === 'string') {
+        x.toUpperCase();  // ok after guard
+      }
+    }
+
+    function g(x: any) {
+      x.notReal();  // compiles, may crash at runtime
+    }
