@@ -1,0 +1,35 @@
+question
+  code that returns a value is called expression
+  are there any other categories? what about code that defines a function, variable, or class?
+
+response
+  code that produces a value is called an expression
+  code that performs an action but does not produce a value is called a statement
+  code that introduces new identifiers (functions, variables, classes) is called a declaration
+
+
+  Expressions:
+    1 + 2
+    x > 0 ? 'yes' : 'no'
+    array.map(fn)
+    myFunction()
+
+  Statements:
+    if (...) { ... }
+    for (...) { ... }
+    while (...) { ... }
+    return
+    break
+    throw
+
+  Declarations:
+    let x = 5
+    function foo() {}
+    class A {}
+    import ... from ...
+
+  Most imperative languages (JavaScript, C, Java, Python) have these three categories.
+  Functional languages (Haskell, Lisp) treat almost everything as an expression.
+  Low-level languages (assembly) use the term instruction instead.
+
+  In practice, nearly all code can be classified as expression, statement, or declaration.
