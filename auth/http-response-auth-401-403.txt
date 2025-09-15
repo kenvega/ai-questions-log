@@ -1,0 +1,26 @@
+question
+
+  in http response codes what is the difference bewtween 401 and 403?
+
+  are those the only ones that are used for when there is no correct auth from the user?
+
+response 
+
+  response codes
+
+    401 = authentication failed or missing. Include WWW-Authenticate. Client can retry with credentials. Use for missing, invalid, or expired token.
+
+    403 = authenticated but not allowed. Permissions insufficient or access intentionally refused. Do not prompt for login.
+      If credentials are valid but still not enough
+
+  Not the only ones:
+
+    407 Proxy Authentication Required. When a proxy needs credentials.
+
+    511 Network Authentication Required. Captive portal or network login needed.
+
+    400 Bad Request. Malformed auth header or token format.
+
+    302/303/307 redirects. Often used by web apps to send users to a login page.
+
+    404 Not Found. Sometimes used to avoid revealing that a protected resource exists.
