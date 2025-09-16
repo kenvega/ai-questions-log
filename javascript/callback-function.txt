@@ -1,0 +1,19 @@
+question
+  a callback is basically the same as a function?
+  what is the difference? do one of them contains the other?
+
+response
+  a callback is not a different thing.
+  it’s a function used as an argument and invoked by another function, immediately or later.
+  “callback” describes a role.
+  all callbacks are functions, not all functions are callbacks.
+
+  key points:
+
+    concept containment: callback ⊂ function usage.
+
+    higher-order function: any function that receives a function (the callback).
+
+    timing: callbacks can be synchronous (run now) or asynchronous (run later).
+
+    naming by context: the same function may be called a handler, listener, predicate, mapper, reducer, comparator, executor, middleware, etc., depending on how it’s used.
