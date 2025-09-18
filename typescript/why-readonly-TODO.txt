@@ -1,0 +1,15 @@
+const success = [
+    "success",
+    { name: "Testino", email: "testino@mail.com" },
+  ] as const; // 'as const' le dice a typescript que el array se trate como uno literal
+
+const success2: readonly [
+  "success",
+  { readonly name: "Testino"; readonly email: "testino@mail.com" }
+] = ["success", { name: "Testino", email: "testino@mail.com" }];
+// se obtiene el mismo resultado declarando asi usando readonly en lugar de 'as const'
+
+
+// * pregunta a chatgpt caso de uso. realmente. para que sirve y ejemplos porque solo tengo esta referencia
+// dejalo en ai-questions-log
+

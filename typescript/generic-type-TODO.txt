@@ -1,0 +1,21 @@
+function getFirstElement<T>(array: T[]): T {
+  return array[0];
+}
+
+por que me sale error en este return 
+
+Type is not assignable to type.T could be instantiated with an arbitrary type which could be unrelated to T | undefined .
+
+y por que cuando le quito la parte de ": T" ahi se arregla? 
+
+que podria cambiar para que igual pueda poner el ": T" y evitar ese error en return
+
+
+---
+
+por que sin el ": T" al final no funciona?
+
+para que me serviria ponerle eso?
+
+como podria arreglarlo sin hacer que el codigo se vea muy complicado?
+

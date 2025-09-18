@@ -1,0 +1,5 @@
+diference between parseInt and number for this case where str is a string
+
+  parseInt(str)
+  Number(str)
+
