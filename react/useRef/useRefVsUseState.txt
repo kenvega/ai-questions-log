@@ -1,0 +1,32 @@
+question
+  useRef is used to store information that can persist through renders
+  but useState hook already does that, right?
+  what would be the difference then?
+  there has to be some kind of advantage
+  give me examples where
+    - it's actually useful and better to use useRef in this case, instead of useState
+    - it's not even better, it's actually necessary to use it
+        that would be a great example to have as a reference
+
+response
+
+  useState persists and triggers re-renders
+
+  useRef persists and does not re-render
+
+  when to prefer useRef
+
+    you need a mutable value that should not cause re-renders
+    you need imperative access to a DOM node
+    you need a stable "instance variable" across renders
+    you must interact with non-react apis that expect an object reference
+
+  rules of thumb
+
+    UI should show the value → then use useState
+    internal bookkeeping, timers, DOM, external instances → then use useRef
+
+    changing a Ref never schedules a render; changing state always does
+      so if your UI must show a value, that value must live in state and not in a Ref
+      * remember: React only re-renders when state or props change
+
