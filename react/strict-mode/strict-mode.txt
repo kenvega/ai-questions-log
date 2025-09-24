@@ -1,0 +1,37 @@
+question
+  on react apps there is strict mode
+  which mades my requests in effects run twice
+  I understand that strict mode was created to detect bugs
+  can you give me examples where you can
+    show strict mode would allow me to see a possible bug
+
+response
+  StrictMode (dev-only) intentionally double-invokes some lifecycles and effects
+    by doing a mount → unmount → mount cycle to smoke-test side effects
+
+  example
+    code example
+      function Search() {
+        useEffect(() => {
+          const onKey = (e: KeyboardEvent) => {
+            if (e.key === "k" && (e.ctrlKey || e.metaKey)) {
+              console.log("Open command palette");
+            }
+          };
+          window.addEventListener("keydown", onKey);
+          // ❌ no cleanup
+        }, []);
+
+        return null;
+      }
+
+    What StrictMode reveals
+      after the remount, you now have two listeners
+      press ⌘K and the log fires twice
+
+    fixed code example
+      useEffect(() => {
+        const onKey = (e: KeyboardEvent) => { /* ... */ };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey); // ✅ cleanup
+      }, []);
