@@ -1,0 +1,33 @@
+question
+  diference between parseInt and number for this case where str is a string
+
+    parseInt(str)
+    Number(str)
+
+  also difference in general between these two methods
+
+response
+
+  Number(str) is a strict “convert the whole thing to a number” coercion
+
+  parseInt(str) is a parser that grabs an integer prefix from the string and ignores the rest
+
+  they overlap, but they’re designed for different jobs
+
+  examples where you can see difference
+
+    Number("123")         // 123
+    parseInt("123")       // 123
+
+    Number("1.23")        // 1.23
+    parseInt("1.23")      // 1   (stops at the dot)
+
+    Number("123abc")      // NaN (whole string must be a valid number)
+    parseInt("123abc")    // 123 (parses the leading integer part)
+
+    Number("")            // 0   (empty string → 0 by spec)
+    parseInt("")          // NaN (no digits to parse)
+
+    Number("Infinity")    // Infinity
+    parseInt("Infinity")  // NaN
+
