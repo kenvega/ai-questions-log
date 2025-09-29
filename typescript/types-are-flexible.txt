@@ -1,0 +1,94 @@
+question
+  in this component:
+    type ButtonProps = {
+      // onIncrement: React.MouseEventHandler<HTMLButtonElement>;
+      onIncrement: () => void;
+    };
+
+    const ButtonWithoutContext = ({ onIncrement }: ButtonProps) => {
+      return (
+        <button type="button" className="button" onClick={onIncrement}>
+          Increment button
+        </button>
+      );
+    };
+
+    export default ButtonWithoutContext;
+
+
+  explain me why for the ButtonProps type we can use the line 2 or line 3 and both work
+    and i don't get any issues with typescript?
+    and if both are valid which one is the most recommended way to use?
+    also why both are valid? is this a typescript bug?
+
+  if you need more info btw its parent component is this one
+
+    import * as React from "react";
+    import DisplayWithoutContext from "./DisplayWithoutContext";
+    import ButtonWithoutContext from "./ButtonWithoutContext";
+
+    function CounterWithoutContext() {
+      const [count, setCount] = React.useState(0);
+
+      function onIncrement() {
+        setCount(count + 1);
+      }
+
+      return (
+        <div className="container">
+          <h1>Counter Component without using context</h1>
+          <DisplayWithoutContext count={count} />
+          <ButtonWithoutContext onIncrement={onIncrement} />
+        </div>
+      );
+    }
+
+    export default CounterWithoutContext;
+
+  i don't get why you can do both
+
+  also what i don't understand as well is
+    what really is React.MouseEventHandler<HTMLButtonElement>
+      is it a function? and object? why is that valid as a type?
+      can you explain that as well?
+
+response
+  both work because
+    React’s event handler types are intentionally flexible
+    and JavaScript happily ignores extra arguments. It’s not a bug.
+
+  what React.MouseEventHandler<HTMLButtonElement> actually is
+    it’s a type alias for a function
+
+      takes a React SyntheticEvent (specifically a React.MouseEvent<HTMLButtonElement>)
+      and returns void
+
+      looks like this
+        type MouseEventHandler<T = Element> = (event: React.MouseEvent<T>) => void
+
+  React’s handler types are bivariant
+    a function that ignores the event parameter is still acceptable
+
+  Which should you prefer to use?
+
+    Use `() => void` when
+      the child doesn’t need the event object
+
+      benefits
+        simpler API
+        decouples your component from DOM/React specifics
+        easier to reuse and test
+
+    Use `React.MouseEventHandler<HTMLButtonElement>` when
+      the child does need details from the click
+        e.g.
+          event.shiftKey
+          event.currentTarget.disabled = true
+          preventing default on links, etc.
+
+  Think of it as intent vs. mechanism:
+
+    () => void says “run this command when clicked.”
+
+    MouseEventHandler says “give me the click event so I can inspect it.”
+
