@@ -10,6 +10,7 @@ const success2: readonly [
 // se obtiene el mismo resultado declarando asi usando readonly en lugar de 'as const'
 
 
-// * pregunta a chatgpt caso de uso. realmente. para que sirve y ejemplos porque solo tengo esta referencia
+// * pregunta a chatgpt caso de uso
+realmente. para que sirve y ejemplos porque solo tengo esta referencia
 // dejalo en ai-questions-log
 

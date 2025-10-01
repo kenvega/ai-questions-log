@@ -1,0 +1,41 @@
+question
+  difference between 'printenv' and 'env' in the terminal
+  i'm using zsh
+
+response
+  printenv → prints environment variables. That’s all it does.
+    printenv = show me environment variables (optionally, just one).
+
+  env → runs a command with a modified environment
+    (and if you don’t pass a command, it prints the current environment)
+
+    env = run something with a (possibly) changed environment
+      If you don’t give it a command, it just prints the environment.
+
+  
+  When they (appear to) print the same
+    No arguments, same shell, same exports
+      $ printenv
+      $ env
+
+  When they do not print the same
+    You modify anything with env
+      $ env FOO=123 printenv FOO   # prints 123
+      $ printenv FOO               # prints current FOO (not the temp one above)
+      # env can add/remove/clear variables for that one run; printenv can’t.
+
+    You ask for a single variable
+      $ printenv HOME      # prints only the VALUE
+      # env has no “print just one var” mode (you’d have to env | grep '^HOME=' which is a different format).
+
+
+  When to use which (rule of thumb)
+
+    Use printenv
+      when you want to read environment variables (especially one by name)
+
+    Use env
+      when you want to run something with changes to the environment (add, remove, or clear variables)
+      If you call it with no args, it doubles as a dumper like printenv
+
+    Just list everything → use either printenv or env (no args).
