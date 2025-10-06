@@ -1,0 +1,46 @@
+question
+  what happens if i have set zshrc and zsh_profile?
+    does one takes priority?
+      should i only have one? or is there reason why i should have both?
+        are there any other files like that i should care about?
+
+response
+  short answer:
+    both can exist and neither “wins” universally
+
+    which one runs depends on how the shell is started, and later-read files can override earlier settings
+
+  Who runs and in what order
+    When zsh starts it reads files in this general sequence (system files first, then user files):
+
+      /etc/zshenv then ~/.zshenv — always read for every zsh invocation (interactive, non-interactive, login, scripts).
+
+      If it’s a login shell, next it reads /etc/zprofile then ~/.zprofile.
+
+      If it’s interactive, it then reads /etc/zshrc then ~/.zshrc.
+
+      If it’s a login shell, finally it reads /etc/zlogin then ~/.zlogin.
+
+      On exit of a login shell it reads ~/.zlogout (and system /etc/zlogout if present).
+
+    for an interactive login shell the user-file order is: ~/.zshenv → ~/.zprofile → ~/.zshrc → ~/.zlogin
+
+    for a non-login interactive shell it’s ~/.zshenv → ~/.zshrc.
+
+    for non-interactive shells (scripts) typically only ~/.zshenv is read
+
+  Practical meaning / what to put where
+
+    ~/.zshenv — put minimal, essential environment variables that must be available in every zsh invocation (e.g. PATH additions you rely on in scripts). Be careful: this runs for non-interactive shells too, so don’t put prompt settings, aliases or heavy logic here.
+
+    ~/.zprofile — login-shell-only initialization. Good for things you want once-per-login-session (e.g. session-wide hooks, keyring/ssh-agent startup in some setups).
+
+    ~/.zshrc — interactive-shell configuration: prompt, completions, aliases, key bindings, shell options (setopt), function definitions, plugin manager (oh-my-zsh, zinit, etc.). This is where most interactive users put config.
+
+    ~/.zlogin — commands to run after ~/.zshrc for login shells (rarely needed; sometimes used for motd or last-minute session messages).
+
+    ~/.zlogout — commands to run when a login shell exits.
+
+  Does one “take priority”?
+
+    Not exactly — files are read in order, so later files can override earlier ones
