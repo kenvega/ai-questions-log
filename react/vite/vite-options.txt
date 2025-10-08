@@ -1,0 +1,44 @@
+question
+  when creating a react project with typescript using vite i get three options
+    TypeScript
+    TypeScript + React Compiler
+    TypeScript + SWC
+
+  what are the differences between these options?
+
+response
+
+  TypeScript
+
+    Uses the standard React plugin for Vite: @vitejs/plugin-react (Babel-based Fast Refresh, plus esbuild for TS transpile).
+
+    It’s the most compatible path and lets you add Babel plugins later (like the React Compiler).
+
+  TypeScript + React Compiler
+
+    Same as above but preconfigured to run the React Compiler (via the Babel plugin babel-plugin-react-compiler).
+
+    The compiler analyzes your components/hooks and automatically memoizes work where it’s safe, aiming for fewer re-renders.
+
+    Works best with React 19; there’s a runtime for 17/18 if needed.
+
+    Enabling it means you’re running an extra Babel transform (a small build-time overhead).
+
+  TypeScript + SWC
+
+    Uses @vitejs/plugin-react-swc (Rust-based SWC instead of Babel) for faster dev startup and HMR on big projects.
+
+    Trade-off: Babel plugins don’t apply here so the React Compiler isn’t natively part of this template
+      (there are ongoing efforts/notes about SWC support, but the official compiler runs as a Babel plugin)
+
+
+  Practical picks
+
+    Want maximum speed and you’re not using Babel plugins?
+      Pick TypeScript + SWC.
+
+    Want the new auto-memoization goodies out of the box?
+      Pick TypeScript + React Compiler (and consider adding the ESLint rule eslint-plugin-react-compiler to see violations the compiler will skip)
+
+    Want maximum plugin compatibility (macros, custom Babel transforms) without the compiler?
+      Pick plain TypeScript and add plugins as needed.
