@@ -1,0 +1,48 @@
+question
+  seems in docs that react-router has 3 modes of use
+  what are the main differences? which to use and why?
+
+response
+  Modes
+    declarative mode
+      use <BrowserRouter> + <Routes>/<Route>, Link, useNavigate, etc
+      no route loaders/actions built in; you bring your own data fetching
+      smallest API, easiest to learn
+
+      example
+        import { BrowserRouter, Routes, Route } from "react-router";
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home/>} />
+          </Routes>
+        </BrowserRouter>
+
+    data mode
+      adds data fetching & mutations to routing
+      use createBrowserRouter with a RouterProvider
+        and use loader, action, pending UI, useFetcher, etc
+      your routes are objects, and data flows are first-class
+
+      example
+        import { createBrowserRouter, RouterProvider } from "react-router";
+        const router = createBrowserRouter([
+          { path: "/", Component: Home, loader: loadHome }
+        ]);
+        <RouterProvider router={router} />
+
+    framework mode
+      wraps Data mode with a Vite plugin and conventions
+      you get (essentially the “Remix-style” experience inside React Router)
+        file/route mapping via @react-router/dev/routes
+        type-safe params and route modules
+        smart code-splitting
+        built-in CSR/SSR/SSG options
+
+  Which should you use?
+    If you want the smoothest, batteries-included path (and maybe SSR/SSG later): use Framework mode.
+      It’s the default recommendation if you don’t have strong opinions yet. 
+
+    If you already like route objects + loaders/actions and want to wire up your own build/server: use Data mode.
+
+    If you just need simple SPA routing (you’ll handle data yourself): use Declarative mode.
+
