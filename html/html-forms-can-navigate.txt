@@ -1,0 +1,67 @@
+question
+  "HTML forms actually cause a navigation in the browser
+    just like clicking a link."
+
+  That is a quote from React Router Docs. What does this mean?
+  Does this mean that, for example, the HTML forms can actually change the history?
+  Can you expand on the details of this idea?
+  What navigation in the browser means specifically?
+  Does it has to do with history and something else?
+
+response
+  What “navigation” means
+
+    A navigation is when the browser loads a (possibly new) document for a URL. That typically:
+      - Sends an HTTP request to some URL
+      - Replaces the current document with the response
+      - Creates a session history entry (so Back/Forward works)
+      - Fires page lifecycle events (validation → beforeunload → unload on the old page; then DOMContentLoaded/load on the new page)
+      - Resets JS/DOM state, cancels timers/fetches, etc.
+
+    * remember
+        a navigation doesn’t always mean "go to a different URL"
+          It means the browser performs a load/traversal operation in a browsing context
+            The URL may change, but it doesn’t have to
+
+  How a plain HTML <form> causes navigation
+
+    By default, submitting a form:
+
+      1. Runs constraint validation (required fields, patterns)
+          if invalid → no navigation.
+
+      2. If valid and not prevented by JS, the browser makes a request to the form’s action URL with the chosen method:
+        - GET: encodes fields into the query string and requests action?field=value…
+        - POST: sends fields in the request body
+
+      3. The browser navigates to whatever resource is returned (that could be a new page, same page reloaded, a redirect, a file download, etc.).
+
+    Form attributes that change where the navigation happens:
+
+      action — the destination URL (defaults to the current page’s URL)
+
+      method — GET (default) or POST
+
+      target — '_self' (default, current tab), '_blank' (new tab), or a named <iframe> (navigates just that frame)
+
+  Does it change history?
+
+    Usually, yes. A submission pushes a new history entry, very much like clicking a normal <a href="…">
+
+  When a submission does not navigate
+
+    Your JS calls event.preventDefault() in the submit handler and uses fetch/XHR instead (common in SPAs).
+
+    Validation fails (required, pattern, etc.).
+
+    The server responds with special codes like 204 No Content (no document is replaced).
+
+  How this relates to React Router
+
+    React Router’s <Form> component intercepts the browser’s default navigation and:
+
+      Sends the data via fetch (no full-document reload),
+
+      Updates the URL and UI using the History API (pushState/replaceState)—a client-side navigation.
+
+      Conceptually, though, React Router aligns with the platform idea that “submitting a form is a navigation,” it just performs it client-side so your app doesn’t reload.
