@@ -1,0 +1,71 @@
+question
+  Could you explain to me in simple terms how is it that Link from React Router
+  avoids doing a full document request for the next URL
+  instead of when you use a regular <a /> tag you do a full document request
+
+  What is inside that component that is being used that actually avoids doing that.
+  I don't like too much specific stuff
+  but I want like the fundamental stuff that is being used behind the scenes
+  in the link component so that I understand why is that possible and how it is possible.
+
+  Is there something native in JavaScript that is allowing this to happen?
+
+response
+
+  short answer: event handling + History API are the native pieces that make this possible
+
+    A plain <a> lets the browser handle the click
+      the browser navigates, does a full document request
+        throws away the current JS/DOM, and loads a whole new page.
+
+    React Router’s <Link> still renders an <a href="…">
+      but it intercepts the click
+      prevents the default navigation
+      and then uses the browser’s History API to change the URL without reloading
+      React (plus the router) then re-renders the right screen for that new URL
+
+  Here’s the “fundamentals behind the scenes,” no React-specific trivia
+
+    DOM events
+      JavaScript can handle click events on links.
+      In the handler you can call event.preventDefault() to stop the browser’s built-in navigation.
+
+    History API (native, built into browsers)
+
+      history.pushState(state, "", "/next-url") changes the URL bar without a page load.
+
+      The browser fires a popstate event when the user goes back/forward
+      so your code can update the UI for that URL
+
+    Client-side routing logic
+
+      After changing the URL with pushState
+      the router figures out “which component matches /next-url?” and renders it
+
+      No network document request is needed
+        you might still fetch data, but that’s a JSON/data request, not a full HTML page
+
+  A (very) simplified version of what a router link does:
+
+    function onLinkClick(e, href) {
+      // Only hijack normal left-clicks in the same tab & same origin:
+      if (
+        e.defaultPrevented ||
+        e.button !== 0 ||            // not left click
+        e.metaKey || e.ctrlKey ||    // user wants a new tab/window
+        e.shiftKey || e.altKey ||
+        e.currentTarget.target && e.currentTarget.target !== "_self" ||
+        new URL(href, location.href).origin !== location.origin
+      ) {
+        return; // let the browser do a normal navigation
+      }
+
+      e.preventDefault();                   // stop full page load
+      window.history.pushState({}, "", href); // change URL bar
+      router.navigate(href);                // render the new route
+    }
+
+    window.addEventListener("popstate", () => {
+      router.navigate(location.pathname + location.search + location.hash);
+    });
+
