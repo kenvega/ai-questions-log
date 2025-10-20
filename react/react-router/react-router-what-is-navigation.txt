@@ -1,0 +1,31 @@
+question
+  In React Router there is a concept called navigation, for example use navigation triggers when a navigation occurs, but what is the concept of that navigation, can you explain it in detail because it's very important for me to know that, for example I think that navigation right now is when the URL changes, but I'm not completely sure if that is the case. I want to be 100% sure how to define this navigation so that I can be sure when use navigation is triggered.
+
+response
+  A navigation is the router starting a transition to a next location
+    and, if needed, running loaders/actions for the matching routes
+
+  the hook useNavigation()
+    exposes that transition via navigation.state (idle | submitting | loading)
+
+    The three states of navigation
+      idle – no navigation in progress.
+
+      loading – loaders for the next routes are running (typical link click or GET form).
+
+      submitting – an action is running because of a non-GET form (POST/PUT/PATCH/DELETE), then it usually goes to loading, then back to idle.
+
+  What triggers a navigation (and thus useNavigation)
+
+    Clicking a <Link> or <NavLink> to a different location
+
+    Programmatic navigate() (from useNavigate) to a new location
+
+    Submitting a React Router <Form>
+      GET form: updates the URL (search params) and loads
+
+      POST/PUT/PATCH/DELETE: runs the action. → submitting
+
+    Redirects from loaders/actions – they change the next location, so you see the same state transitions as above
+
+    Navigating to the same URL (e.g., a re-click or redirect to the same path) – still counts for data revalidation. → may show loading
