@@ -1,0 +1,26 @@
+question
+  in react router what is the concept of location
+
+response
+  Location is "an entry in history stack"
+    contains information about the URL path and 
+
+    it's not just a string URL
+
+    it's an object with properties that describes URL-like parts
+      plus some router-specific metadata
+
+    example of location
+      { pathname: string, search: string, hash: string, state: any, key: string }
+
+    it is based on window.location that represents “where the user is at.”
+
+    useLocation() returns the current Location
+
+  When a “new location” is created
+
+    A new location entry is pushed or replaced in the history stack when you do things like:
+      Navigate to a different pathname (e.g., /users → /users/42).
+      Change the search (query string) (e.g., ?page=1 → ?page=2).
+      Change the hash (e.g., #top → #details).
+      Push to the same URL again (programmatically) with a different state or just a new entry—this produces a new key, so it’s a distinct location even if the address bar looks identical
