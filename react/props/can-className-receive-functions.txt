@@ -1,0 +1,75 @@
+question
+  for classNames from JSX in React
+  can you pass only expressions?
+  or can you pass something else like a function for example?
+
+response
+  pass expressions that evaluate to a string, not a function itself
+
+  JSX lets you put any JavaScript expression inside {}
+
+  For a DOM element’s className, React expects a string
+    If you pass a function itself
+      e.g. <div className={() => 'btn'} />
+
+      React will try to set className to that value
+        and it’ll end up as a weird string like "function …"
+          or TypeScript will complain. That’s not what you want
+
+  Do this instead—use an expression that produces a string
+    <div className="btn" />
+
+    <div className={isActive ? "btn active" : "btn"} />
+
+    <div className={`btn ${isActive ? "active" : ""}`} />
+
+    <div className={["btn", isActive && "active"].filter(Boolean).join(" ")} />
+
+    // with a helper function that RETURNS a string
+    const getClass = (state) => (state.active ? "btn active" : "btn");
+    <div className={getClass(state)} />
+
+  * One nuance: for custom React components
+      you could design a prop named className
+        to accept a function but that’s unconventional
+      If that component eventually passes the value to a real DOM node’s className
+        it must resolve it to a string first
+
+follow up question
+  Give me an example of a custom react component
+    where you have a className prop that
+      can do that what you mentioned about the nuance
+
+  I thought that you cannot overwrite className
+    because it is a reserved prop for components
+
+follow up response
+
+  Is className “reserved” on custom components?
+    No. Only key and ref are truly reserved in React
+
+  On host DOM elements (<div>, <button>, …)
+    React gives special meaning to certain props
+      like className, style, dangerouslySetInnerHTML, etc.
+
+    But that special handling doesn’t automatically apply
+      to your custom component unless you pass the prop down to a DOM element
+
+  Example: a component that accepts className as a string or a function
+
+  * host dom elements
+      also called an intrinsic element
+      is a tag that React knows how to turn directly into a real platform element
+      e.g. <div>, <button>, <input>, <svg>, etc
+
+        When you write <button onClick={…} />
+          React sees a host element and attaches a real DOM listener
+
+        When you write <MyButton onClick={…} />
+          that onClick is just a prop
+          It won’t do anything unless MyButton passes it to a host element
+            like a <button>
+
+        under the hood jsx is transformed to js like this:
+            <div /> → React.createElement("div")
+            <MyButton /> → React.createElement(MyButton)
