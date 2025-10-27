@@ -1,0 +1,76 @@
+question
+  what is business logic related to programming?
+
+  give me real life examples with companies and their applications they might use
+    for example Uber, Discord, Whatsapp
+
+  tell me which would be the business logic in every one of them
+
+  and also to complement it tell me with which other related concept
+    someone might confuse it as business logic in those cases
+      but it's actually not that and it's another concept related with another name
+
+response
+
+  What “business logic” is (and isn’t)
+
+    Business logic
+      the rules that encode how the business creates/exchanges value:
+        pricing, eligibility, limits, payouts, matching,
+        prioritization, compliance policies, promotions, etc.
+
+    It should read like policy:
+      “If X, then do Y because that’s how our business works.”
+
+  Not business logic (common confusions):
+
+    UI/presentation logic
+      how things look/feel (buttons, modals, formatting, animations)
+
+    Application/orchestration logic
+      wiring flows between components/APIs (controllers, job runners, retries)
+
+    Infrastructure concerns
+      DB schemas, caching, queues, Kubernetes, logging, sharding, failover
+
+    Transport/protocol logic
+      HTTP/WebSocket handling, gRPC contracts
+
+    Security plumbing
+      crypto primitives, OAuth handshakes, TLS, device binding.
+        (Business rules about “who may do what” are business logic; the crypto to enforce it isn’t.)
+
+  Real-world examples
+
+    Uber (rides marketplace)
+      Business logic (examples)
+
+        Matching & dispatch rules
+          which driver gets which trip (ETA, driver rating, vehicle class, driver/rider preferences)
+
+        Dynamic pricing (“surge”)
+          price multipliers based on supply/demand by geofence and time, caps/floors, driver pay splits
+
+        Pooling constraints
+          max detour minutes, pickup reorder limits, passenger count rules
+
+        Cancellation & no-show fees
+          when to charge, how much, who keeps what
+
+        Incentives & promotions
+          quests/bonuses eligibility, stacking rules, fraud guardrails
+
+        Compliance gating
+          city/airport regulations (license required? staging area rules?)
+
+      Often confused with business logic (but not)
+
+        Map rendering & turn-by-turn UI (presentation).
+
+        GPS smoothing, route snapping (algorithms/infrastructure).
+
+        Payment tokenization & 3-D Secure flows (payments infrastructure).
+
+        Kubernetes autoscaling, Kafka topics (infra).
+
+        SQL/ORM models and migrations (data access plumbing).
