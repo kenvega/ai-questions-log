@@ -1,0 +1,83 @@
+question
+  for this component
+    there is no complaint about the delegated here
+    in my prop types I only have two things that can be received
+    but in the component in the destructuring it seems that I can receive more than two
+    and typescript doesn't say something like, hey, you should only be able to receive two things and you are assuming that you are going to receive more
+    so why typescript doesn't complain about this.
+
+    component
+      import s from "./ButtonWithBasicPolymorphism.module.css";
+
+      type ButtonWithBasicPolymorphismProps = {
+        children: React.ReactNode;
+        href?: string;
+      };
+
+      const ButtonWithBasicPolymorphism = ({
+        children,
+        href,
+        ...delegated
+      }: ButtonWithBasicPolymorphismProps) => {
+        return typeof href === "string" ? (
+          <a className={s.button} href={href} {...delegated}>
+            {children}
+          </a>
+        ) : (
+          <button className={s.button} {...delegated}>
+            {children}
+          </button>
+        );
+      };
+
+      export default ButtonWithBasicPolymorphism;
+
+
+response
+  Your type says: “This component accepts only children and (optionally) href.”
+
+  Your component says: “I’m going to grab children, href, and then whatever else (...delegated) and spread it into <a> or <button>.”
+
+  And TypeScript is not yelling at the component definition itself.
+
+  Why? Because of what you do (and don’t) do with delegated.
+
+  What TypeScript actually infers for delegated here
+
+    Your props type only has:
+      {
+        children: React.ReactNode;
+        href?: string;
+      }
+
+    So when you destructure:
+      const { children, href, ...delegated } = props;
+
+    TypeScript goes:
+
+      “Okay, I know about children and href. After removing those… I have nothing left. So delegated is {}.”
+
+    So delegated is typed as {} (an empty object).
+
+      Now look at what you do with it:
+
+        <a ...delegated>
+
+    Spreading an empty object is always fine. TS doesn’t complain about spreading {}
+      So the component itself is fine.
+
+    The reason you don’t see an error is not because TS magically thinks you can pass extra props
+      it’s because you don’t try to read any property from delegated
+        You just spread it
+
+    If you change it to:
+
+    <button className={delegated.className}>
+      {children}
+    </button>
+
+    you will get:
+
+      Property 'className' does not exist on type {}.
+
+      So: no property access → no error.
