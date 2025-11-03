@@ -1,0 +1,85 @@
+question
+  which cases are useful for useRef?
+  which cases are not the best idea to use useRef?
+
+response
+  short mental model first:
+    State = declarative UI (“what should it look like?”)
+    Ref = imperative handle (“do this to that thing”)
+
+  Places where useRef is the right tool
+
+    All of the following are: “tell the DOM to do something now” → imperative.
+
+    1. Focusing an input
+      You can’t “declare” focus with state nicely — focus is a browser/DOM action.
+
+      example
+        const inputRef = useRef<HTMLInputElement>(null);
+
+        function handleClick() {
+          inputRef.current?.focus();
+        }
+
+        return (
+          <>
+            <input ref={inputRef} />
+            <button onClick={handleClick}>Focus</button>
+          </>
+        );
+
+    2. Scrolling to an element
+
+      example
+        sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+
+    3. Measuring DOM (width/height/bounding box)
+
+      example
+        const divRef = useRef<HTMLDivElement>(null);
+        useEffect(() => {
+          const rect = divRef.current?.getBoundingClientRect();
+          // use rect...
+        }, []);
+
+    4. Keeping a mutable value that should NOT cause re-renders
+
+        Example: storing the previous props to compare
+          const prevValueRef = useRef<number>();
+          useEffect(() => {
+            prevValueRef.current = value;
+          }, [value]);
+
+        Example: saving a timeout ID
+          const timeoutRef = useRef<number | null>(null);
+
+    5. Interacting with non-React / third-party libraries
+      Canvas, maps, video players: you need a DOM node to give to the library.
+
+      example
+        const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    6. Avoiding stale closures in effects or callbacks
+      You put the “latest value” in a ref and the callback always reads from it
+
+
+  Places where useRef is possible but not the best idea
+
+    1. Tracking UI state that should re-render the component
+      Why: refs changes don’t trigger re-render
+
+        const activeTabRef = useRef("tab-1");
+        // change it...
+        activeTabRef.current = "tab-2";
+        // UI will NOT re-render
+
+  When do I pick ref vs state? (quick rules)
+
+    Will the UI change on screen? → use state / context.
+
+    Do I just need to remember something between renders? → useRef.
+
+    Do I need to touch the actual DOM node? → useRef on the element.
+
+    Do I need parent ↔ child communication across separate components? → state + context, not ref (except for very special cases with forwardRef).
+
