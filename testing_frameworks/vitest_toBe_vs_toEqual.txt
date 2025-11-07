@@ -1,0 +1,35 @@
+question
+  difference between toBe and toEqual
+
+response
+  toBe
+    Uses strict equality (===)
+    Checks if two values are the exact same (same reference for objects, arrays, etc.)
+
+    Use it for:
+      Primitive values — numbers, strings, booleans, undefined, null.
+
+      expect(2 + 2).toBe(4)            // ✅ passes
+      expect('hi').toBe('hi')          // ✅ passes
+      expect(true).toBe(true)          // ✅ passes
+
+    fails for objects or arrays, even if they have the same content:
+
+      expect({ a: 1 }).toBe({ a: 1 })  // ❌ fails (different object references)
+      expect([1, 2]).toBe([1, 2])      // ❌ fails
+
+  toEqual
+    Uses deep equality.
+    Checks if two values have the same structure and content, not necessarily the same reference.
+
+    Use it for:
+      Objects, arrays, or nested data structures where you want to check value equality rather than identity.
+
+      expect({ a: 1 }).toEqual({ a: 1 })  // ✅ passes
+      expect([1, 2]).toEqual([1, 2])      // ✅ passes
+
+  Extra Tip:
+    If you specifically want to check that two variables point to the exact same object, use toBe:
+
+    const obj = { a: 1 };
+    expect(obj).toBe(obj);   // ✅ same reference
