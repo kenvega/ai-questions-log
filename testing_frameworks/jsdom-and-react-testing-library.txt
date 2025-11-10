@@ -1,0 +1,24 @@
+question
+  does react-testing-library depends on jsdom?
+  can it run tests without it?
+
+response
+  short answer
+    no—React Testing Library (RTL) doesn’t depend on jsdom. It depends on having a DOM environment
+    jsdom is just the most common way to provide one in Node.
+
+  What that means in practice:
+
+    Works without jsdom if you run tests in a real browser
+      e.g., Playwright Component Testing, Cypress Component Testing, Karma, Web Test Runner.
+      RTL runs directly against the browser’s DOM.
+
+    Also works without jsdom in Node if you use an alternative DOM
+      e.g., happy-dom (Vitest supports environment: 'happy-dom').
+      Other options exist (e.g., linkedom), but jsdom/happy-dom are the usual picks.
+
+    Won’t work with “no DOM at all”
+      @testing-library/react renders into document.body and needs window/document.
+      If you’re only unit-testing pure functions, you can use a Node env
+        but for RTL component tests you need some DOM implementation.
+
