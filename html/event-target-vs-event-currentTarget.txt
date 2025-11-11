@@ -1,0 +1,69 @@
+question
+  give me a simple example where target and currentTarget are different
+  and not knowing the difference between those two might lead to a bug
+
+  also tell me where should I use one or another
+
+response
+  here's the short, real-world distinction:
+
+    event.target = the deepest element that actually triggered the event (could be an inner <svg>, <span>, etc.)
+
+    event.currentTarget = the element whose listener is currently running (the one you attached the handler to)
+
+  a simple bug you’ll actually hit:
+
+    imagine a Delete button that contains an SVG icon inside:
+
+      <button class="delete" data-id="42">
+        <svg><!-- icon --></svg>
+        Delete
+      </button>
+
+
+    // BAD: using target to read attributes of *the button's* element
+    document.querySelectorAll('.delete').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        // If you click the <svg>, e.target === <svg>, which has no dataset.id
+        const id = e.target.dataset.id; // <-- undefined sometimes → bug!
+        // ...deleteItem(id) blows up or deletes the wrong thing
+      });
+    });
+
+    // GOOD: use currentTarget when you need the element the handler is bound to
+    document.querySelectorAll('.delete').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.id; // always "42" here
+        deleteItem(id);
+      });
+    });
+
+    Why the bug happens
+      clicking the SVG makes target the <svg>, not the <button>
+      the SVG doesn’t have data-id, so your code gets undefined and misbehaves
+
+  when to use which:
+    use currentTarget when
+      you want the element you attached the listener to
+        e.g., read its dataset, toggle a class on it, disable it after click, etc.
+
+      * React tip: in onClick={(e) => …}, prefer e.currentTarget to read props/attributes of that element reliably
+
+    use target when
+      you care about the exact inner element that was interacted with
+      or when doing event delegation from a parent:
+        example
+          // Delegation: one listener on a container
+          list.addEventListener('click', (e) => {
+            // currentTarget === list (the container)
+            // target is the actual thing clicked → locate the intended control:
+            const btn = e.target.closest('button.delete');
+            if (!btn) return;
+            const id = btn.dataset.id;
+            deleteItem(id);
+          });
+
+  in React + TypeScript component code: you’ll use currentTarget more often
+    why: it always refers to the element you attached the handler to
+          it’s safer for reading dataset/props or mutating the element (e.g., disabled = true)
+          and its TypeScript type is the concrete element (HTMLButtonElement), so no type casting
