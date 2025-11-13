@@ -1,0 +1,87 @@
+question
+  a js promise goes to resolved or rejected when a server responds but responds with a 401 code?
+
+  or in any case when a promise goes as rejected? is that something the dev always decides? i guess with the fetch api from js is already decided based on error codes?
+
+response
+
+  Short version:
+    In general, the code that creates the Promise decides when to resolve or reject.
+      Libraries like Axios choose to reject for 4xx/5xx, but fetch doesn’t.
+
+    With fetch, a response with status 401 (or any 4xx / 5xx) still makes the Promise resolve (fulfilled), not reject.
+      the Promise is rejected only for network-level problems
+        no connection, CORS failure, DNS error, aborted request, etc.
+
+  What happens with fetch and a 401?
+    fetch("/some/url")
+      .then((response) => {
+        console.log("Promise is fulfilled!");
+        console.log("status:", response.status); // could be 200, 401, 500, etc.
+      })
+      .catch((error) => {
+        console.log("Promise is rejected!");
+        console.error(error);
+      });
+
+      If the server responds with HTTP 401:
+        .then is called.
+        response.ok will be false.
+        The Promise does not go to .catch automatically.
+
+  Example handling:
+    fetch("/some/url")
+      .then((response) => {
+        if (!response.ok) {
+          // Here YOU decide to treat it as an error
+          throw new Error(`HTTP error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Data:", data);
+      })
+      .catch((error) => {
+        console.error("Something went wrong:", error);
+      });
+
+  So when does a Promise go to "rejected"?
+
+      In general JS, a Promise is just:
+
+      const p = new Promise((resolve, reject) => {
+        // you decide when to call resolve() or reject()
+      });
+
+      The creator of the Promise decides:
+
+        When to call resolve(value) → Promise becomes fulfilled.
+
+        When to call reject(error) → Promise becomes rejected.
+
+      There is nothing “built-in” about HTTP codes here.
+      Promises don’t know about 401, 404, etc. They only know about resolve/reject.
+
+  Why is fetch different from Axios?
+    With fetch, it’s not really “based on error codes”; it’s:
+
+      Decided by the browser spec: fetch resolves for any HTTP status.
+      Rejects only for network/low-level failures.
+
+    Other libraries make different choices. Example: Axios:
+
+      With Axios, a 401 or 500 does reject the Promise.
+      They internally do something like:
+        if (response.status >= 200 && response.status < 300) {
+          resolve(response);
+        } else {
+          reject(createAxiosError(response));
+        }
+
+    So:
+      fetch:
+        HTTP error? → still .then, you check .ok yourself.
+      axios (and similar):
+        HTTP error? → goes straight to .catch.
+
+    
