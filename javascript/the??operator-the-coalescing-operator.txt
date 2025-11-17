@@ -1,0 +1,97 @@
+question
+  what is the ?? operator in js
+
+  how is it called?
+
+  give me an example on where to use it
+    what it is equivalent to?
+
+response
+
+  The ?? operator in JavaScript is the nullish coalescing operator
+
+  It returns the right-hand side value
+    only when
+      the left-hand side is null or undefined
+    otherwise
+      it returns the left-hand side value
+
+  example:
+    this line
+
+      const value = something ?? fallback;
+
+    is basically the same as
+
+      const value = (something !== null && something !== undefined) ? something : fallback;
+
+  simple use case
+
+    imagine you’re reading a setting that might be missing
+
+      const userProvidedLimit = undefined; // could be null or undefined
+      const limit = userProvidedLimit ?? 10;
+
+      console.log(limit); // 10, because userProvidedLimit is undefined
+
+    if userProvidedLimit was 0
+
+      const userProvidedLimit = 0;
+      const limit = userProvidedLimit ?? 10;
+
+      console.log(limit); // 0 (it keeps 0 because it's NOT null/undefined)
+
+  Why not just use ||?
+
+    || treats any falsy value as “empty”: 0, "", false, NaN, null, undefined.
+
+      example
+
+        const count = 0;
+
+        const a = count || 10; // 10, because 0 is falsy
+        const b = count ?? 10; // 0, because 0 is NOT null/undefined
+
+    So you use:
+
+      || when any falsy value should trigger the default
+
+      ?? when you only want the default if the value is missing (null or undefined)
+
+  Typical real-world use
+
+    Default config values without breaking on 0 or ""
+
+      function createUser(options = {}) {
+        const name = options.name ?? "Anonymous";
+        const age = options.age ?? 18;
+        const isAdmin = options.isAdmin ?? false;
+
+        return { name, age, isAdmin };
+      }
+
+      createUser({ name: "", age: 0 });
+      // name: ""   (keeps empty string)
+      // age: 0     (keeps 0)
+      // isAdmin: false (default)
+
+
+    If you used || here
+      the empty string and 0 would be replaced by the defaults, which is often not what you want.
+
+    Summary
+
+      Name: nullish coalescing operator (??)
+
+      Use when: you want a default only if value is null or undefined
+
+      Equivalent to:
+
+          left ?? right
+          // ≈
+          (left !== null && left !== undefined) ? left : right
+
+      || when any falsy value (0, "", false, NaN, null, undefined) should trigger the default
+
+      ?? when you only want the default if the value is missing (null or undefined)
+
