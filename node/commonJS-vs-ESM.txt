@@ -1,0 +1,34 @@
+question
+  What is CommonJS vs ESM, in plain words?
+
+response
+  CommonJS (CJS) – the older Node style
+
+    Uses require and module.exports.
+
+    Was invented by Node before JavaScript had a standard module system.
+
+    Key words:
+
+      require(...)
+
+      module.exports = ...
+
+  ES Modules (ESM) – the modern standard
+
+    Uses import and export.
+
+    Part of the JavaScript language spec (works in browsers, Deno, Node, etc).
+
+    Key words:
+
+      import ... from
+
+      export / export default
+
+  Rough analogy
+
+    CommonJS = “Node’s custom way of doing modules”.
+
+    ESM = “Official JavaScript way of doing modules, works everywhere.”
+
