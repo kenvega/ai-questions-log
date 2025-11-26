@@ -1,0 +1,126 @@
+question
+  how does a cookie, a query parameter, and a regular header differentiate from one another?
+
+response
+  cookies aren’t just arbitrary headers. They come with extra rules:
+
+  Automatic persistence
+
+    Server sends Set-Cookie in a response.
+    Client stores it.
+    Future requests reuse it automatically.
+      A normal header doesn’t have a standard “store this and reuse it” mechanism.
+
+  Domain/path matching
+    Cookies are only sent when the request matches rules like:
+
+    domain (example.com)
+
+    path (/api)
+
+    secure-only (HTTPS)
+
+    expiry time
+
+    Special flags
+    Cookies have attributes that matter:
+
+    HttpOnly, Secure, SameSite, Expires/Max-Age
+    These don’t really fit the “just type a header” mental model.
+
+follow up question
+  are cookies just like a special header?
+    your “special header” idea is right (with one tweak)
+
+    cookies are sent in a header (Cookie:), but they’re “special” because:
+
+      - the client stores them automatically,
+      - the client resends them automatically,
+      - and there are standardized rules about when they should/shouldn’t be sent.
+
+follow up question
+  why it became a standard to store cookies automatically?
+
+    The core reason: HTTP is stateless
+      HTTP requests don’t “remember” earlier requests
+      Each request is basically: “Hi server, here’s a request. Bye.”
+
+    But websites needed state, like:
+
+      “this user is logged in”
+      “this is your shopping cart”
+      “your language is Spanish”
+      CSRF protection tokens
+      A/B test assignments
+
+    Without a standard mechanism, every site had to invent hacks.
+
+    Before cookies, the hacks/common approaches were not ideal:
+      Put state in the URL (query params)
+
+        Example:
+        /account?sessionId=abc123
+
+        Problems:
+
+          session IDs end up in browser history, bookmarks, screenshots, and logs
+          leaks via the Referer header when you click links to other sites
+          links become shareable “login links” accidentally
+          messy UX and security
+
+      Hidden form fields
+
+        You submit a form and include <input type="hidden" name="sessionId" ...>
+
+        Problems:
+
+          only works reliably for form navigation, not normal browsing/assets
+          hard for GET navigation, images, scripts, etc.
+          easy to break
+
+    What cookies solved (and why “automatic” mattered)
+
+      Automatic continuity
+
+        If the server says “store this piece of state,” the client should keep it and send it back later without every programmer reinventing that logic.
+
+        That means any browser can do:
+
+          Server → Set-Cookie: sessionId=abc123; ...
+
+          Browser stores it
+
+          Next request → Browser sends Cookie: sessionId=abc123
+
+        This made “login sessions” and “shopping carts” feasible across the whole web.
+
+      Scalable for servers
+
+        If the browser sends a small ID (like sessionId)
+          the server can store the big data server-side (in memory/Redis/DB).
+
+        The server doesn’t need to “remember” a TCP connection.
+
+        Works across multiple servers behind a load balancer.
+
+      Consistent rules across sites
+
+        Cookies come with standardized rules so clients behave predictably:
+
+          only send to matching domain/path
+
+          expire at a specific time (or “session cookie”)
+
+          send only on HTTPS with Secure
+
+          reduce theft/abuse with HttpOnly, SameSite
+
+
+follow up question
+  why cookies are called like that?
+    The term “cookie” comes from older computing jargon like “magic cookie”
+      a small piece of data a program receives
+        and then sends back unchanged to prove continuity/identity (like a token)
+
+        web cookies are essentially that
+          a small blob of data the server gives you, and the browser sends it back later
