@@ -1,0 +1,7 @@
+question
+  why is it not secure to send the userId in a cookie?
+  what can a hacker do with just the userId?
+  how is it that a session is more secure?
+
+response
+  

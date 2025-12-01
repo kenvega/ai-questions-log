@@ -1,0 +1,3 @@
+question
+  are cookies automatically set by the browser once the server sends them?
+

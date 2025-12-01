@@ -1,0 +1,93 @@
+question
+  let sessions: { [sessionId: string]: { userId: string } } = {};
+
+  the sessionId part here for this typescript line is confusing
+  it doesn't enforce the property to be literally called sessionId
+  both of these lines won't give you an error with that typescript line
+    sessions = { sessionId: { userId: "u1" } };
+    sessions = { s1: { userId: "u1" } };
+
+  why is that?
+
+  also if you change sessionId for anything else it still works
+    let sessions: { [anythingElse: string]: { userId: string } } = {};
+
+    sessions = { sessionId: { userId: "u1" } }; // doesn't throw an error
+    sessions = { s1: { userId: "u1" } }; // doesn't throw an error
+
+  if it doesn't matter why do i need to set a keyword for that?
+  why is there no specific syntax to say that the key of an object is a string without having to asign it a name
+
+response
+  this is the syntax of an index signature
+    it enforces the type of the key of an object, not the name of the key
+
+    TypeScript has a “simpler” alias that often makes this click
+      both lines are equivalent
+
+        const sessions: { [sessionId: string]: { userId: string } } = {};
+        const sessions: Record<string, { userId: string }> = {};
+
+      Record is a built-in Typescript utility type
+        It's available globally in TS
+        It’s a type alias that helps you say “an object whose keys are X and whose values are Y”
+          without writing an index signature yourself.
+
+        Why is it called “Record”?
+
+          in programming/type theory, a “record” is a common word for “a structured object with fields” (like an object type)
+          TypeScript already uses “object” everywhere, so “Record” became the utility name for “a mapping from keys to values”
+          Record also fits with other TS utility type names (Partial, Pick, Omit, etc.): short, generic, math-y.
+
+        Is Record the same as an index signature?
+
+          mostly yes when the first part is a string
+            Record<string, V>
+
+          is effectively the same idea as:
+            { [key: string]: V }
+
+        example
+          type R = Record<"a" | "b", number>; // must have both a and b
+          const x: R = { a: 1, b: 2 };        // ok
+          const y: R = { a: 1 };              // error: missing b
+
+      Should you “always use Record with string keys” for objects?
+        No — it’s recommended only when you’re modeling a dictionary / lookup table (dynamic keys).
+
+        Use a normal object type (fixed fields) when the keys are known ahead of time:
+          type Session = { userId: string; createdAt: Date };
+
+        Use Record / index signature when keys are dynamic:
+          type SessionsById = Record<string, Session>;
+
+follow up question
+  javascript coerce key properties to strings so why typescript needs me to say that the key is a string
+
+follow up response
+  Because TypeScript types are about how you intend to use the object, not just “what JS allows”.
+
+    example
+      const bySessionId: Record<string, number> = {};
+      bySessionId["abc"] = 1;   // ✅ intended
+
+      const byIndex: Record<number, number> = {};
+      byIndex[0] = 123;         // ✅ intended (array-like)
+
+  The real practical reason to care: symbol and “missing keys”
+
+    Symbols are not strings
+
+      Objects can have symbol keys, and Record<string, V> explicitly excludes them.
+
+        const sym = Symbol();
+        const o: Record<string, number> = {};
+        o[sym] = 1; // ❌ (not a string key)
+
+    “key might not exist” (the common pitfall)
+
+      With Record<string, V>
+        TS tends to pretend any string key gives a V, but at runtime it could be undefined.
+
+        to model that correctly
+          type Sessions = Record<string, { userId: string } | undefined>;

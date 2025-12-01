@@ -1,0 +1,28 @@
+question
+  When you define an object in JavaScript, can the properties of that object be anything other than strings?
+
+response
+  In plain JavaScript objects
+    property keys are either strings or symbols
+
+  If you “use a number” as a key, JavaScript coerces it to a string (1 becomes "1")
+
+  const obj = {
+    A: "B",  // key is the string "A"
+    1: 2,    // key is actually the string "1"
+  };
+
+  console.log(obj.A);     // "B"
+  console.log(obj[1]);    // 2  (1 is coerced to "1")
+  console.log(obj["1"]);  // 2
+
+  console.log(Object.keys(obj)); // ["1", "A"]
+  console.log(typeof Object.keys(obj)[0]); // "string"
+
+  same thing happens if you assign it
+
+  const obj = {};
+  obj["A"] = "B";
+  obj[1] = 2;
+
+  console.log(obj); // { '1': 2, A: 'B' }
