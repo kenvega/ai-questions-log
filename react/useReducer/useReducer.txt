@@ -1,0 +1,111 @@
+question
+  What is the useReducer hook?
+  how is it different from useState, and when should I use it?
+  Why does it exist? What is the advantage or disadvantage over the other hooks?
+  Can you show an example where
+    a number is fetched from an API and re-fetched every time I click it—both with useState and with useReducer?”
+
+response
+
+  useReducer is a hook for managing state that changes in more structured ways
+    especially when you have multiple related state values (like data + loading + error)
+      and you want updates to happen through named “actions” instead of lots of setSomething(...) calls
+
+  how useReducer works (the idea)
+    looks like this
+      const [state, dispatch] = useReducer(reducer, initialState);
+
+        - state: your current state (often an object)
+
+        - dispatch(action): you send an “action” describing what happened
+
+        - reducer(state, action): a pure function that returns the next state
+
+      it’s basically the same pattern as array.reduce()
+        and also the same idea used by Redux—but it’s local to a component
+
+  How it relates to useState
+    Conceptually:
+
+      - useState is great when updates are simple: “set this value to that value”.
+      - useReducer is great when updates are: “when X happens, transition state from A → B”.
+
+    You can even think of useState as a simpler cousin of useReducer.
+
+    Example of a tiny reducer counter:
+
+      const reducer = (count, action) => {
+        if (action.type === "inc") {
+          return count + 1
+        }
+        if (action.type === "dec") {
+          return count - 1
+        }
+        return count
+      };
+
+      const [count, dispatch] = useReducer(reducer, 0)
+
+  Why does useReducer exist?
+
+    Because in real apps, state often becomes something like:
+        value
+        status (idle/loading/success/error)
+        error
+
+      plus rules like: “if loading starts, clear error”, “ignore stale responses”, etc.
+
+    With useState, those rules get scattered across multiple setters and effects
+
+    With useReducer, you put the “rules of state changes” in one place (the reducer)
+      making it easier to reason about, test, and extend
+
+  Advantages of useReducer
+
+    More predictable updates: state transitions are explicit (“actions”)
+
+    Less tangled code when many state fields update together
+
+    Easier to extend when new feature requests appear
+
+    Great for async UI state (loading/error/success) + tricky cases like stale responses
+
+  Disadvantages of useReducer
+
+    More boilerplate for simple cases
+
+    You must keep the reducer pure (no fetching inside the reducer)
+
+    If you’re only toggling a couple of values, useState is usually clearer
+
+  Your exact scenario: fetch a number from an API, refetch on click
+
+    You don’t need useReducer just to refetch
+
+    A very common useState solution is to store a reloadKey counter and increment it on click.
+
+    - Solution with useState (totally valid)
+
+        check the file: TODO:
+
+        This is simple and fine. So why might someone recommend a reducer? Usually because…
+
+          feature requests grow (“track retries”, “show last updated time”, “ignore stale responses”, “disable click while loading”, etc.)
+
+          then the number of setX(...) calls and rules starts to sprawl.
+
+    - Solution with useReducer (scales better as logic grows)
+
+        check the file: TODO:
+
+          Why some people recommend useReducer here
+
+            Not because “refetch requires reducer” (it doesn’t), but because API fetching often has multiple related state changes:
+
+              start loading → clear error
+              success → set value, status
+              failure → set error, status
+              ignore stale response
+              maybe add “lastUpdated”, “retryCount”, “fetchedAt”, etc.
+
+            Reducers keep those rules centralized.
