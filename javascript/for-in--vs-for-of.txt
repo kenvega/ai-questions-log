@@ -1,0 +1,51 @@
+question
+  difference between for...in vs for...of
+
+  difference with forEach and a for loop as well
+
+  give me examples of all of those
+
+response
+  for...in (keys / property names)
+    Iterates over enumerable property keys (strings) of an object
+    On arrays, it iterates over indexes as strings (and can include custom/extra properties)
+      so it’s usually not recommended for arrays
+
+    example
+      const obj = { a: 1, b: 2 };
+
+      for (const key in obj) {
+        console.log(key, obj[key]); // "a" 1, "b" 2
+      }
+
+    example arrays
+      const arr = ["x", "y"];
+      arr.extra = "oops";
+
+      for (const i in arr) {
+        console.log(i); // "0", "1", "extra"  (not what you want most of the time)
+      }
+
+  for...of (values of an iterable)
+    Iterates over values of an iterable (arrays, strings, maps, sets, NodeLists, etc.)
+    Great for arrays and anything that implements Symbol.iterator
+
+    example
+      const arr = ["x", "y"];
+
+      for (const value of arr) {
+        console.log(value); // "x", "y"
+      }
+
+    example string
+
+      for (const ch of "hi") {
+        console.log(ch); // "h", "i"
+      }
+
+    example with index
+      const arr = ["x", "y"];
+
+      for (const [i, v] of arr.entries()) {
+        console.log(i, v); // 0 "x", 1 "y"
+      }
