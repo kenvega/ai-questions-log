@@ -1,8 +1,6 @@
 question
   difference between for...in vs for...of
 
-  difference with forEach and a for loop as well
-
   give me examples of all of those
 
 response
