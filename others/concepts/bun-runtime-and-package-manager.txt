@@ -1,0 +1,43 @@
+question
+  I've heard that Bun is a runtime but is also a package manager
+  Is it both or maybe is it that there are two tools that actually does these separate tasks, but they are called the same?
+
+  For example, I know that node is a runtime and NPN is a package manager
+
+response
+  Bun is both a JavaScript runtime and a package manager—and it’s mostly “one tool”
+    in the sense that it ships as a single executable called bun with multiple subcommands
+
+  How it maps to your Node/npm mental model
+
+    Node = runtime (node)
+    npm = package manager (npm) (usually distributed alongside Node, but still a separate CLI)
+
+    Bun = runtime and toolkit in one (bun)
+
+      runtime
+        bun run ...
+
+      package manager
+        bun install, bun add, bun remove
+
+      plus: test runner + bundler
+              bun test, bun build, etc
+
+  So it’s not “two separate tools that happen to share a name”
+    it’s one CLI that does multiple jobs
+
+  Can I use Bun’s package manager without using the Bun runtime?
+
+    Yes
+
+    Bun’s docs explicitly position the package manager as usable standalone
+      and it can install a Node.js-compatible node_modules so you can keep running your app with Node
+        while using bun install
+
+  One small exception: bunx
+
+    When you install Bun, you also get bunx
+      which is basically an alias for bun x (like npx)
+
+    It’s still part of the same Bun toolchain, just a convenience command
