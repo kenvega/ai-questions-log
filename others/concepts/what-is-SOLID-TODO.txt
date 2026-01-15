@@ -1,0 +1,15 @@
+question
+  related to programming what is SOLID?
+  give me an example with a popular app where it can be applied
+
+response
+  What is SOLID (in programming)?
+    S — Single Responsibility: one class/module = one reason to change
+    O — Open/Closed: open to extension, closed to modification
+    L — Liskov Substitution: subclasses/implementations must be swappable without breaking behavior
+    I — Interface Segregation: many small, purpose-specific interfaces > one fat interface
+    D — Dependency Inversion: depend on abstractions, not concrete implementations
+
+  Example: Twitter/Instagram-style timeline
+
+    Goal: show a user’s feed, with pluggable ranking (chronological, “friends first”, “ML ranked”), and swappable data source (SQL, REST, cache)
