@@ -1,0 +1,148 @@
+question
+  Can you explain what is a race condition and use a very simple example with a React component where that might happen?
+  For example, I've heard that you can trigger a race condition when you click many times a button that fetches something. Is that possible? Is that a thing? And why that occurs?
+  What is the issue that that brings? Because as I understand it, if I just refetch the same thing there wouldn't have to be any problems usually.
+  I mean from the user side they will get the information. And the other requests just will show the information.
+  Usually I think that will be not a problem as long as you're using a GET request.
+  But I can understand maybe if you are creating a resource for example.
+  But you let me know because I'm just imagining what will be problematic the cases for this.
+
+response
+
+  A race condition is when the result you end up showing/using
+    depends on which async thing finishes first, and that order is not guaranteed
+
+  In React, this often happens because you kick off multiple async operations (like fetch)
+    and each one updates state when it finishes
+      If they finish in a different order than they were started
+        an older response can overwrite a newer one
+
+  “Click many times and fetch” — yes, that can race
+
+    Even if every request is a GET, the UI can still end up wrong
+      because “latest click” ≠ “last response to arrive”
+
+    A very simple buggy example
+
+        import React, { useState } from "react";
+
+        function sleep(ms) {
+          return new Promise((r) => setTimeout(r, ms));
+        }
+
+        export default function RaceyFetcher() {
+          const [text, setText] = useState("Nothing yet");
+
+          async function fetchThing() {
+            // Simulate variable network latency (0–1500ms)
+            const delay = Math.floor(Math.random() * 1500);
+            await sleep(delay);
+
+            // Imagine this is: const data = await fetch(...).then(r => r.json())
+            const data = `Response after ${delay}ms`;
+
+            setText(data);
+          }
+
+          return (
+            <div>
+              <button onClick={fetchThing}>Fetch</button>
+              <p>{text}</p>
+            </div>
+          );
+        }
+
+      If you click 5 times quickly, you started 5 requests. The slowest one might finish last and “win” (overwrite the UI), even if it corresponds to an earlier click.
+
+      That’s the race: which setText(...) runs last.
+
+  Why it’s an issue (even for GET)
+
+    If you truly refetch the exact same immutable data, you might not notice
+      But in real apps, races cause problems like:
+
+        Stale UI / wrong screen
+
+          You click “Load user A”, then quickly “Load user B”.
+
+          If A’s request returns after B’s, you end up showing A while the UI says you’re on B.
+
+        Loading/error state lies
+
+          Request #1 sets loading=true
+
+          Request #2 sets loading=true
+
+          #2 finishes → loading=false
+
+          #1 finishes later → might set loading=false again (fine) or set an old error that overwrites success, etc.
+
+        Flicker / confusing updates
+
+          Data jumps back and forth as responses arrive.
+
+        Waste + rate limits + server load
+
+          “Harmless GET” can still spam your backend, hit rate limits, drain battery on mobile, etc.
+
+  A minimal fix: only accept the latest response
+
+    Track a request id; ignore responses that aren’t the most recent:
+
+      import React, { useRef, useState } from "react";
+
+      function sleep(ms) {
+        return new Promise((r) => setTimeout(r, ms));
+      }
+
+      export default function SafeFetcher() {
+        const [text, setText] = useState("Nothing yet");
+        const latestRequestId = useRef(0);
+
+        async function fetchThing() {
+          const requestId = ++latestRequestId.current;
+
+          const delay = Math.floor(Math.random() * 1500);
+          await sleep(delay);
+
+          const data = `Response after ${delay}ms (req ${requestId})`;
+
+          // Only update state if this is still the latest request
+          if (requestId === latestRequestId.current) {
+            setText(data);
+          }
+        }
+
+        return (
+          <div>
+            <button onClick={fetchThing}>Fetch</button>
+            <p>{text}</p>
+          </div>
+        );
+      }
+
+  Another common fix: cancel the previous request (AbortController)
+
+    If you’re using real fetch, you can abort in-flight requests so they don’t even finish:
+
+      store the current AbortController in a ref
+
+      abort it before starting a new fetch
+
+      pass signal to fetch
+
+  When it’s especially problematic
+
+    Creating resources / double submit: duplicate orders, duplicate rows, double charges (classic race).
+
+    Search-as-you-type: results for “r” arrive after results for “rea”, showing the wrong list.
+
+    Pagination / filters: user changes filter, old request returns and overwrites filtered data.
+
+  Practical recommendations
+
+    For “fetch on click”: disable the button while loading or ignore older responses (request id).
+
+    For typeahead/search: debounce + ignore older responses or abort them.
+
+    Prefer a data-fetching library (React Query / SWR) when possible: they handle deduping, caching, cancellation patterns, and stale data rules.
