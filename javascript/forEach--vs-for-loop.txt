@@ -54,3 +54,10 @@ response
 
     for
       maximum control (early exit, skipping, stepping by 2, iterating backwards, etc.)
+
+follow up question
+  does this includes the for loops like for..of and similars?
+
+follow up response
+  Yes — most of what I said applies to all the “for loops” family
+    including for, for...of, and for...in, with a couple important nuances
