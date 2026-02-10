@@ -1,0 +1,125 @@
+question
+  when doing a fullstack app with react and node what are the type of tests we should do and why?
+  which tests are the ones that are the 'least' important or 'most' important?
+  does anything change if we use ruby on rails instead of node?
+
+response
+  In a React + Node full-stack app you generally want a mix of tests at different “distances” from the user
+  The closer a test is to real user behavior, the more confidence it gives—but it also gets slower and more brittle
+  The trick is balancing confidence vs. cost
+
+  Types of tests to do (and why), with examples
+    1. Unit tests (fast, cheap, lots of them)
+
+      What: Test small pieces of logic in isolation
+      Why: Catch logic bugs early, run super fast, pinpoint failures
+
+      Examples
+        Backend (Node): pricing/discount rules, permission checks, input validation functions.
+        Frontend (React): pure utilities, reducers, complex hooks logic (when it’s truly logic-heavy).
+
+      Rule of thumb
+        Unit test business rules and edge-case logic, not framework glue.
+
+    2. Component tests (React UI behavior, medium-fast)
+
+      What: Render a component and test behavior through the UI (click, type, see changes).
+      Why: Prevent UI regressions where it matters: interaction logic, conditional rendering, form validation.
+
+      Examples
+        Login form shows error on invalid credentials
+        A “Save” button is disabled until required fields are filled
+        A table filters results correctly when you type in search
+
+    3. Integration tests (high value in full-stack)
+
+      What: Test multiple units working together—especially across your app’s internal boundaries.
+      Why: Most real bugs come from integration points (API ↔ DB, UI ↔ API, auth ↔ permissions, etc.).
+
+      Examples
+        Backend: HTTP request → controller/route → service → database (real DB or containerized DB)
+        Frontend: component uses a real data-fetching layer but with network mocked (or pointed at a test API)
+
+    4. API/Request tests (backend-focused integration)
+
+      What: Hit endpoints and assert status codes, response shapes, auth behavior.
+      Why: Your API is a contract. These tests prevent breaking changes and catch wiring issues.
+
+      Examples
+        POST /sessions returns 200 and a token on valid credentials, 401 otherwise
+        GET /orders returns only the user’s orders (authorization)
+
+    5. End-to-end (E2E) tests (slowest, most confidence per test)
+
+      What: Drive the browser like a user and exercise the whole system.
+      Why: Best “does the app actually work” coverage—ideal for critical flows.
+
+      Examples
+        Sign up → confirm email (if applicable) → log in → create project → log out
+        Checkout/payment flow (often with sandbox stubs)
+
+      Key part
+        Keep E2E small and focused (happy paths + a couple high-risk failures). Don’t try to cover everything here
+
+    6. Contract / schema tests (often underrated in full-stack)
+
+      What: Ensure frontend expectations match backend responses.
+      Why: Prevent “frontend broke because backend changed a field name” class of bugs.
+
+      Examples
+        Validate responses against an OpenAPI schema
+        Consumer-driven contract tests (frontend asserts needs; backend verifies)
+
+    7. Non-functional tests (pick based on risk)
+
+      These aren’t always required on day one, but they matter depending on your app:
+        Accessibility checks (automated + manual)
+          forms, modals, keyboard navigation
+
+        Security checks
+          dependency scanning, basic authz coverage, input sanitization
+
+        Performance/load tests
+          if you expect real traffic, test critical endpoints and pages
+
+        Visual regression
+          useful if pixel-level UI consistency matters (marketing/design-heavy apps)
+
+  Most important vs least important (practical ranking)
+    “Most important” in almost every full-stack app
+
+      Backend integration/request tests for critical business rules
+        Because breaking payments, permissions, or data integrity is catastrophic.
+
+      React component tests for critical UI behavior
+        Especially forms, complex state, and “can’t ship broken” screens.
+
+      A small set of E2E tests for top user journeys
+        Smoke-level confidence that the whole system works.
+
+      Contract/schema checks (or something equivalent)
+        Because FE/BE drift is constant.
+
+    “Least important” (or easiest to overdo)
+
+      Lots of brittle E2E tests (high maintenance; use sparingly)
+
+      Snapshot tests for markup (often noisy; ok for stable, simple UI, but easy to abuse)
+
+      Chasing coverage % as a goal (coverage is a metric, not a strategy)
+
+      Visual regression everywhere (use only where design fidelity is crucial)
+
+      Heavy load testing early (do a baseline, then invest when you have real traffic risk)
+
+  A solid “default” testing mix (if you want a starting point)
+
+    Backend: lots of unit tests for business rules + a strong set of request/integration tests against a real DB
+
+    Frontend: component tests for interactive/conditional UI + a few integration-style tests around data fetching
+
+    E2E: ~5–20 tests covering the top critical journeys (smoke + highest-risk flows)
+
+    Contracts: OpenAPI/schema validation (or equivalent) to prevent FE/BE drift
+
+    Plus: lint/typecheck + basic dependency security scanning in CI
