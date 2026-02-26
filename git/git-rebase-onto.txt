@@ -1,0 +1,26 @@
+question
+  what does this git command do
+    git rebase --onto development main
+
+response
+  moves your current branch’s commits that are after main
+    so they sit on top of development instead
+
+  Break it down
+    main (the last argument) = the upstream / cutoff point. Git will find the merge-base and identify commits reachable from your current HEAD but not reachable from main.
+    development (after --onto) = the new base those commits will be applied onto.
+    (no branch specified at the end) = the branch being rebased is whatever you currently have checked out (HEAD).
+
+  Before
+    main:        A---B---C
+    development:       \---D---E
+    feature:            \---f1---f2   (you are here)
+
+  Run 'git rebase --onto development main' (on feature), after:
+
+    main:        A---B---C
+    development:       \---D---E
+    feature:                 \---f1'---f2'
+
+  (f1', f2' are rewritten commits with new hashes.)
+
