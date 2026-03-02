@@ -1,0 +1,59 @@
+question
+  difference between npx and npm?
+  why was npx created?
+
+response
+  npm is primarily a package manager:
+
+    Installs dependencies: npm install react
+    Runs scripts you define in package.json: npm run build
+    Publishes packages: npm publish
+
+  npx is primarily a package runner / command launcher:
+    Runs a package’s executable without you having to install it globally
+
+      Examples:
+        npx eslint . (runs eslint, using a local install if present)
+
+        npx create-react-app my-app (downloads and runs it if you don’t have it)
+
+  Think of it like:
+    npm = get/manage packages
+    npx = run a package’s command
+
+  What does npx actually do when you run it?
+
+    When you run npx some-tool:
+
+      If some-tool exists in your project’s node_modules/.bin, it runs that local version first.
+      Otherwise, it can download a temporary copy (cache it) and run it.
+      It can also run specific versions easily: npx typescript@5.4.5 --version
+
+  Why was npx created?
+
+    It solved a few real pain points in the Node ecosystem:
+
+    Stop installing CLI tools globally
+      Before: npm i -g create-react-app (global installs caused version drift and permission issues)
+      After: npx create-react-app my-app (always runs it when you need it)
+
+    Make “run the project’s local tools” effortless
+      Before: ./node_modules/.bin/jest or setting up scripts for everything
+      After: npx jest (runs the local one automatically)
+
+    Easily run one-off tools
+      Great for scaffolding, codemods, quick checks:
+        npx degit user/repo my-app
+        npx prettier --check .
+
+    Avoid PATH/OS differences
+      npx finds the right executable across platforms more reliably than telling people to run a file path directly.
+
+  One important modern note (Node/npm versions)
+
+    In modern npm, npm exec is basically the “official” equivalent of npx:
+
+      npx eslint . ≈ npm exec eslint -- .
+      npx create-next-app@latest ≈ npm exec create-next-app@latest
+
+    npx still exists and is widely used, but npm exec is the newer “same idea” built into npm.
