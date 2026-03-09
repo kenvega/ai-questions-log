@@ -1,0 +1,95 @@
+question
+  what is session fixation?
+  what strategy is used to to prevent it?
+
+response
+  session fixation is a web attack where
+    the attacker gets the victim to use a session ID the attacker already knows
+
+  How it works:
+    1) The attacker creates or obtains a valid session ID from the site
+    2) They trick the victim into logging in while using that same session ID
+    3) After the victim logs in, the session becomes authenticated
+    4) Because the attacker already knows the session ID, they can use it to hijack the victim’s logged-in session
+
+  What prevents it:
+    The usual defense is
+      to issue a new session ID after login or after any privilege change
+
+    This is often called
+      session regeneration or rotating the session ID
+
+  So the chain is:
+    session ID regeneration after login
+      → prevents session fixation attack
+        → which is a form of authenticated session hijacking
+
+  A simple way to remember it:
+    Session hijacking = stealing or reusing someone’s valid session
+    Session fixation = forcing them to use a session you already know
+
+follow up question
+
+  how could the attacker do this?
+    how they could create or obtain a valid session ID from the site?
+    how could they trick someone into logging while using that sessionID?
+    how could they keep using that sessionID once the victim user has logged in?
+
+follow up response
+
+  At a high level, session fixation works only when the app accepts an existing session identifier before login and fails to replace it after login.
+
+  Here is the idea behind each step.
+
+    1. How could an attacker obtain a valid session ID?
+
+        A “valid” session ID does not have to belong to another logged-in user.
+        It can just be a real session token that the site itself issued.
+
+          Examples:
+            - The attacker visits the site and gets assigned a normal anonymous session cookie.
+            - The app puts session IDs in URLs or hidden form fields, and the attacker sees one there.
+            - The app is designed to accept a client-provided session ID and create server state around it.
+
+          The important point is that the attacker already knows this session ID in advance.
+
+    2. How could they trick someone into logging in with that session ID?
+
+        This only works if the application lets the victim’s browser use the attacker-chosen session ID.
+
+        Common insecure patterns include:
+          - the app accepts session IDs in the URL
+          - the app accepts session IDs from a form parameter
+          - the app lets a subdomain or related app set the session cookie in a way that affects the main app
+          - the site does not properly protect how session cookies are established
+
+    3. How does the attacker keep using that session ID after login?
+
+        If the app is vulnerable, it keeps the same session ID when the user authenticates.
+
+        So the flow is:
+          - attacker knows session ID X
+          - victim logs in while using session ID X
+          - server marks session X as authenticated
+          - attacker continues sending requests with session ID X
+          - server treats both as the logged-in user tied to that session
+
+        That is why rotating the session ID at login stops the attack.
+        After login, the old ID becomes useless and only the victim gets the new authenticated one.
+
+    What has to be broken for this attack to work
+      Usually, one or more of these must be true:
+        - the app accepts a session ID from an unsafe source
+        - the app does not generate a fresh session after login
+        - the app lets the same session survive a privilege change
+        - cookie scope or session handling is poorly configured
+
+    What prevents it
+      The main defense is
+        - always issue a brand-new session ID after login and after privilege changes
+
+      And also
+        - only accept session IDs from secure cookies, not URLs or form fields
+        - set cookies correctly (HttpOnly, Secure, appropriate SameSite)
+        - invalidate old session IDs after regeneration
+        - avoid letting untrusted origins influence session cookies
