@@ -233,3 +233,27 @@ follow up response
 
     So it’s better classified as
       component collection / component starter kit, not a CSS framework
+
+follow up question
+
+  i understand that shadcn requires tailwind when you install it
+  does shadcn requires radix ui when you install it as well?
+
+follow up response
+
+  Does shadcn require Tailwind?
+    In practice: yes, almost always
+    The shadcn/ui components are written with Tailwind classes
+      so you need Tailwind (or you’d have to rewrite the styles)
+
+  Does shadcn require Radix UI too?
+    Sometimes, not always.
+      Many shadcn components are built on Radix UI primitives like:
+        Dialog, Dropdown Menu, Popover, Tabs, Tooltip, etc
+
+      Some shadcn components don’t need Radix
+        Button, Badge, Card, Separator, etc.
+
+    So when you “install”/add a specific shadcn component, it will pull in whatever it needs:
+      If that component uses Radix, you’ll get @radix-ui/... dependencies.
+      If it doesn’t, you won’t.
