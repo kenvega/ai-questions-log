@@ -1,0 +1,81 @@
+question
+  what is the difference between a login shell and an interactive shell
+
+response
+  In Unix/Linux, login shells and interactive shells describe
+    how a shell session starts and how it behaves
+      they often overlap, but they’re not the same concept
+
+  Login Shell
+    is started when you log into the system and begin a user session
+
+    Typical situations
+      - Logging into a TTY console
+      - Connecting via SSH
+      - Logging into a desktop environment (often internally starts one)
+
+    example
+      ssh user@server
+
+    or when the system starts your shell after authentication
+
+    What makes it special
+      A login shell reads login-specific configuration files.
+
+      For bash, these are typically:
+        /etc/profile
+        ~/.bash_profile
+        ~/.bash_login
+        ~/.profile
+
+    Only one of the user files is read (first one found).
+
+    These files usually set things like:
+      - PATH
+      - environment variables
+      - starting programs
+      - session configuration
+
+  Interactive Shell
+    an interactive shell is a shell where you type commands and see results immediately
+
+    Typical situations
+      Opening a terminal window
+        Now you're interacting with the shell directly
+
+    What makes it special
+      Interactive shells enable features like:
+        - command history
+        - tab completion
+        - prompts (PS1)
+        - aliases
+        - job control
+
+  Key Difference
+
+    | Feature                            | Login Shell | Interactive Shell |
+    | ---------------------------------- | ----------- | ----------------- |
+    | Started during login               | Yes         | Not necessarily   |
+    | Accepts user input                 | Usually yes | Yes               |
+    | Reads `.bash_profile` / `.profile` | Yes         | No                |
+    | Reads `.bashrc`                    | Sometimes   | Yes               |
+
+  The 4 Possible Combinations
+
+    Shells can be both or neither
+
+      | Type                           | Example                           |
+      | ------------------------------ | --------------------------------- |
+      | Login + Interactive            | SSH session                       |
+      | Interactive only               | Opening a new terminal in desktop |
+      | Login but non-interactive      | Running login shell script        |
+      | Non-login, non-interactive     | Running a shell script            |
+
+    Example of non-interactive shell
+      bash script.sh
+
+  Simple way to remember
+
+    Login shell → starts a user session
+
+    Interactive shell → lets you type commands
