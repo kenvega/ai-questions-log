@@ -1,0 +1,116 @@
+question
+  what are action based routes?
+  what are RESTful routes?
+  are those the same? which was created first?
+  why after the first one was created the second was needed?
+
+response
+  They are related, but not the same.
+
+  Action-based routes organize URLs around operations.
+    Examples:
+      /createUser
+      /deletePost/42
+      /approveInvoice/7
+
+      The route name tells you what action to perform
+
+  RESTful routes organize URLs around resources and use the HTTP method to express the action.
+    Examples:
+      GET /users → list users
+      POST /users → create a user
+      GET /posts/42 → fetch one post
+      DELETE /posts/42 → delete that post
+
+      The URL tells you what thing you are working with
+        and the HTTP verb tells you what you want to do
+
+  Are they the same?
+
+    No. They can both let you do CRUD operations
+          but they model the API differently
+
+    Action-based:
+      - URL contains the verb/action
+      - often looks like RPC-style commands
+      - example: POST /users/create
+
+    RESTful:
+      - URL contains the noun/resource
+      - HTTP method carries the action
+      - example: POST /users
+
+    So these two may achieve the same outcome
+      but the structure and design philosophy are different
+
+  Which came first?
+
+    Action-based routing came first in practice
+
+      Early web apps and APIs were commonly built around actions like:
+
+        /login
+        /save
+        /deleteItem
+        /doSearch
+
+        That style was natural because developers were thinking in terms of “call this function.”
+
+    REST came later as a formal architectural style
+      especially after Roy Fielding described REST in his 2000 dissertation
+        It gave a more systematic way to use HTTP as it was designed
+
+  Why was RESTful routing needed after action-based routing?
+
+    Because action-based routing works
+      but it tends to get messy as systems grow
+
+  Problems action-based routing often runs into
+    1. Too many one-off endpoints
+        You end up with lots of custom routes:
+
+          /getUser
+          /createUser
+          /updateUser
+          /deactivateUser
+          /resetUserPassword
+
+          This can become inconsistent and harder to predict.
+
+    2. It ignores a lot of HTTP’s built-in meaning
+        HTTP already has methods like GET, POST, PUT, PATCH, DELETE.
+        Action-based routing often stuffs everything into URLs and sometimes even uses POST for everything.
+
+    3. Harder to standardize
+        With action-based APIs, every team may invent different naming rules.
+
+        With RESTful APIs, there is a common pattern which makes APIs more predictable:
+          collections: /users
+          single item: /users/:id
+
+    4. Caching, idempotency, and tooling become clearer with REST
+        For example:
+
+        GET /users/42 is naturally a read
+        DELETE /users/42 is naturally a delete
+
+        This aligns better with browsers, proxies, docs tools, and client libraries.
+
+  But action-based routes did not disappear
+
+    They are still used.
+
+    They make sense when the operation is not cleanly CRUD/resource-shaped, such as:
+
+      /login
+      /logout
+      /checkout
+      /send-verification-email
+      /users/42/activate
+
+    Even very REST-oriented systems often include a few action-like endpoints.
+
+  A good real-world rule is:
+
+    use RESTful routes for normal resource operations
+    use action-based routes only for true commands that do not fit resource CRUD well
