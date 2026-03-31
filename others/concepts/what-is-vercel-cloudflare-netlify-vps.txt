@@ -1,0 +1,88 @@
+question
+  what are these called?
+    vercel
+    cloudflare
+    netlify
+    vps
+
+  are those related/alternatives to the same solution? or are they different things?
+
+response
+  They’re related, but not the same kind of thing.
+
+    Vercel
+      a deployment/hosting platform for web apps, especially frontend apps
+
+    Netlify
+      also a deployment/hosting platform for web apps
+
+    Cloudflare
+      a broader web infrastructure platform
+        it includes things like CDN, DNS, security, edge functions, and also app hosting options
+
+    VPS
+      a virtual private server
+      which is just a rented server you manage yourself
+
+  So
+    Vercel and Netlify
+
+      These are very close competitors.
+
+      They usually handle things like:
+        deploy from Git
+        hosting
+        previews
+        serverless functions
+        CDN
+        SSL
+
+      They’re often alternatives to each other
+
+    Cloudflare
+
+      Cloudflare overlaps with them a bit, but it is bigger and broader.
+
+      It can be:
+        CDN
+        DNS provider
+        security layer
+        edge compute platform
+        app hosting platform
+
+      So Cloudflare is partly an alternative in some cases, but not a 1:1 match for everything.
+
+    VPS
+
+      A VPS is different.
+
+      With a VPS, you get a server and do more yourself:
+
+        install software
+        configure nginx / apache / docker
+        deploy manually
+        manage security and updates
+
+      So a VPS is more like raw infrastructure, while Vercel/Netlify are more like managed platforms.
+
+  Think of it like this:
+
+    Vercel / Netlify = “host and deploy my app for me”
+    Cloudflare = “internet platform with hosting plus lots of network/security tools”
+    VPS = “give me a machine; I’ll handle it”
+
+  Are they alternatives?
+
+    Yes, but only partly.
+
+    They can all be involved in putting a website online, but at different levels:
+
+      Vercel vs Netlify → direct alternatives
+      Vercel/Netlify vs Cloudflare → sometimes alternatives
+      Vercel/Netlify/Cloudflare vs VPS → different abstraction levels, not really the same product type
+
+  A cleaner set of names would be:
+
+    Vercel / Netlify: hosting or deployment platforms
+    Cloudflare: web infrastructure / edge platform
+    VPS: virtual server / infrastructure
