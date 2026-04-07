@@ -1,0 +1,6 @@
+question
+  when to use subqueries and when to use joins
+  advantages in one over the other
+
+response
+  
