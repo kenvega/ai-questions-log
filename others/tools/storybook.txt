@@ -1,0 +1,71 @@
+question
+  what is Storybook from frontend development?
+  what is it useful for?
+  does it make something easier?
+
+response
+
+  What it is
+    Storybook is a tool for
+      building, viewing, testing, and documenting UI components in isolation, outside your full app
+    In Storybook each saved example state of a component is called a story
+
+  What it’s useful for
+    It’s mainly useful when you build reusable UI
+      buttons, forms, modals, cards, tables, page sections, or full pages
+
+    It gives your team a single place to see components, their states, and their docs
+
+    Storybook can also generate documentation from stories and use stories for automated UI testing
+
+  Does it make something easier?
+
+    Yes, it makes easier working on UI without needing to run and navigate your whole app.
+
+    Instead of logging in, clicking through screens, loading data, and trying to reproduce a weird state
+      you jump directly to the exact component state you want
+
+    Storybook’s docs specifically call out hard-to-reach states and edge cases as a core benefit.
+
+  In practice, it makes these easier:
+
+    Developing components
+      work on one component at a time, without APIs or app plumbing
+
+    Checking edge cases
+      empty state, loading state, error state, long text, disabled button, different themes, etc
+
+    Testing interactions
+      stories can include interactions and assertions after render
+
+    Documentation
+      your examples become living docs for the team
+
+    Review with non-devs
+      published Storybooks let designers, PMs, and QA review UI without running code locally.
+
+  Simple example
+    Say you have a Button component.
+    In your app, testing every case might be annoying.
+    In Storybook, you can create stories like:
+
+      Primary
+      Secondary
+      Disabled
+      Loading
+      With long label
+
+    Then you can open each one instantly and verify how it looks and behaves. That is the core idea of Storybook
+
+  When it’s worth using
+    Use it when:
+      you build a lot of reusable components
+      your UI has many states
+      multiple people need to review UI
+      you want better component docs and visual consistency
+
+  When it may be overkill
+    It may be less useful for:
+      tiny apps with very few custom components
+      quick prototypes
+      projects where most UI is one-off and not reused
