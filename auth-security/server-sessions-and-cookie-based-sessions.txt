@@ -113,3 +113,61 @@ response
           Token theft is dangerous
           More complexity than many apps need
 
+    D) Token in cookie (hybrid)
+
+        How it works
+          Use JWT or opaque token, but store/send it via cookie instead of header
+
+        Pros
+          Can use HttpOnly, Secure, SameSite cookie protections
+          Convenient for browsers
+
+        Cons
+          CSRF considerations if using cookies automatically
+          Still need token lifecycle handling
+
+  Important distinction: cookies vs sessions
+    Cookie = a browser storage + automatic sending mechanism for HTTP requests.
+    Session = the server/client auth state continuity concept.
+
+  A cookie can store:
+    a session ID,
+    a JWT,
+    preferences (theme=dark),
+    tracking data,
+    cart ID, etc.
+
+    So a cookie is not the same thing as a session
+
+  Which is broader?
+
+    “Session” is broader than “cookie-based session.”
+
+    Even broader than that is authentication/state management, which includes:
+
+      sessions
+      token-based auth
+      API keys (machine-to-machine)
+      mTLS
+      OAuth flows, etc.
+
+  Practical rule of thumb
+
+    If someone says “server session”, they usually mean:
+      server stores session state
+      client sends a session ID (very often via cookie)
+
+    If someone says “cookie-based auth”, ask:
+      “Do you mean a session ID in a cookie?”
+      “Or a JWT in an HttpOnly cookie?”
+      “Or actual session data in a signed cookie?”
+
+    Those are different designs.
+
+  Recommendation (for most web apps)
+
+    For a normal web app with a browser frontend:
+      Server-side session + HttpOnly, Secure, SameSite cookie is often the simplest and safest default.
+
+    For APIs/mobile/SPA-heavy systems:
+      Short-lived access tokens + refresh tokens (with careful storage and rotation) is common.
