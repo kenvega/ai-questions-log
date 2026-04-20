@@ -1,0 +1,116 @@
+question
+  what is an mcp server?
+  why is it useful?
+  why it was decided that
+    this should be the solution they do
+    instead of doing something different?
+
+response
+  An MCP server refers to a server that implements the Model Context Protocol (MCP)
+    a standard designed to let AI models (like ChatGPT or other LLMs)
+    securely interact with external tools, data sources, and systems
+
+  What an MCP server actually is
+    Think of an MCP server as a bridge between an AI model and the outside world.
+      The AI itself doesn’t directly access databases, APIs, or files
+      Instead, it talks to an MCP server
+      The MCP server exposes tools, functions, and data in a structured, safe way
+
+    So instead of the AI “doing everything,” it says:
+      “Hey MCP server, run this tool or fetch this data for me.”
+
+  What it does (simple mental model)
+
+    Without MCP:
+      AI model → ??? → external tools (messy, custom integrations)
+
+    With MCP:
+      AI model → MCP server → tools / APIs / databases
+
+    The MCP server:
+      Defines available tools/functions
+      Validates inputs
+      Handles authentication
+      Returns structured results
+
+  Why MCP servers are useful
+
+    1. Standardization (huge deal)
+        Before MCP, every integration was:
+          custom
+          inconsistent
+          fragile
+
+        MCP provides:
+          one unified protocol
+          reusable integrations across apps
+
+          Build once, use with many AI systems.
+
+    2. Security & control
+        Instead of giving AI direct access:
+          MCP server acts as a gatekeeper
+          You control:
+            what tools exist
+            what data is accessible
+            permissions
+
+    3. Tooling becomes modular
+        You can plug in:
+          databases
+          internal APIs
+          SaaS tools (Slack, GitHub, etc.)
+
+        Without changing the AI model itself.
+
+    4. Better reasoning + execution loop
+        Modern AI agents need to:
+          think
+          act (call tools)
+          observe results
+          repeat
+
+        MCP enables this loop cleanly:
+          structured tool calls
+          predictable outputs
+
+    5. Works across ecosystems
+        Different AI apps can talk to the same MCP server:
+          IDE assistants
+          chatbots
+          automation agents
+
+        This avoids duplication of integrations everywhere.
+
+  Why this approach was chosen (instead of something else)
+    There were 3 main bad options before MCP:
+
+      ❌ 1. Hardcode integrations into each AI
+          Not scalable
+          Every app reinvents everything
+      ❌ 2. Let AI call APIs directly
+          Security nightmare
+          No control layer
+          Hard to standardize
+      ❌ 3. Use ad-hoc plugin systems
+          Every company built its own
+          No interoperability
+
+    MCP solves these tradeoffs
+      Separates concerns
+        AI = reasoning
+        MCP server = execution layer
+
+    Protocol over product
+      Instead of one company controlling everything:
+      MCP is a standard, not a single platform
+        this is similar to:
+          HTTP for the web
+          SQL for databases
+
+    Safer than direct access
+      AI never gets raw credentials
+      MCP server enforces rules
+
+    Easier to scale
+      Add new tools without retraining or modifying the AI
