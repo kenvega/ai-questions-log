@@ -1,0 +1,87 @@
+question
+  how would you define CI/CD?
+  how is github actions related to it?
+  what are the alternatives to github actions?
+
+response
+  CI/CD stands for Continuous Integration and Continuous Delivery (or Deployment)
+    it’s a way teams automate
+      - building
+      - testing
+      - releasing code so changes move quickly and safely
+
+    1) Continuous Integration (CI)
+          Developers frequently push code to a shared repository (like GitHub).
+          Every change automatically:
+            - builds the project
+            - runs tests
+
+          Goal: catch bugs early and keep the codebase stable.
+
+          Example
+            You push a change
+              → tests run automatically
+                → if something breaks, you find out immediately.
+
+    2) Continuous Delivery / Deployment (CD)
+          Continuous Delivery:
+            code is always ready to deploy, but you trigger the release manually.
+
+          Continuous Deployment:
+            every successful change is deployed automatically.
+
+          Example:
+            CI passes
+              → app is deployed to staging or production without manual steps.
+
+  Where does GitHub Actions fit in?
+    GitHub Actions is directly related to CI/CD.
+
+    It’s a tool inside GitHub that lets you automate workflows like:
+      Run tests on every push (CI)
+      Build your app
+      Deploy to servers or cloud (CD)
+
+    Think of it as:
+      “The engine that runs your CI/CD pipeline.”
+
+  Simple flow using GitHub Actions
+    1. You push code
+    2. GitHub Actions runs a workflow:
+        installs dependencies
+        runs tests
+        builds the app
+    3. If everything passes:
+        deploys automatically
+
+  Are there alternatives to GitHub Actions?
+    Yes — many. Some are older, some more powerful depending on your setup.
+
+    Popular CI/CD tools:
+      Jenkins
+        Very flexible, self-hosted, widely used in enterprises
+        More setup required
+      GitLab CI/CD
+        Built into GitLab (similar idea to GitHub Actions)
+      CircleCI
+        Cloud-based, fast, easy to configure
+      Travis CI
+        One of the older hosted CI tools
+      Bitbucket Pipelines
+        Integrated with Bitbucket repos
+      Azure DevOps
+        Strong integration with Microsoft ecosystem
+
+    GitHub Actions is great if:
+      your code is on GitHub
+      you want simple setup
+      you don’t need heavy customization
+
+    You might choose alternatives if:
+      you need full control/self-hosting → Jenkins
+      you're already using another ecosystem → GitLab / Azure
+      you want specific performance or pricing advantages
+
+  Quick mental model
+    CI/CD = the process
+    GitHub Actions (and others) = tools that run the process
