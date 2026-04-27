@@ -1,0 +1,76 @@
+question
+  what is upstream?
+  what is tracking?
+    when track is set up: the local branch is tracking the remote branch or viceversa?
+  what is fast-forward and non-fast-forward?
+  using 'ggpush' or 'ggpull' does any of these?
+    if not
+      what should i do?
+      and why github would allow me to push and not set upstreams?
+      and why would settings upstreams would be sometimes necessary and others not?
+      and what the concept of upstreams was created for?
+
+response
+  upstream
+    usually mean
+      the remote branch that this other local branch is configured to follow
+
+    git stores that relationship in the local branch’s config
+
+    commands like 'git pull' use it when you run them without arguments
+
+    git’s docs even note that
+      upstream branches are sometimes referred to as tracking information
+
+    so when tracking is set up, the direction is
+      local branch → tracks → remote branch
+
+    not the other way around
+      a remote branch does not track your local branch
+
+    git describes tracking branches as
+      local branches that have a direct relationship to a remote branch
+
+    and if your local branch is set to follow another branch
+      that other branch is called its upstream
+
+    so in plain English:
+      tracking = the relationship
+      upstream = the branch being followed
+      tracking branch = your local branch, because it has that relationship set up
+
+    a good mental model is:
+      'feature' is your local branch
+      'origin/feature' is a remote-tracking branch in your local repo
+      your local 'feature' can be configured to track 'origin/feature' as its upstream
+
+        that distinction matters:
+          remote-tracking branch: your local cached reference like 'origin/main'
+          tracking branch: your local branch, such as 'main', that is configured to follow some upstream branch like 'origin/main'
+
+    example
+      local branch:   feature
+      upstream:       origin/feature
+
+      that means:
+
+        - your local 'feature' branch is the one you work on
+        - git remembers that 'feature' should compare/pull against 'origin/feature'
+        - therefore 'origin/feature' is the upstream of local feature
+
+  why git cares
+
+    when tracking is configured
+      git can do convenient things automatically
+
+      example:
+        'git pull' with no arguments uses the current branch’s upstream by default
+        'git status' / 'git branch -vv' can show whether you are ahead or behind that upstream
+
+    once that relationship exists, git can do shortcuts like:
+
+      git pull with no branch name
+      showing “ahead by 2, behind by 1”
+      resolving @{upstream} / @{u} for the current branch
+
+  
