@@ -1,0 +1,176 @@
+question
+  how would you define Sidekiq?
+  how does it work?
+
+  which problem was created to solve?
+    and what happens internally when a job is added and later processed?
+
+response
+  Sidekiq is a background job processor for Ruby
+    commonly used with Rails, but it is not part of Rails itself
+
+  Think of it like this:
+
+    Rails
+      is the web framework
+
+    Sidekiq
+      is a separate tool/library that runs work in the background
+
+    Redis
+      is typically the queue/storage system Sidekiq uses to keep track of jobs
+
+  What problem does it solve?
+
+    Some tasks should not block the user’s request/response cycle
+
+    For example:
+      sending emails
+      generating reports
+      resizing images
+      syncing data with another API
+      cleaning up old records
+
+    If you do those inside the web request itself
+      the user waits longer
+      the request can time out
+      and your app becomes less responsive
+
+    Sidekiq solves that by letting your app say:
+      save this work for later and let another process handle it
+
+  Is it part of Rails?
+
+    No. It is a separate Ruby gem/tool
+          but it integrates very well with Rails
+
+    It can also be used outside Rails in Ruby apps
+
+  High-level flow
+
+    1. Your Rails app receives a request
+
+    2. Instead of doing heavy work immediately
+         it enqueues a job to Sidekiq
+
+    3. Sidekiq stores that job in Redis
+
+    4. A separate Sidekiq worker process is always running
+         watching Redis for queued jobs
+
+    5. The worker process pulls a job from the queue
+         and executes the Ruby code for that job
+
+    6. If the job fails
+         Sidekiq can retry it later
+
+  What does “enqueue a job” mean?
+
+    It means:
+      “create a record of work to do later”
+
+    Example mental model:
+
+      Web app says:
+        Send welcome email to user 42
+
+      Instead of sending it immediately
+        it pushes a small payload into Redis
+
+      Something like:
+        job class name
+        arguments
+        queue name
+        retry metadata
+
+    Then Sidekiq workers pick that up later and perform it
+
+  What happens internally?
+
+    When a job is added
+
+      Your app calls something like:
+        MyJob.perform_async(user_id)
+
+      Sidekiq serializes the job data
+        usually to JSON-like data
+
+      Then it writes that job into Redis
+        under a queue managed by Sidekiq
+
+    When a job is processed
+
+      A Sidekiq process is running separately from your web server
+
+      It uses threads to process many jobs concurrently
+        which is one of the big reasons Sidekiq is fast
+
+      The process pulls the next job from Redis
+        deserializes the payload
+        finds the Ruby worker class
+        and calls its perform method with the job arguments
+
+      Example idea:
+
+        class WelcomeEmailJob
+          include Sidekiq::Job
+
+          def perform(user_id)
+            user = User.find(user_id)
+            UserMailer.welcome(user).deliver_now
+          end
+        end
+
+      Here the actual background work is inside perform
+
+  Important distinction
+
+    Sidekiq is not “the job”
+      it is the system that manages and runs jobs
+
+    Your worker/job class
+      defines what work should happen
+
+    Sidekiq
+      decides when/how that work gets pulled from the queue and executed
+
+  Why Redis is involved
+
+    Sidekiq needs somewhere fast to store pending jobs
+      retry jobs
+      scheduled jobs
+      and queue metadata
+
+    Redis is a good fit because it is very fast
+      and supports data structures useful for queues
+
+  Common related concepts people confuse with Sidekiq
+
+    Active Job
+      Rails abstraction for background jobs
+        it gives a common interface
+
+      Sidekiq can be the backend used by Active Job
+
+      So:
+        Active Job = abstraction/interface
+        Sidekiq = actual job processor/backend
+
+    Cron jobs
+      used for scheduled tasks at certain times
+      not the same as a background queue processor
+
+      Sidekiq can run scheduled jobs too
+        but its main identity is job processing from queues
+
+    Threads/processes
+      these are lower-level concurrency/runtime concepts
+      Sidekiq uses them
+        but Sidekiq itself is a job system, not just “a thread tool”
+
+  Short summary
+
+    Sidekiq is a separate Ruby background-job tool often used with Rails
+    it lets your app push work into Redis
+    and a separate Sidekiq worker process later pulls that work and runs it
+    so slow tasks do not block the user’s request
