@@ -1,0 +1,34 @@
+question
+  what are action creators in redux?
+
+response
+  are functions that create and return action objects
+
+  an action is a plain object that describes something that happened. example:
+    {
+      type: "todos/addTodo",
+      payload: "Learn Redux"
+    }
+
+  instead of writing that object manually everywhere, you make an action creator:
+    function addTodo(text) {
+      return {
+        type: "todos/addTodo",
+        payload: text
+      };
+    }
+
+  then you use it like this:
+    dispatch(addTodo("Learn Redux"));
+
+  so instead of:
+    dispatch({
+      type: "todos/addTodo",
+      payload: "Learn Redux"
+    });
+
+  you write:
+    dispatch(addTodo("Learn Redux"));
+
+  The benefit is that your action structure lives in one place.
+    If the action shape changes later, you only update the action creator.
