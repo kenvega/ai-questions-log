@@ -1,0 +1,40 @@
+question
+  what is this code doing behind the scenes?
+
+    import { createAction } from "@reduxjs/toolkit";
+    import { User } from "../../models/interfaces/user.interface";
+
+    export const setSelectedUser = createAction<User | null>(
+      "users/setSelectedUser",
+    );
+
+  because later you can do things like
+
+    dispatch(setSelectedUser(user));
+
+  that means that createAction returns a function that recieves a parameter
+
+response
+
+  this code
+    export const setSelectedUser = createAction<User | null>(
+      "users/setSelectedUser",
+    );
+
+  would be equivalent to writing this manually
+
+    export const setSelectedUser = function (user: User | null) {
+      return {
+        type: "users/setSelectedUser",
+        payload: user,
+      };
+    };
+
+  so at the end of the day when you do
+    dispatch(setSelectedUser(user));
+
+  you are doing the same as:
+    dispatch({
+      type: "users/setSelectedUser",
+      payload: user,
+    });
