@@ -1,0 +1,5 @@
+question
+  can typescript type a number that is a positive number?
+
+response
+  Not directly. TypeScript cannot express “positive number” as a built-in numeric type.
