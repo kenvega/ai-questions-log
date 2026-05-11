@@ -1,0 +1,134 @@
+question
+  what are react-router actions?
+  how do they work?
+  how is it related to revalidation of the data?
+
+response
+  React Router actions are route-level functions for writing/mutating data.
+
+  The simple mental model is:
+    loader = read data
+    action = write/change data
+    revalidation = re-run loaders after the write so the UI has fresh data
+
+  React Router docs describe actions as
+    the “writes” to loader “reads”
+    and they’re only available with React Router’s data APIs/data routers
+
+  1. What is an action?
+      An action is a function attached to a route:
+        example
+          const router = createBrowserRouter([
+            {
+              path: "/projects/:projectId",
+              Component: Project,
+              loader: async ({ params }) => {
+                return getProject(params.projectId);
+              },
+              action: async ({ request, params }) => {
+                const formData = await request.formData();
+
+                await updateProject(params.projectId, {
+                  title: formData.get("title"),
+                });
+
+                return { ok: true };
+              },
+            },
+          ]);
+
+      The loader fetches the project.
+      The action updates the project.
+
+      Actions receive a request, which is a standard Fetch Request,
+      so you usually read submitted form data with:
+
+        const formData = await request.formData();
+
+      React Router sends form submissions to the matching route action
+        instead of you manually writing
+          onSubmit, preventDefault, loading states, and refetch logic yourself.
+
+  2. How are actions called?
+
+      Usually with React Router’s <Form>:
+
+        example
+          import { Form } from "react-router";
+
+          function ProjectForm() {
+            return (
+              <Form method="post" action="/projects/123">
+                <input name="title" />
+                <button type="submit">Save</button>
+              </Form>
+            );
+          }
+
+      When this form submits:
+
+        React Router prevents the normal full-page browser request.
+        It creates a Request containing the form data.
+        It finds the route matching /projects/123.
+        It calls that route’s action.
+        It updates the UI based on the result.
+
+      Actions are called by non-GET submissions like post, put, patch, and delete.
+      They can be called via <Form>, useSubmit, <fetcher.Form>, or fetcher.submit.
+
+  3. How is this related to revalidation?
+
+      This is the key part.
+
+      After an action finishes, React Router assumes:
+
+        “Data probably changed, so the existing loader data might now be stale.”
+
+      So it automatically re-runs the relevant loaders for the current page to refresh the UI.
+      The docs call this data revalidation:
+        after route actions run, loaders for the data on the page are called again
+          so the UI stays up to date,
+            without you manually invalidating cache keys or refetching data.
+
+      example flow:
+        Page loads
+        → loader runs
+        → todos are displayed
+
+        User submits form
+        → action runs
+        → new todo is saved
+
+        Action completes
+        → loader runs again automatically
+        → updated todos are displayed
+
+      You do not need to manually call refetch(), update local state, or invalidate a query key for the common case.
+
+  4. <Form> vs fetcher.Form
+
+      There are two common ways to submit to actions.
+
+      Use <Form> when the submission is like a navigation:
+
+        <Form method="post" action="/projects/new">
+          ...
+        </Form>
+
+        That can update browser history and behave like a page-level form submission.
+
+        React Router docs note that <Form> submissions cause navigation/history behavior.
+
+      Use fetcher.Form when you want to call an action without navigating:
+
+        const fetcher = useFetcher();
+
+        <fetcher.Form method="post" action="/tasks/123/toggle">
+          <button>Toggle</button>
+        </fetcher.Form>
+
+        That is good for things like
+          buttons, delete buttons, toggles, inline edits, or row-level mutations.
+
+        Fetchers submit to actions/loaders without causing browser navigation
+          while still participating in revalidation, error handling, and pending states.
