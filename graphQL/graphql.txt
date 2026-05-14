@@ -1,0 +1,217 @@
+question
+  what is graphQL?
+  is it the alternative to what technology?
+  how does it affect your frontend/backend when decided to be used in your web app?
+  why it was created?
+  what are the advantages/disadvantages of using it?
+  in which scenarios we should use it and when we should avoid it?
+
+response
+  GraphQL is a way for the frontend to ask the backend for exactly the data it needs
+
+  It is both
+    1. a query language for APIs, and
+    2. a runtime/server system for answering those queries
+
+  A typical GraphQL request looks like this:
+    query {
+      user(id: "123") {
+        name
+        email
+        posts {
+          title
+        }
+      }
+    }
+
+  The response matches the shape of the query:
+    {
+      "data": {
+        "user": {
+          "name": "Ken",
+          "email": "ken@example.com",
+          "posts": [
+            { "title": "My first post" }
+          ]
+        }
+      }
+    }
+
+  Is GraphQL an alternative to what technology?
+    Mostly, GraphQL is an alternative to REST APIs.
+
+    For example
+      with REST you may have endpoints like:
+        GET /users/123
+        GET /users/123/posts
+        GET /posts/456/comments
+
+      with GraphQL, you usually have one endpoint:
+        POST /graphql
+
+      and the frontend sends a query describing what it wants.
+
+  Why was GraphQL created?
+
+    GraphQL was created by Facebook to solve problems they had with mobile apps.
+
+    The big problem was this:
+
+      Different screens needed different combinations of data
+        but REST endpoints often returned either too much or too little.
+
+    Example:
+
+      A profile page may need:
+
+        user name
+        avatar
+        last 3 posts
+        number of followers
+        viewer relationship to user
+
+      A REST API might force the frontend to call several endpoints:
+
+        GET /users/123
+        GET /users/123/posts
+        GET /users/123/followers/count
+        GET /users/123/relationship
+
+      Or the backend might create a custom endpoint:
+
+        GET /profile-page/123
+
+        But then every new screen may need another custom endpoint.
+
+      GraphQL was created to make APIs more flexible for complex apps
+        especially apps with many frontend clients:
+          web, iOS, Android, desktop, etc.
+
+  How does GraphQL affect the frontend?
+
+    On the frontend, GraphQL changes how you request data.
+
+      Instead of thinking:
+        Which endpoint should I call?
+      You think:
+        What data does this component/page need?
+
+    Frontend benefits
+      The frontend can request only the fields it needs:
+        query {
+          user(id: "123") {
+            name
+          }
+        }
+
+      Or more data:
+        query {
+          user(id: "123") {
+            name
+            email
+            avatar
+            posts {
+              title
+              createdAt
+            }
+          }
+        }
+
+      Same backend endpoint, different query.
+
+      This is very useful when building screens with different data needs.
+
+    Frontend costs
+
+      You usually need GraphQL tooling, such as:
+
+        Apollo Client
+        Relay
+        urql
+        GraphQL Code Generator
+
+      You also need to understand:
+        queries
+        mutations
+        fragments
+        caching
+        schema types
+        error handling
+        loading states
+
+      So the frontend may become more powerful, but also more complex.
+
+  How does GraphQL affect the backend?
+
+    On the backend, GraphQL changes the API structure.
+
+      Instead of writing many REST endpoints like:
+        GET /users/:id
+        GET /users/:id/posts
+        POST /users
+        DELETE /users/:id
+
+      You define a schema:
+
+        type User {
+          id: ID!
+          name: String!
+          email: String!
+          posts: [Post!]!
+        }
+
+        type Post {
+          id: ID!
+          title: String!
+          content: String!
+        }
+
+        type Query {
+          user(id: ID!): User
+        }
+
+        type Mutation {
+          createUser(name: String!, email: String!): User
+        }
+
+      Then you write resolvers which are backend functions that fetch the data:
+        const resolvers = {
+          Query: {
+            user: async (_, { id }, context) => {
+              return db.user.findUnique({ where: { id } });
+            },
+          },
+
+          User: {
+            posts: async (user, _, context) => {
+              return db.post.findMany({ where: { userId: user.id } });
+            },
+          },
+        };
+
+    Backend benefits
+      GraphQL gives the backend a clear contract:
+        These are the types.
+        These are the queries.
+        These are the mutations.
+        These are the fields.
+
+      The schema becomes a strongly defined API contract between frontend and backend.
+
+    Backend costs
+
+      GraphQL can make the backend more complex.
+
+      You need to handle:
+        authorization
+        query depth limits
+        performance
+        caching
+        N+1 queries (famous issue to look for)
+        schema design
+        resolver organization
+        file uploads
+        error formatting
+        monitoring
+
+TODO: complete with more info. https://chatgpt.com/c/6a0615dc-0568-83e9-9b57-b05e859e8e7d
