@@ -1,0 +1,177 @@
+question
+  what are types and interfaces?
+  how are they similar and how they are different?
+  in which cases devs might use them not in the intended way they need to?
+
+response
+  How they are similar
+
+    Both disappear at runtime.
+      They only help TypeScript check your code before or during compilation.
+
+    Both type and interface can describe objects:
+      type Product = {
+        id: number;
+        price: number;
+      };
+
+      interface Product {
+        id: number;
+        price: number;
+      }
+
+    Both can describe function shapes:
+      type Greet = (name: string) => string;
+
+      interface Greet {
+        (name: string): string;
+      }
+
+    Both can be extended/composed:
+      type Admin = User & {
+        role: "admin";
+      };
+
+      interface Admin extends User {
+        role: "admin";
+      }
+
+  Main difference
+
+    The biggest practical difference is:
+
+      - interface is mainly for describing object/class shapes.
+
+      - type is more flexible and can represent many kinds of types, not just object shapes.
+
+      For example, type can do this:
+        type ID = string | number;
+
+      An interface cannot directly represent a union like that.
+
+      You can also do:
+        type Status = "loading" | "success" | "error";
+
+      This is one of the most common uses for type.
+
+    interface can be reopened; type cannot
+
+      Interfaces can be declared multiple times and TypeScript will merge them:
+        example
+          interface User {
+            id: number;
+          }
+
+          interface User {
+            name: string;
+          }
+
+          const user: User = {
+            id: 1,
+            name: "Ken",
+          };
+
+        This works because the two User interfaces merge.
+
+        But this does not work with type:
+          type User = {
+            id: number;
+          };
+
+          type User = {
+            name: string;
+          };
+
+          That gives an error because a type alias cannot be redeclared.
+
+        This makes interface useful when
+          you intentionally want extension or declaration merging, especially in libraries
+
+  Common rule of thumb
+
+    Use interface for object shapes that may be extended:
+
+      interface User {
+        id: number;
+        name: string;
+      }
+
+    Use type for unions, primitives, tuples, function aliases, and complex combinations:
+
+      type ID = string | number;
+
+      type Status = "idle" | "loading" | "success" | "error";
+
+      type Point = [number, number];
+
+      type ApiResponse<T> =
+        | { ok: true; data: T }
+        | { ok: false; error: string };
+
+    For normal object shapes, either is fine
+      but many teams pick one style for consistency
+
+  Where devs use them “wrong” or awkwardly
+
+    1. Using interface for something that should be a union
+        example
+
+          interface Status {
+            value: "loading" | "success" | "error";
+          }
+
+        Sometimes this is unnecessary. A simpler type is better:
+
+          type Status = "loading" | "success" | "error";
+
+        Use the object version only if you genuinely need an object:
+
+          const status: Status = "loading";
+
+        Instead of:
+
+          const status = { value: "loading" };
+
+    2. Using giant interfaces for everything
+
+        Some devs make huge interfaces:
+
+          interface User {
+            id: number;
+            name: string;
+            email: string;
+            password: string;
+            createdAt: string;
+            updatedAt: string;
+            permissions: string[];
+            profile: object;
+            settings: object;
+          }
+
+        Then they use User everywhere: forms, API responses, database records, UI props, etc.
+
+        That often becomes messy.
+
+        A better approach would be:
+          type UserPreview = {
+            id: number;
+            name: string;
+          };
+
+          type UserFormInput = {
+            name: string;
+            email: string;
+          };
+
+          type UserFromApi = {
+            id: number;
+            name: string;
+            email: string;
+            createdAt: string;
+          };
+
+          Different situations often need different types.
+
+    3. Using type intersections where interface extends would be clearer
+
+        TODO: complete: https://chatgpt.com/c/6a0e2aa5-3174-83e9-b2ca-330e261c5794
