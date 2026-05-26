@@ -174,4 +174,42 @@ response
 
     3. Using type intersections where interface extends would be clearer
 
-        TODO: complete: https://chatgpt.com/c/6a0e2aa5-3174-83e9-b2ca-330e261c5794
+        This is valid:
+          type Admin = User & {
+            role: "admin";
+          };
+
+        But for simple object extension, this can be clearer:
+          interface Admin extends User {
+            role: "admin";
+          }
+
+        Especially when modeling object-oriented or library-style APIs.
+
+    4. Using interface when they need mapped types
+
+        This kind of thing needs type:
+          type OptionalUser = {
+            [K in keyof User]?: User[K];
+          };
+
+        Or simply:
+          type OptionalUser = Partial<User>;
+
+        An interface is not the right tool for that.
+
+  Practical recommendation for most teams
+    Use interface for plain object shapes
+        interface User {
+          id: number;
+          name: string;
+        }
+
+    Use type for unions, aliases, tuples, mapped types, and complex compositions
+        type Status = "loading" | "success" | "error";
+        type ID = string | number;
+          type Coordinates = [number, number];
+
+    But the most important thing is consistency.
+      In real projects, both are acceptable for simple object shapes,
+        so it is common to follow the existing style of the codebase.
