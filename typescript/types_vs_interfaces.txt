@@ -1,9 +1,108 @@
 question
   what are types and interfaces?
+  seems they overlap in features which makes it a bit more complicated than needed. why is that?
+  why interfaces were created for?
+  why types were created for?
+  which one was created first?
+  if both were created at the same time
+    then they had a reason to exist even though they overlap?
   how are they similar and how they are different?
   in which cases devs might use them not in the intended way they need to?
 
 response
+  The cleanest separation is this:
+    interface = name an object contract
+    type = name any type expression
+
+    The confusion happens because an object shape is also a type expression
+      so both can describe it
+
+    Interfaces were created mainly to model JavaScript objects and APIs.
+
+  Which came first?
+
+    Interfaces came first.
+      TypeScript’s first public release was TypeScript 0.8 in October 2012
+
+    Type aliases came later, in TypeScript 1.4.
+
+  Why were interfaces created?
+
+    Interfaces were created mainly to model JavaScript objects and APIs.
+
+    JavaScript uses objects everywhere:
+      createButton({
+        text: "Submit",
+        color: "blue",
+      });
+
+    TypeScript needed a way to say:
+      interface ButtonSettings {
+        text: string;
+        color?: string;
+      }
+
+      That means:
+        “Anything with this shape is acceptable.”
+
+  Why were type aliases created?
+
+    type was created later because
+      TypeScript needed a way to give a name to any type expression
+      not only object contracts
+
+    examples
+      type ID = string | number;
+      type Callback = () => void;
+      type Status = "idle" | "loading" | "success" | "error";
+      type Point = [number, number];
+
+    An interface cannot directly represent that.
+
+    type was not originally “another interface.” It was:
+
+      “I have a type expression. I want to reuse it by name.”
+
+        Then this also became possible:
+
+        type User = {
+          id: number;
+          name: string;
+        };
+
+        And now it overlaps with interface.
+
+  Why can both describe objects?
+
+    Because TypeScript is structurally typed.
+
+    This means TypeScript mostly does not care where a type came from. It cares what shape it has.
+
+    These two are effectively the same shape:
+
+      interface User {
+        id: number;
+        name: string;
+      }
+
+      type User = {
+        id: number;
+        name: string;
+      };
+
+      TypeScript sees both as:
+        An object with id: number and name: string
+
+      So the overlap exists because:
+        interface names object shapes
+        type names any type expression
+        An object shape is one kind of type expression
+        They overlap because an object shape is also a type expression
+          interface User { ... } // Here is an object contract
+          type User = { ... } // Here is a name for this object type expression
+
+          Same result, different original purpose
+
   How they are similar
 
     Both disappear at runtime.
@@ -89,14 +188,17 @@ response
 
   Common rule of thumb
 
-    Use interface for object shapes that may be extended:
+    Use 'interface' for object shapes that may be extended:
 
       interface User {
         id: number;
         name: string;
       }
 
-    Use type for unions, primitives, tuples, function aliases, and complex combinations:
+      Think:
+        This is a contract something must satisfy
+
+    Use 'type' for unions, primitives, tuples, function aliases, and complex combinations:
 
       type ID = string | number;
 
@@ -107,6 +209,9 @@ response
       type ApiResponse<T> =
         | { ok: true; data: T }
         | { ok: false; error: string };
+
+      Think:
+        This is a computed, combined, or alternative type
 
     For normal object shapes, either is fine
       but many teams pick one style for consistency
