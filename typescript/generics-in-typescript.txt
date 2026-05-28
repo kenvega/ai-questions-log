@@ -1,0 +1,119 @@
+question
+  what are generics?
+  can you explain their syntax?
+  why there were created?
+  where they are useful?
+  do they have an alternative?
+  if we didn't have them what problems would we have?
+
+response
+  generics are "type variables"
+
+  They let you write code that works with many types
+    while still preserving the exact type information
+      example
+
+        function identity<T>(value: T): T {
+          return value;
+        }
+
+        const a = identity("hello"); // string
+        const b = identity(123);     // number
+
+        T is not a real runtime variable.
+          It is a placeholder for a type.
+
+         
+
+        TypeScript’s docs describe generics as
+          a way to build reusable components that
+            work over a variety of types rather than only one type.
+
+  Syntax
+    in the function
+      function identity<T>(value: T): T {
+        return value;
+      }
+
+      The <T> part means:
+        I am creating a type variable called T
+          and I want to use it inside this function signature
+
+      the function can be read like this:
+        function identity<T>(value: T): T
+        //       name     ↑       ↑     ↑
+        //                |       |     return type uses T
+        //                |       parameter uses T
+        //                declare T here
+
+          without <T>, this would not work:
+            function identity(value: T): T {
+              return value;
+            }
+
+            TypeScript would ask:
+              Cannot find name 'T'
+                Because T was never declared.
+
+    Think of <T> like declaring a variable
+
+      This is similar to regular function parameters.
+
+      TODO: complete https://chatgpt.com/c/6a185dfc-98a0-83e9-98e8-e4be4e13c478
+
+  Why were generics created?
+
+    They solve this problem:
+      “I want reusable code, but I do not want to lose type safety.”
+
+    Without generics, you often end up choosing between duplication and weak types.
+      example
+        without generics code becomes repetitive:
+          function getFirstString(items: string[]): string {
+            return items[0];
+          }
+
+          function getFirstNumber(items: number[]): number {
+            return items[0];
+          }
+
+        you could use any:
+          function getFirst(items: any[]): any {
+            return items[0];
+          }
+
+          const value = getFirst(["a", "b"]);
+          // value is any, so TypeScript no longer protects you
+          value.toFixed(); // no error at compile time, but crashes at runtime
+
+        generics fix both problems:
+          function getFirst<T>(items: T[]): T {
+            return items[0];
+          }
+
+          const name = getFirst(["John", "Doe"]); // string
+          const age = getFirst([20, 30]);        // number
+
+          name.toUpperCase(); // OK
+          age.toFixed();      // OK
+
+        The function is reusable, but TypeScript still knows what comes out.
+
+  Where are generics useful?
+
+    They are useful anywhere the input type and output type are related.
+
+      1. Arrays
+
+          You already use generics when you write this:
+            const names: Array<string> = ["John", "Doe"];
+            const numbers: Array<number> = [1, 2, 3];
+
+          Array<string> means “an array whose items are strings.”
+            TypeScript’s docs use arrays as a common example of generics.
+
+
+
+follow up question
+  why you say that generics are "type variables" in quotes?
+    do you mean that is not really that and it's actually another thing?
