@@ -23,8 +23,6 @@ response
         T is not a real runtime variable.
           It is a placeholder for a type.
 
-         
-
         TypeScript’s docs describe generics as
           a way to build reusable components that
             work over a variety of types rather than only one type.
@@ -59,7 +57,94 @@ response
 
       This is similar to regular function parameters.
 
-      TODO: complete https://chatgpt.com/c/6a185dfc-98a0-83e9-98e8-e4be4e13c478
+        example:
+          You cannot do this:
+            function double(): number {
+              return x * 2;
+            }
+
+          Because x was never declared.
+
+          You need:
+            function double(x: number): number {
+              return x * 2;
+            }
+
+        Same idea with generic types.
+          You cannot do this:
+            function identity(value: T): T {
+              return value;
+            }
+
+          Because T was never declared.
+
+          You need:
+            function identity<T>(value: T): T {
+              return value;
+            }
+
+            <T> declares T
+
+    Why is it placed after the function name?
+
+      Because it describes the function itself
+        function identity<T>(value: T): T
+
+      means:
+        identity is a generic function with one type parameter called T
+
+      When you call it, TypeScript usually figures out T automatically:
+        const a = identity("hello");
+        // TypeScript infers T = string
+
+        const b = identity(123);
+        // TypeScript infers T = number
+
+      So these are equivalent:
+        identity<string>("hello");
+        identity("hello");
+
+      Most of the time, you do not manually write the type
+        when calling it because TypeScript infers it
+
+    Why not just infer T from (value: T): T?
+      In theory, TypeScript could have been designed that way.
+        But TypeScript requires generic type variables to be declared explicitly.
+        That makes the code clearer and avoids ambiguity
+          especially when you have multiple generic types, constraints, or defaults.
+
+          example:
+            function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+              return obj[key];
+            }
+
+          Here the generic declaration is doing more:
+            <T, K extends keyof T>
+
+          It says:
+            There are two type variables, T and K, and K must be one of the keys of T.
+
+          example:
+            const user = {
+              id: 1,
+              name: "Ken",
+            };
+
+            const name = getProperty(user, "name"); // string
+            const id = getProperty(user, "id");     // number
+
+            getProperty(user, "email"); // Error
+
+          Here, <T, K extends keyof T> is not repetitive at all.
+            It defines the relationship between the types.
+
+    Simple mental model
+      function identity<T>(value: T): T
+
+      means
+        Create a generic function named identity.
+        It has a type variable called T.
+        The parameter is of type T, and the return value is also of type T
 
   Why were generics created?
 
