@@ -1,0 +1,63 @@
+question
+  monolithic architecture vs microservices architecture vs serverless architecture?
+  why there were created? to solve what?
+  what are their advantages and disadvantages?
+  which is better for which type of solution?
+
+response
+  Big picture
+    Monolithic, microservices, and serverless are
+      different ways to structure and run backend systems.
+
+    The main tradeoff is:
+      The more distributed you make the system
+        the more scalability and team independence you get
+        but the more operational complexity you add
+
+    A simple mental model:
+      | Architecture      | Main idea                                                            | Best when                                                           |
+      | ----------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------- |
+      |   Monolith        | One application, one codebase, one deployable unit                   | Small/medium apps, MVPs, startups, internal tools                   |
+      |   Microservices   | Many small services, each owned/deployed/scaled independently        | Large systems, large teams, independent domains                     |
+      |   Serverless      | You write functions/services; cloud provider manages servers/scaling | Event-driven workloads, APIs with variable traffic, automation jobs |
+
+  1. Monolithic architecture
+
+      A monolith is an application where
+        most features live inside one codebase and are deployed together
+
+      Example:
+        E-commerce App
+        ├── Users
+        ├── Products
+        ├── Cart
+        ├── Payments
+        ├── Orders
+        └── Admin
+
+        All of that may be inside one backend app, one repository, one deployment.
+
+      Why was it created?
+        Because it is the simplest natural way to build software.
+
+        Early systems usually start as monoliths because:
+          one app + one database + one deployment = simple
+
+        It solves the problem of getting something working quickly
+          without unnecessary infrastructure complexity
+
+      Advantages
+        Simple to build -- Fewer moving parts
+        Simple to test locally -- Run one app
+        Simple deployment -- Deploy one artifact
+        Easy debugging -- Logs and code are in one place
+        Fast development early on -- Great for MVPs
+        Lower infrastructure cost -- Fewer services, queues, gateways, monitoring tools
+
+      Disadvantages
+        Harder to scale parts independently -- If payments need more capacity, you may need to scale the whole app
+        Large codebase can become messy -- Poor boundaries create spaghetti code
+        Deployments become risky -- A small change requires redeploying the whole app
+        Team bottlenecks -- Many developers touching the same codebase
+        Technology lock-in inside the app -- Hard to use different languages/frameworks per feature
+
