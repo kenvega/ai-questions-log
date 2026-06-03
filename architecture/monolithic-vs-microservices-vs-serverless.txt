@@ -61,3 +61,68 @@ response
         Team bottlenecks -- Many developers touching the same codebase
         Technology lock-in inside the app -- Hard to use different languages/frameworks per feature
 
+      Use a monolith for:
+        MVPs
+        small teams
+        early-stage startups
+        internal business apps
+        CRUD-heavy apps
+        products where the domain is not yet clear
+        apps where deployment simplicity matters more than independent scaling
+
+      A well-structured modular monolith is often the best default choice
+
+        Good monolith ≠ messy monolith
+
+        Good monolith:
+        ├── clear modules
+        ├── clean boundaries
+        ├── shared database carefully managed
+        └── easy to split later if needed
+
+  2. Microservices architecture
+
+      A microservices architecture splits an application
+        into multiple smaller services
+        Each service owns a specific business capability.
+
+      Example:
+        E-commerce System
+          Users Service
+          Products Service
+          Cart Service
+          Payments Service
+          Orders Service
+          Notifications Service
+          Shipping Service
+
+        Each service can have its own
+          codebase, database, deployment pipeline, and scaling rules
+
+      Why was it created?
+
+        Microservices were created to solve problems that appear when monoliths become too large.
+
+        They mainly solve:
+          large codebase pain
+          large team coordination pain
+          independent scaling needs
+          independent deployment needs
+          domain ownership problems
+
+        For example, in a large company:
+          the payments team wants to deploy without waiting for the orders team
+          the search service needs different scaling than the admin panel
+          the recommendation engine may need Python while the checkout system uses Java
+          one feature should fail without taking down the whole platform
+
+      Advantages
+        Independent deployment -- Teams can release services separately
+        Independent scaling -- Scale only the service that needs it
+        Technology flexibility -- Different services can use different stacks
+        Better team ownership -- Teams own business capabilities
+        Fault isolation -- One service can fail without killing everything
+        Good for complex domains -- Boundaries can match business areas
+
+
+        TODO: complete https://chatgpt.com/c/6a1ed42d-4f30-83e9-abae-864d766f181c
