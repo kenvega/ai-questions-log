@@ -124,5 +124,28 @@ response
         Fault isolation -- One service can fail without killing everything
         Good for complex domains -- Boundaries can match business areas
 
+      Disadvantages
+        High complexity -- Networking, APls, retries, timeouts, failures
+        Harder debugging -- A request may pass through many services
+        Distributed data problems -- Transactions across services are difficult
+        More DevOps required -- CI/CD, monitoring, service discovery, orchestration
+        Latency overhead -- Network calls are slower than in-process calls
+        Can become a distributed monolith -- Bad boundaries create all the pain without the benefits
+
+      The biggest mistake is using microservices too early.
+        Bad microservices often look like this:
+          Service A cannot work without Service B
+          Service B cannot deploy without Service C
+          Service C shares database tables with Service A
+
+        That is not real independence. That is a distributed monolith.
+
+      Use microservices for:
+        large engineering teams
+        large products with clear business domains
+        systems that need independent scaling
+        platforms with many separately evolving components
+        companies with strong DevOps maturity
+        systems requiring high fault isolation
 
         TODO: complete https://chatgpt.com/c/6a1ed42d-4f30-83e9-abae-864d766f181c
