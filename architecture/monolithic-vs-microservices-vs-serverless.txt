@@ -148,4 +148,32 @@ response
         companies with strong DevOps maturity
         systems requiring high fault isolation
 
+      Examples:
+        Netflix-like streaming platform
+        large banking platform
+        large marketplace
+        logistics platform
+        cloud SaaS with many domains
+        enterprise systems with multiple teams
+
+      Microservices are not mainly about making the code “cleaner.”
+        They are mostly about scaling teams and operations.
+
+  3. Serverless architecture
+
+      Serverless means you do not manage servers directly.
+        You write functions or services,
+          and the cloud provider handles provisioning, scaling, and runtime management.
+
+      Example using functions:
+        User uploads image
+                ↓
+        Storage event triggers function
+                ↓
+        Function resizes image
+                ↓
+        Function saves thumbnail
+                ↓
+        Notification is sent
+
         TODO: complete https://chatgpt.com/c/6a1ed42d-4f30-83e9-abae-864d766f181c
