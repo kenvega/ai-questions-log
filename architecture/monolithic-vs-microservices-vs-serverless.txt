@@ -176,4 +176,45 @@ response
                 ↓
         Notification is sent
 
+      Common serverless tools include:
+        AWS Lambda
+        Google Cloud Functions
+        Azure Functions
+        Cloudflare Workers
+        Firebase
+        Supabase Edge Functions
+        Vercel Functions
+
+      Serverless does not mean “there are no servers.”
+        It means you do not manage them.
+
+      Why was it created?
+
+        Serverless was created to solve infrastructure and scaling problems.
+
+        It helps with:
+          server management
+          automatic scaling
+          paying for idle servers
+          event-driven workloads
+          fast deployment of small backend tasks
+
+        Traditional server:
+          You rent/run a server 24/7
+          You manage capacity
+          You pay even when traffic is low
+
+        Serverless:
+          Function runs only when needed
+          Cloud provider scales it
+          You usually pay per execution/time
+
+      Advantages
+        No server management -- Less infrastructure work
+        Automatic scaling -- Handles traffic spikes well
+        Pay-per-use -- Good for irregular workloads
+        Fast to deploy small features -- Great for small Als and jobs
+        Good for event-driven systems -- File uploads, webhooks, scheduled tasks
+        Reduced ops burden -- Provider handles much of the runtime
+
         TODO: complete https://chatgpt.com/c/6a1ed42d-4f30-83e9-abae-864d766f181c
