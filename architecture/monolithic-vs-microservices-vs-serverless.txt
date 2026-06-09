@@ -217,4 +217,23 @@ response
         Good for event-driven systems -- File uploads, webhooks, scheduled tasks
         Reduced ops burden -- Provider handles much of the runtime
 
+      Disadvantages
+        Cold starts	-- First request after inactivity may be slower
+        Vendor lock-in -- Code may depend on AWS/GCP/Azure-specific services
+        Execution limits -- Functions have time, memory, and runtime limits
+        Harder local development -- Cloud environment can be hard to replicate
+        Harder debugging -- Distributed logs/events can be tricky
+        Cost surprises at scale -- Cheap at low traffic, potentially expensive at huge volume
+        Not ideal for long-running processes -- Better for short-lived tasks
+
+      Use serverless for:
+        APIs with unpredictable traffic
+        background jobs
+        scheduled tasks
+        webhooks
+        image/video processing triggers
+        automation workflows
+        MVPs where you want minimal infrastructure
+        event-driven systems
+
         TODO: complete https://chatgpt.com/c/6a1ed42d-4f30-83e9-abae-864d766f181c
