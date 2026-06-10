@@ -236,4 +236,32 @@ response
         MVPs where you want minimal infrastructure
         event-driven systems
 
+      Examples:
+        When a user uploads a file, process it
+        When Stripe sends a webhook, update payment status
+        Every night, generate reports
+        Send email after signup
+        Expose a small API endpoint
+
+      Serverless is often excellent when
+        the workload is spiky, event-driven, or idle most of the time.
+
+  Important: these are not mutually exclusive
+    You can combine them. Example:
+      Frontend: Next.js
+      Main backend: Modular monolith
+      Payments: Separate microservice
+      Image processing: Serverless function
+      Database: PostgreSQL
+      Queue: SQS / PubSub / RabbitMQ
+
+    Also Serverless microservices is a real thing.
+      Each microservice might be implemented as serverless functions.
+
+    And Serverless monolith can also happen.
+      One big serverless function can contain too much logic.
+
+    So the real comparison is not always “one vs the other.”
+      It is about choosing the right level of separation.
+
         TODO: complete https://chatgpt.com/c/6a1ed42d-4f30-83e9-abae-864d766f181c
