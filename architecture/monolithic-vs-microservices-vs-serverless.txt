@@ -264,4 +264,55 @@ response
     So the real comparison is not always “one vs the other.”
       It is about choosing the right level of separation.
 
+  Which one is better?
+
+    For most projects: start with a modular monolith
+      Best default:
+        Modular Monolith → split into services only when needed
+
+    Why? Because most projects fail from:
+        not enough users
+        not enough product-market fit
+        too much complexity too early
+
+    They usually do not fail because they did not start with microservices.
+      A good starting architecture:
+        One backend app
+        Clear modules
+        One database
+        Good boundaries
+        Good tests
+        Simple deployment
+
+    Then later, if one part becomes painful, extract it.
+      Example:
+        Start:
+          Monolith
+        Later:
+          Extract Payments Service
+        Later:
+          Extract Notifications Service
+        Later:
+          Add Serverless Image Processing
+
+  Decision Guide
+      | Situation                             | Best choice                                         |
+      | ------------------------------------- | --------------------------------------------------- |
+      | MVP                                   | **Monolith**                                        |
+      | Small team                            | **Monolith**                                        |
+      | Internal dashboard                    | **Monolith**                                        |
+      | CRUD app                              | **Monolith**                                        |
+      | Startup with uncertain product        | **Modular monolith**                                |
+      | Large company with many teams         | **Microservices**                                   |
+      | Need independent deployments          | **Microservices**                                   |
+      | Need independent scaling per domain   | **Microservices**                                   |
+      | Event-driven tasks                    | **Serverless**                                      |
+      | Webhooks                              | **Serverless**                                      |
+      | Scheduled jobs                        | **Serverless**                                      |
+      | Unpredictable traffic                 | **Serverless**                                      |
+      | Long-running processes                | Usually **not serverless**                          |
+      | Complex distributed business platform | **Microservices**, maybe with serverless parts      |
+      | Simple API with low/medium traffic    | **Monolith** or **serverless**                      |
+      | High-performance low-latency system   | Usually **monolith** or carefully designed services |
+
         TODO: complete https://chatgpt.com/c/6a1ed42d-4f30-83e9-abae-864d766f181c
