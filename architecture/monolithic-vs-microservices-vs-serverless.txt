@@ -315,4 +315,81 @@ response
       | Simple API with low/medium traffic    | **Monolith** or **serverless**                      |
       | High-performance low-latency system   | Usually **monolith** or carefully designed services |
 
-        TODO: complete https://chatgpt.com/c/6a1ed42d-4f30-83e9-abae-864d766f181c
+  Simple examples
+    Blog app.
+      Features: users, posts, comments, likes
+
+    Best choice: Monolith
+
+    Why?
+      Small domain, simple data relationships, no need for independent scaling
+
+    Food delivery app
+      Features:
+        customers
+        restaurants
+        orders
+        payments
+        drivers
+        notifications
+        tracking
+        promotions
+
+      Best choice early:
+        Modular monolith
+
+      Best choice at large scale:
+        Microservices
+
+        Possible services:
+          Order Service
+          Payment Service
+          Driver Location Service
+          Notification Service
+          Restaurant Service
+
+    Image upload platform
+      Feature:
+        User uploads image → resize → compress → generate thumbnail
+
+      Best choice: Serverless
+
+      Why?
+        It is event-driven. The function only runs when an image is uploaded.
+
+    SaaS dashboard
+      Features:
+        login
+        billing
+        projects
+        reports
+        admin panel
+        email notifications
+
+      Best choice: Modular monolith + serverless for background jobs
+
+      Example:
+        Main app: monolith
+        Billing webhook: serverless
+        Report generation: background worker or serverless
+        Email sending: queue/function
+
+  Final recommendation
+    Use this rule:
+      Start simple.
+      Separate by modules first.
+      Separate by services only when pain proves you need it.
+      Use serverless for event-driven or spiky workloads.
+
+    My practical ranking for most real-world projects:
+
+      Modular monolith — best default
+      Monolith + selected serverless functions — great for many startups/SaaS apps
+      Microservices — best when team/product scale justifies the complexity
+      Pure serverless — great for event-driven apps, but be careful with lock-in and debugging
+
+    The main lesson:
+
+      Monoliths optimize for simplicity.
+      Microservices optimize for independent teams and scaling.
+      Serverless optimizes for minimal infrastructure and event-based execution.
