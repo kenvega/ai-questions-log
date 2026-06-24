@@ -1,0 +1,58 @@
+question
+  what is the event-loop in node?
+  what is it useful for?
+  how is it different from another languajes like python or ruby?
+  does javascript on the frontend has the same approach?
+    if so why is the event-loop always mentioned when talking about node and not javascript?
+
+response
+  The event loop is the mechanism Node.js uses to run JavaScript
+    while also handling many “waiting” tasks like
+      file reads, database calls, network requests, timers, and callbacks.
+
+  JavaScript itself runs on one main thread in Node.
+    The event loop lets Node avoid blocking that thread while it waits for slow external work.
+
+  What is it useful for?
+
+    The event loop is useful because many server programs spend most of their time waiting.
+
+    example
+      a web server often does this:
+        app.get("/user", async (req, res) => {
+          const user = await db.findUser(req.query.id);
+          res.json(user);
+        });
+
+      While the database is working, Node can handle other incoming requests.
+        That makes Node good for
+          Request comes in
+          → Start database query
+          → Do not block the main thread
+          → Handle other requests
+          → When DB result is ready, continue
+
+      This is why Node is often strong for:
+        - APIs
+        - chat apps
+        - real-time apps
+        - proxies
+        - I/O-heavy backends
+        - applications with many concurrent connections
+
+      But the event loop is not magic parallel CPU execution.
+        If you run a heavy calculation on the main thread, you block everything:
+          app.get("/slow", (req, res) => {
+            while (true) {
+              // blocks the event loop forever
+            }
+
+            res.send("done");
+          });
+
+        While that loop runs, Node cannot handle other callbacks, timers, or requests on that thread.
+
+      For CPU-heavy work
+        Node usually needs worker threads, child processes, queues, or external services.
+
+    
