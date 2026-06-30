@@ -1,0 +1,749 @@
+/* ================================================================
+   CSS GRID EXERCISES
+   Every class below is used by a rendered Original / Change example.
+   ================================================================ */
+
+.preview {
+  min-width: 0;
+  align-self: stretch;
+}
+
+.preview > i,
+.display-preview > i,
+.inline-grid-result i {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 0.45rem;
+  color: var(--green-dark);
+  background: var(--blue);
+  border: 1px solid rgb(15 62 47 / 0.28);
+  border-radius: 6px;
+  font-size: 0.73rem;
+  font-style: normal;
+  font-weight: 820;
+  text-align: center;
+}
+
+.preview > i:nth-child(2n) {
+  background: var(--lime);
+}
+
+.preview > i:nth-child(3n) {
+  background: #ffd0be;
+}
+
+/* 00 — Grid terminology ----------------------------------------- */
+
+.terms-result {
+  min-height: 210px;
+}
+
+.terms-container-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+  align-self: center;
+  padding: 0.8rem;
+  border: 4px solid var(--green);
+  border-radius: 10px;
+}
+
+.terms-container-preview i,
+.terms-explicit-preview i {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 0.65rem;
+  color: var(--green-dark);
+  background: var(--blue);
+  border: 1px solid rgb(15 62 47 / 0.28);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 820;
+  text-align: center;
+}
+
+.terms-container-preview i:nth-child(2),
+.terms-explicit-preview i:nth-child(2n) {
+  background: var(--lime);
+}
+
+.terms-container-preview small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.55rem;
+  font-weight: 650;
+}
+
+.terms-lines-preview {
+  position: relative;
+  align-self: center;
+  margin: 26px 28px 4px;
+  min-height: 170px;
+  background-color: rgb(255 253 247 / 0.7);
+  background-image:
+    linear-gradient(to right, var(--green) 2px, transparent 2px),
+    linear-gradient(to bottom, var(--green) 2px, transparent 2px);
+  background-size: calc(100% / 3) 50%;
+  border-right: 2px solid var(--green);
+  border-bottom: 2px solid var(--green);
+}
+
+.column-line-numbers,
+.row-line-numbers {
+  position: absolute;
+  display: flex;
+  color: var(--orange);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.7rem;
+}
+
+.column-line-numbers {
+  top: -24px;
+  right: -5px;
+  left: -4px;
+  justify-content: space-between;
+}
+
+.row-line-numbers {
+  top: -6px;
+  bottom: -6px;
+  left: -24px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.terms-lines-preview > i {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 33.333%;
+  display: grid;
+  place-items: center;
+  height: 50%;
+  padding: 0.5rem;
+  color: var(--green-dark);
+  background: rgb(217 255 119 / 0.75);
+  border: 2px solid var(--orange);
+  font-size: 0.67rem;
+  font-style: normal;
+  font-weight: 750;
+  text-align: center;
+}
+
+.terms-tracks-preview,
+.terms-cell-preview,
+.terms-area-preview {
+  display: grid;
+  grid-template-columns: 80px repeat(2, 1fr);
+  grid-template-rows: repeat(2, 52px);
+  align-self: center;
+  gap: 0.35rem;
+}
+
+.terms-tracks-preview > i,
+.terms-cell-preview > i,
+.terms-area-preview > i {
+  min-width: 0;
+  background: rgb(255 253 247 / 0.65);
+  border: 1px solid rgb(24 92 68 / 0.42);
+  border-radius: 4px;
+}
+
+.terms-tracks-preview span,
+.terms-cell-preview span,
+.terms-area-preview span {
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 0.4rem;
+  border-radius: 5px;
+  font-size: 0.65rem;
+  font-weight: 850;
+  text-align: center;
+}
+
+.column-track-note {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  color: #742708;
+  background: rgb(255 116 69 / 0.78);
+}
+
+.row-track-note {
+  grid-column: 1 / 4;
+  grid-row: 2;
+  color: white;
+  background: rgb(116 103 223 / 0.76);
+}
+
+.terms-cell-preview span {
+  grid-column: 2;
+  grid-row: 1;
+  color: var(--green-dark);
+  background: var(--lime);
+  border: 2px solid var(--green);
+}
+
+.terms-area-preview span {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  color: white;
+  background: rgb(116 103 223 / 0.88);
+  border: 2px solid #4c40bc;
+}
+
+.terms-explicit-preview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 52px;
+  grid-auto-rows: 36px;
+  align-self: center;
+  gap: 0.4rem;
+}
+
+.terms-explicit-preview i:nth-child(n + 3) {
+  border: 2px dashed var(--orange);
+}
+
+/* 01 — display --------------------------------------------------- */
+
+.display-preview {
+  align-self: center;
+}
+
+.display-block {
+  display: block;
+}
+
+.display-block i {
+  margin-bottom: 0.35rem;
+}
+
+.display-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+}
+
+.inline-grid-result {
+  align-self: center;
+  white-space: nowrap;
+}
+
+.display-inline-grid {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 56px);
+  gap: 0.4rem;
+  vertical-align: middle;
+}
+
+.inline-grid-result > b {
+  margin-left: 0.55rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+/* 02 — explicit columns and rows -------------------------------- */
+
+.tracks-preview {
+  display: grid;
+  align-self: center;
+  gap: 0.45rem;
+}
+
+.tracks-equal {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 60px 60px;
+}
+
+.tracks-weighted {
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 60px 60px;
+}
+
+.tracks-mixed {
+  grid-template-columns: fit-content(110px) 1fr;
+  grid-template-rows: 44px 84px;
+}
+
+/* 03 — row-gap, column-gap, gap --------------------------------- */
+
+.gap-preview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 54px);
+  align-self: center;
+}
+
+.gap-none {
+  gap: 0;
+}
+
+.gap-none > i {
+  border-radius: 0;
+}
+
+.gap-rows {
+  row-gap: 18px;
+}
+
+.gap-both {
+  gap: 8px 24px;
+}
+
+/* 04 — grid-template-areas, grid-template, grid-area ------------ */
+
+.areas-preview {
+  display: grid;
+  align-self: center;
+  gap: 0.4rem;
+}
+
+.areas-auto {
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: repeat(2, 56px);
+}
+
+.areas-desktop {
+  grid-template-areas:
+    "header header"
+    "nav main"
+    "footer footer";
+  grid-template-columns: 90px 1fr;
+  grid-template-rows: 35px 74px 30px;
+}
+
+.areas-desktop i:nth-child(1),
+.areas-stacked i:nth-child(1) {
+  grid-area: header;
+}
+
+.areas-desktop i:nth-child(2),
+.areas-stacked i:nth-child(2) {
+  grid-area: nav;
+}
+
+.areas-desktop i:nth-child(3),
+.areas-stacked i:nth-child(3) {
+  grid-area: main;
+}
+
+.areas-desktop i:nth-child(4),
+.areas-stacked i:nth-child(4) {
+  grid-area: footer;
+}
+
+.areas-stacked {
+  height: 200px;
+  grid-template:
+    "header" 44px
+    "main" 1fr
+    "nav" 44px
+    "footer" 38px
+    / 1fr;
+}
+
+/* 05 — justify-items, align-items, place-items ------------------- */
+
+.align-items-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 120px;
+  align-self: center;
+  gap: 0.45rem;
+}
+
+.align-items-preview > i {
+  outline: 1px dashed rgb(23 33 27 / 0.18);
+  outline-offset: 3px;
+}
+
+.align-stretch {
+  justify-items: stretch;
+  align-items: stretch;
+}
+
+.align-justify-center {
+  justify-items: center;
+  align-items: stretch;
+}
+
+.align-justify-center > i {
+  width: 44px;
+}
+
+.align-place {
+  place-items: end center;
+}
+
+.align-both {
+  justify-items: center;
+  align-items: end;
+}
+
+.align-both > i,
+.align-place > i {
+  width: 44px;
+  height: 44px;
+}
+
+/* 06 — justify-content, align-content, place-content ------------- */
+
+.align-content-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(2, 44px);
+  min-height: 145px;
+  gap: 0.4rem;
+  border: 2px dashed rgb(23 33 27 / 0.2);
+  border-radius: 8px;
+}
+
+.content-start {
+  justify-content: start;
+  align-content: start;
+}
+
+.content-between {
+  justify-content: space-between;
+  align-content: start;
+}
+
+.content-bottom {
+  justify-content: space-between;
+  align-content: end;
+}
+
+.content-center {
+  place-content: center;
+}
+
+/* 07 — grid-auto-rows and grid-auto-columns --------------------- */
+
+.implicit-preview {
+  display: grid;
+  align-self: center;
+  gap: 0.4rem;
+}
+
+.implicit-auto,
+.implicit-rows {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 48px;
+}
+
+.implicit-auto {
+  grid-auto-rows: auto;
+}
+
+.implicit-rows {
+  grid-auto-rows: 30px 64px;
+}
+
+.implicit-auto > i:nth-child(n + 3),
+.implicit-rows > i:nth-child(n + 3),
+.implicit-columns > i:nth-child(n + 2) {
+  border: 2px dashed var(--orange);
+}
+
+.implicit-columns {
+  grid-template-columns: 72px;
+  grid-auto-columns: 96px;
+  grid-auto-flow: column;
+  justify-content: center;
+  min-height: 90px;
+}
+
+/* 08 — grid-auto-flow ------------------------------------------- */
+
+.flow-preview {
+  display: grid;
+  grid-template: repeat(2, 52px) / repeat(3, 1fr);
+  align-self: center;
+  gap: 0.4rem;
+}
+
+.flow-row {
+  grid-auto-flow: row;
+}
+
+.flow-column {
+  grid-auto-flow: column;
+}
+
+.flow-dense {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 52px);
+  grid-auto-flow: row dense;
+}
+
+.flow-dense .wide {
+  grid-column: span 2;
+}
+
+/* 09 — grid shorthand ------------------------------------------- */
+
+.master-grid-preview {
+  display: grid;
+  align-self: center;
+  gap: 0.4rem;
+}
+
+.master-original {
+  grid: 48px 80px / 1fr 2fr;
+}
+
+.master-auto {
+  grid: 72px / auto-flow 96px;
+  justify-content: center;
+}
+
+/* 10 — grid line placement longhands ---------------------------- */
+
+.placement-preview,
+.shortcut-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 46px);
+  align-self: center;
+  background-color: rgb(255 253 247 / 0.55);
+  background-image:
+    linear-gradient(to right, rgb(23 33 27 / 0.2) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(23 33 27 / 0.2) 1px, transparent 1px);
+  background-size: calc(100% / 3) calc(100% / 3);
+  border-right: 1px solid rgb(23 33 27 / 0.2);
+  border-bottom: 1px solid rgb(23 33 27 / 0.2);
+}
+
+.placement-preview > i,
+.shortcut-preview > i {
+  z-index: 1;
+  margin: 4px;
+  background: var(--lime);
+}
+
+.placed-auto {
+  grid-column-start: auto;
+  grid-row-start: auto;
+}
+
+.placed-wide {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+.placed-area {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+}
+
+/* 11 — grid-column, grid-row, numeric grid-area ----------------- */
+
+.shortcut-wide {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.shortcut-column-row {
+  grid-column: 2 / span 2;
+  grid-row: 1 / 3;
+}
+
+.shortcut-area {
+  grid-area: 2 / 1 / 4 / 4;
+}
+
+/* 12 — justify-self, align-self, place-self --------------------- */
+
+.self-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 125px;
+  align-self: center;
+  gap: 0.45rem;
+}
+
+.self-preview > i {
+  outline: 1px dashed rgb(23 33 27 / 0.2);
+  outline-offset: 3px;
+}
+
+.self-justify .special {
+  width: 44px;
+  justify-self: end;
+  align-self: auto;
+}
+
+.self-place .special {
+  width: 44px;
+  height: 44px;
+  place-self: end center;
+}
+
+.self-both .special {
+  width: 44px;
+  height: 44px;
+  justify-self: end;
+  align-self: end;
+}
+
+/* 13 — repeat, fr, minmax, auto-fit, subgrid -------------------- */
+
+.minmax-intro-preview {
+  display: grid;
+  grid-template-columns: 70px minmax(60px, 1fr);
+  align-self: center;
+  gap: 0.5rem;
+}
+
+.responsive-preview {
+  display: grid;
+  align-self: center;
+  gap: 0.5rem;
+}
+
+.responsive-fixed {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.responsive-auto {
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+.responsive-fill {
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+}
+
+.responsive-fit-narrow {
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+}
+
+.responsive-compare {
+  display: grid;
+  gap: 0.85rem;
+  align-self: center;
+}
+
+.responsive-compare-item {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.compare-tag {
+  margin: 0;
+  color: var(--green);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.64rem;
+  font-weight: 850;
+}
+
+.compare-frame {
+  width: 264px;
+  max-width: 100%;
+  padding: 0.35rem;
+  border: 2px dashed rgb(23 33 27 / 0.32);
+  border-radius: 8px;
+}
+
+.subgrid-preview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto 1fr auto;
+  align-self: center;
+  gap: 0.75rem;
+}
+
+.subgrid-preview article {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  gap: 0;
+  min-width: 0;
+  padding: 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.subgrid-preview b,
+.subgrid-preview p {
+  margin: 0;
+}
+
+.subgrid-preview b {
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.subgrid-preview p {
+  padding-block: 0.5rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.subgrid-preview .card-action {
+  justify-self: start;
+  color: var(--green);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+/* 14 — negative line numbers ------------------------------------- */
+
+.negative-lines-preview {
+  display: grid;
+  grid-template-rows: 64px;
+  align-self: center;
+  background-color: rgb(255 253 247 / 0.55);
+  background-image: linear-gradient(to right, rgb(23 33 27 / 0.2) 1px, transparent 1px);
+  border-right: 1px solid rgb(23 33 27 / 0.2);
+}
+
+.negative-lines-preview.cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+  background-size: calc(100% / 3) 100%;
+}
+
+.negative-lines-preview.cols-5 {
+  grid-template-columns: repeat(5, 1fr);
+  background-size: calc(100% / 5) 100%;
+}
+
+.negative-lines-preview > i {
+  z-index: 1;
+  margin: 6px;
+  background: var(--lime);
+}
+
+.span-fixed-end {
+  grid-column: 1 / 4;
+}
+
+.span-last-line {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 520px) {
+  .display-inline-grid {
+    grid-template-columns: repeat(3, 46px);
+  }
+
+  .tracks-mixed {
+    grid-template-columns: fit-content(90px) 1fr;
+  }
+
+  .content-between {
+    grid-template-columns: repeat(3, 44px);
+  }
+
+  .responsive-auto {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+}

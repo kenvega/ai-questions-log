@@ -1,0 +1,942 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Learn CSS Grid through short, visual before-and-after exercises."
+    />
+    <title>CSS Grid Lab — learn by comparing</title>
+    <link rel="stylesheet" href="exercise-ui.css" />
+    <link rel="stylesheet" href="grid-examples.css" />
+  </head>
+
+  <body>
+    <div class="learning-shell">
+      <header class="site-header">
+        <div class="header-inner">
+          <div class="brand-lockup">
+            <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <div>
+              <p class="brand-name">CSS Grid Lab</p>
+              <p class="brand-subtitle">Learn by changing one thing</p>
+            </div>
+          </div>
+          <p class="header-note"><span>15</span> guided exercises · plain CSS</p>
+        </div>
+      </header>
+
+      <main class="course-layout">
+        <aside class="lesson-sidebar" aria-label="Course lessons">
+          <nav class="lesson-nav" aria-label="Choose a CSS Grid exercise">
+            <a href="#lesson-00"><span>00</span><b>Grid terms</b><small>container, item, line, track, cell, area</small></a>
+            <a href="#lesson-01"><span>01</span><b>display</b><small>makes an element a grid container</small></a>
+            <a href="#lesson-02"><span>02</span><b>grid-template-columns/rows</b><small>size each column and row upfront</small></a>
+            <a href="#lesson-03"><span>03</span><b>gap</b><small>space out tracks without margins</small></a>
+            <a href="#lesson-04"><span>04</span><b>grid-template-areas</b><small>name regions to sketch a layout</small></a>
+            <a href="#lesson-05"><span>05</span><b>justify/align-items</b><small>align items inside their cells</small></a>
+            <a href="#lesson-06"><span>06</span><b>justify/align-content</b><small>position the grid within its box</small></a>
+            <a href="#lesson-07"><span>07</span><b>grid-auto-rows/columns</b><small>size the extra tracks Grid creates</small></a>
+            <a href="#lesson-08"><span>08</span><b>grid-auto-flow</b><small>control how leftover items flow</small></a>
+            <a href="#lesson-09"><span>09</span><b>grid</b><small>set rows, columns + flow at once</small></a>
+            <a href="#lesson-10"><span>10</span><b>grid-column/row-start/end</b><small>pin an item to exact line numbers</small></a>
+            <a href="#lesson-11"><span>11</span><b>grid-column/row/area</b><small>combine line values into one rule</small></a>
+            <a href="#lesson-12"><span>12</span><b>justify/align-self</b><small>realign just one item, not all</small></a>
+            <a href="#lesson-13"><span>13</span><b>minmax()/auto-fit</b><small>build grids that adapt to space</small></a>
+            <a href="#lesson-14"><span>14</span><b>grid-column: 1 / -1</b><small>count lines backward from the end</small></a>
+          </nav>
+
+          <p class="sidebar-source">
+            Based on
+            <a href="https://css-tricks.com/snippets/css/complete-guide-grid/">CSS-Tricks’ Grid guide</a>.
+          </p>
+        </aside>
+
+        <section class="lesson-workspace" aria-live="polite">
+          <!-- Targets live inside this scroll region so every lesson opens at its top. -->
+          <span class="lesson-target" id="lesson-00" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-01" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-02" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-03" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-04" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-05" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-06" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-07" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-08" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-09" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-10" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-11" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-12" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-13" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-14" aria-hidden="true"></span>
+
+          <article class="lesson-panel panel-00">
+            <header class="lesson-heading">
+              <div class="lesson-number">00</div>
+              <div>
+                <p class="overline">Terms before properties</p>
+                <h1>Understand the parts of a CSS Grid</h1>
+                <p>Grid terminology describes the container, its children, and the invisible structure that places them.</p>
+              </div>
+            </header>
+
+            <section class="lesson-html">
+              <div><p class="overline">HTML for this lesson</p><p>The direct children are grid items. The paragraph nested inside item B is not.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div class="item"&gt;A&lt;/div&gt;
+  &lt;div class="item"&gt;
+    B &lt;p&gt;nested content&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="item"&gt;C&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+
+            <div class="term-lessons">
+              <section class="term-lesson">
+                <div class="term-explanation">
+                  <p class="term-kicker">Container and items</p>
+                  <h2>The container owns the grid</h2>
+                  <p><b>Grid container:</b> the element with <code>display: grid</code>. <b>Grid items:</b> only its direct children.</p>
+                  <pre><code>.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}</code></pre>
+                </div>
+                <div class="result-side terms-result">
+                  <p class="result-label">Green outline = container · colored boxes = items</p>
+                  <div class="terms-container-preview"><i>A</i><i>B <small>nested text</small></i><i>C</i></div>
+                </div>
+              </section>
+
+              <section class="term-lesson">
+                <div class="term-explanation">
+                  <p class="term-kicker">Grid lines</p>
+                  <h2>Lines are numbered boundaries</h2>
+                  <p>A three-column grid has four vertical lines. A two-row grid has three horizontal lines. Placement properties refer to these numbers.</p>
+                  <pre><code>.item {
+  grid-column: 2 / 4;
+  grid-row: 1 / 2;
+}</code></pre>
+                </div>
+                <div class="result-side terms-result">
+                  <p class="result-label">Column lines 1–4 · row lines 1–3</p>
+                  <div class="terms-lines-preview" aria-label="Grid with numbered row and column lines">
+                    <span class="column-line-numbers"><b>1</b><b>2</b><b>3</b><b>4</b></span>
+                    <span class="row-line-numbers"><b>1</b><b>2</b><b>3</b></span>
+                    <i>starts at column line 2<br />ends at column line 4</i>
+                  </div>
+                </div>
+              </section>
+
+              <section class="term-lesson">
+                <div class="term-explanation">
+                  <p class="term-kicker">Grid tracks</p>
+                  <h2>A track is the space between two lines</h2>
+                  <p>A complete column is a column track. A complete row is a row track. Track sizing properties control their width or height.</p>
+                  <pre><code>.container {
+  grid-template-columns: 80px 1fr 1fr;
+  grid-template-rows: 52px 52px;
+}</code></pre>
+                </div>
+                <div class="result-side terms-result">
+                  <p class="result-label">Orange = one column track · purple = one row track</p>
+                  <div class="measurement-stage ruler-left-space ruler-top-space">
+                    <span class="ruler ruler-x" style="--ruler-size: 80px; --ruler-start: 0px">80px</span>
+                    <span class="ruler ruler-y" style="--ruler-size: 52px; --ruler-start: 0px">52px</span>
+                    <span class="ruler ruler-y" style="--ruler-size: 52px; --ruler-start: calc(52px + 0.35rem)">52px</span>
+                    <div class="terms-tracks-preview"><i></i><i></i><i></i><i></i><i></i><i></i><span class="column-track-note">column track</span><span class="row-track-note">row track</span></div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="term-lesson">
+                <div class="term-explanation">
+                  <p class="term-kicker">Grid cells</p>
+                  <h2>A cell is one grid unit</h2>
+                  <p>One cell is enclosed by two adjacent column lines and two adjacent row lines. It is the Grid equivalent of one table cell.</p>
+                  <pre><code>/* highlighted cell */
+column lines: 2 → 3
+row lines:    1 → 2</code></pre>
+                </div>
+                <div class="result-side terms-result">
+                  <p class="result-label">This cell sits between column lines 2–3 and row lines 1–2</p>
+                  <div class="terms-cell-preview"><i></i><i></i><i></i><i></i><i></i><i></i><span>one cell</span></div>
+                </div>
+              </section>
+
+              <section class="term-lesson">
+                <div class="term-explanation">
+                  <p class="term-kicker">Grid areas</p>
+                  <h2>An area is a rectangle of cells</h2>
+                  <p>An area may be one cell or many cells, but it must be rectangular and enclosed by four grid lines.</p>
+                  <pre><code>.item {
+  grid-area: 1 / 1 / 3 / 3;
+  /* row-start / column-start /
+     row-end / column-end */
+}</code></pre>
+                </div>
+                <div class="result-side terms-result">
+                  <p class="result-label">This area spans four cells from lines 1 to 3 on both axes</p>
+                  <div class="terms-area-preview"><i></i><i></i><i></i><i></i><i></i><i></i><span>2 × 2 grid area</span></div>
+                </div>
+              </section>
+
+              <section class="term-lesson">
+                <div class="term-explanation">
+                  <p class="term-kicker">Explicit and implicit grids</p>
+                  <h2>Defined tracks versus generated tracks</h2>
+                  <p><b>Explicit tracks</b> come from <code>grid-template-*</code>. If more items need space, Grid creates <b>implicit tracks</b>.</p>
+                  <pre><code>.container {
+  grid-template-rows: 52px; /* explicit */
+  grid-auto-rows: 36px;     /* implicit */
+}</code></pre>
+                </div>
+                <div class="result-side terms-result">
+                  <p class="result-label">Solid row = explicit · dashed rows = implicit</p>
+                  <div class="measurement-stage ruler-left-space">
+                    <span class="ruler ruler-y" style="--ruler-size: 52px; --ruler-start: 0px">52px</span>
+                    <span class="ruler ruler-y" style="--ruler-size: 36px; --ruler-start: calc(52px + 0.4rem)">36px</span>
+                    <span class="ruler ruler-y" style="--ruler-size: 36px; --ruler-start: calc(88px + 0.8rem)">36px</span>
+                    <div class="terms-explicit-preview"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div class="term-recap">
+              <p class="overline">Quick recap</p>
+              <dl class="term-definitions">
+                <div><dt>Grid container</dt><dd>The element with <code>display: grid</code>.</dd></div>
+                <div><dt>Grid item</dt><dd>A direct child of the grid container.</dd></div>
+                <div><dt>Grid line</dt><dd>A numbered dividing line on the row or column axis.</dd></div>
+                <div><dt>Grid track</dt><dd>The space between two adjacent parallel lines.</dd></div>
+                <div><dt>Grid cell</dt><dd>One row track crossed with one column track.</dd></div>
+                <div><dt>Grid area</dt><dd>Any rectangular group of cells bounded by four lines.</dd></div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-01">
+            <header class="lesson-heading">
+              <div class="lesson-number">01</div>
+              <div>
+                <p class="overline">Foundation</p>
+                <h1>Grid anatomy starts with <code>display</code></h1>
+                <p>A parent becomes a grid container; only its direct children become grid items.</p>
+              </div>
+            </header>
+
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>The same three children are rendered in every comparison.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div class="item"&gt;A&lt;/div&gt;
+  &lt;div class="item"&gt;B&lt;/div&gt;
+  &lt;div class="item"&gt;C&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side">
+                  <div class="state-heading"><span>Starting point</span><p>Normal block layout</p></div>
+                  <pre><code>.container {
+<mark class="baseline">  display: block;</mark>
+}</code></pre>
+                </div>
+                <div class="result-side">
+                  <p class="result-label">Result</p>
+                  <div class="preview display-preview display-block"><i>A</i><i>B</i><i>C</i></div>
+                </div>
+              </section>
+
+              <section class="comparison-row state-change-one">
+                <div class="code-side">
+                  <div class="state-heading"><span>Make the parent a grid</span></div>
+                  <pre><code>.container {
+<mark>  display: grid;</mark>
+  grid-template-columns: repeat(3, 1fr);
+}</code></pre>
+                </div>
+                <div class="result-side">
+                  <p class="result-label">Items now occupy grid cells</p>
+                  <div class="preview display-preview display-grid"><i>A</i><i>B</i><i>C</i></div>
+                </div>
+              </section>
+
+              <section class="comparison-row state-change-two">
+                <div class="code-side">
+                  <div class="state-heading"><span>Use an inline-level grid</span></div>
+                  <pre><code>.container {
+<mark>  display: inline-grid;</mark>
+  grid-template-columns: repeat(3, 56px);
+}</code></pre>
+                </div>
+                <div class="result-side">
+                  <p class="result-label">The grid only uses the width it needs</p>
+                  <div class="measurement-stage ruler-top-space inline-grid-stage">
+                    <span class="ruler ruler-x" style="--ruler-size: 56px; --ruler-start: 0px">56px</span>
+                    <div class="inline-grid-result"><div class="preview display-preview display-inline-grid"><i>A</i><i>B</i><i>C</i></div><b>neighbor</b></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-02">
+            <header class="lesson-heading">
+              <div class="lesson-number">02</div>
+              <div>
+                <p class="overline">Container properties</p>
+                <h1>Define explicit columns and rows</h1>
+                <p><code>grid-template-columns</code> and <code>grid-template-rows</code> size the tracks you create intentionally.</p>
+              </div>
+            </header>
+
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>Four items make the column and row sizes easy to compare.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div&gt;1&lt;/div&gt;&lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;&lt;div&gt;4&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side">
+                  <div class="state-heading"><span>Starting point</span><p>Two equal columns</p></div>
+                  <pre><code>.container {
+  display: grid;
+<mark class="baseline">  grid-template-columns: 1fr 1fr;</mark>
+<mark class="baseline">  grid-template-rows: 60px 60px;</mark>
+}</code></pre>
+                </div>
+                <div class="result-side"><p class="result-label">Each row is exactly 60px tall</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y" style="--ruler-size: 60px; --ruler-start: 0px">60px</span><span class="ruler ruler-y" style="--ruler-size: 60px; --ruler-start: calc(60px + 0.45rem)">60px</span><div class="preview tracks-preview tracks-equal"><i>A</i><i>B</i><i>C</i><i>D</i></div></div></div>
+              </section>
+
+              <section class="comparison-row state-change-one">
+                <div class="code-side">
+                  <div class="state-heading"><span>Give one column twice the space</span></div>
+                  <pre><code>.container {
+  display: grid;
+<mark>  grid-template-columns: 1fr 2fr;</mark>
+  grid-template-rows: 60px 60px;
+}</code></pre>
+                </div>
+                <div class="result-side"><p class="result-label">The second column is twice as wide; rows remain 60px</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y" style="--ruler-size: 60px; --ruler-start: 0px">60px</span><span class="ruler ruler-y" style="--ruler-size: 60px; --ruler-start: calc(60px + 0.45rem)">60px</span><div class="preview tracks-preview tracks-weighted"><i>1fr</i><i>2fr</i><i>1fr</i><i>2fr</i></div></div></div>
+              </section>
+
+              <section class="comparison-row state-change-two">
+                <div class="code-side">
+                  <div class="state-heading"><span>Mix content and flexible sizing</span></div>
+                  <pre><code>.container {
+  display: grid;
+<mark>  grid-template-columns: fit-content(110px) 1fr;</mark>
+<mark>  grid-template-rows: 44px 84px;</mark>
+}</code></pre>
+                </div>
+                <div class="result-side"><p class="result-label">The first column reaches its 110px cap; rows use different heights</p><div class="measurement-stage ruler-left-space ruler-top-space"><span class="ruler ruler-x" style="--ruler-size: 110px; --ruler-start: 0px">110px</span><span class="ruler ruler-y" style="--ruler-size: 44px; --ruler-start: 0px">44px</span><span class="ruler ruler-y" style="--ruler-size: 84px; --ruler-start: calc(44px + 0.45rem)">84px</span><div class="preview tracks-preview tracks-mixed"><i>long content label</i><i>remaining space</i><i>C</i><i>D</i></div></div></div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-03">
+            <header class="lesson-heading">
+              <div class="lesson-number">03</div>
+              <div>
+                <p class="overline">Container properties</p>
+                <h1>Add space between tracks</h1>
+                <p><code>row-gap</code> and <code>column-gap</code> control one axis. <code>gap</code> is their shorthand.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>Gaps add space between these items, never around the outside.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div&gt;1&lt;/div&gt;&lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;&lt;div&gt;4&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>No gutter</p></div><pre><code>.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+<mark class="baseline">  gap: 0;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Tracks touch</p><div class="preview gap-preview gap-none"><i>1</i><i>2</i><i>3</i><i>4</i></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Add only a row gutter</span></div><pre><code>.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+<mark>  row-gap: 18px;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The ruler measures the 18px space between rows</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y ruler-gap" style="--ruler-size: 18px; --ruler-start: 54px">18px</span><div class="preview gap-preview gap-rows"><i>1</i><i>2</i><i>3</i><i>4</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Set each axis independently</span></div><pre><code>.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+<mark>  row-gap: 8px;</mark>
+<mark>  column-gap: 24px;</mark>
+  /* shorthand: gap: 8px 24px; */
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Vertical ruler = row gap · horizontal ruler = column gap</p><div class="measurement-stage ruler-left-space ruler-top-space"><span class="ruler ruler-y ruler-gap" style="--ruler-size: 8px; --ruler-start: 54px">8px</span><span class="ruler ruler-x ruler-gap" style="--ruler-size: 24px; --ruler-start: calc(50% - 39px)">24px</span><div class="preview gap-preview gap-both"><i>1</i><i>2</i><i>3</i><i>4</i></div></div></div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-04">
+            <header class="lesson-heading">
+              <div class="lesson-number">04</div>
+              <div>
+                <p class="overline">Container + item properties</p>
+                <h1>Sketch layouts with named areas</h1>
+                <p><code>grid-template-areas</code> names the container regions. Each item joins one with <code>grid-area</code>.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>Named areas rearrange these semantic elements without changing their source order.</p></div>
+              <pre><code>&lt;div class="layout"&gt;
+  &lt;header&gt;header&lt;/header&gt;
+  &lt;nav&gt;nav&lt;/nav&gt;
+  &lt;main&gt;main&lt;/main&gt;
+  &lt;footer&gt;footer&lt;/footer&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>Automatic placement</p></div><pre><code>.layout {
+  display: grid;
+<mark class="baseline">  grid-template-columns: 100px 1fr;</mark>
+}
+/* no named areas yet */</code></pre></div>
+                <div class="result-side"><p class="result-label">The first column track is exactly 100px wide</p><div class="measurement-stage ruler-top-space"><span class="ruler ruler-x" style="--ruler-size: 100px; --ruler-start: 0px">100px</span><div class="preview areas-preview areas-auto"><i>header</i><i>nav</i><i>main</i><i>footer</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Name the page regions</span></div><pre><code>.layout {
+  grid-template-columns: 90px 1fr;
+  grid-template-rows: 35px 74px 30px;
+<mark>  grid-template-areas:</mark>
+<mark>    "header header"</mark>
+<mark>    "nav    main"</mark>
+<mark>    "footer footer";</mark>
+}
+.header { grid-area: header; }</code></pre></div>
+                <div class="result-side"><p class="result-label">Names place the regions; the columns/rows above still set their sizes — nav stays 90px while main fills the rest</p><div class="preview areas-preview areas-desktop"><i>header</i><i>nav</i><i>main</i><i>footer</i></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Use the template shorthand</span></div><pre><code>.layout {
+<mark>  grid-template:</mark>
+<mark>    "header" 44px</mark>
+<mark>    "main"   1fr</mark>
+<mark>    "nav"    44px</mark>
+<mark>    "footer" 38px</mark>
+<mark>    / 1fr;</mark>
+}
+/* grid-template sets areas, rows + columns */</code></pre></div>
+                <div class="result-side"><p class="result-label">Header and nav are 44px; the footer is 38px</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y" style="--ruler-size: 44px; --ruler-start: 0px">44px</span><span class="ruler ruler-y" style="--ruler-size: 44px; --ruler-start: calc(100% - 82px)">44px</span><span class="ruler ruler-y" style="--ruler-size: 38px; --ruler-start: calc(100% - 38px)">38px</span><div class="preview areas-preview areas-stacked"><i>header</i><i>nav</i><i>main</i><i>footer</i></div></div></div>
+              </section>
+            </div>
+
+            <p class="a11y-note"><b>Keep in mind:</b> this last layout shows <code>main</code> above <code>nav</code>, but the HTML order above never changed — <code>nav</code> still comes before <code>main</code> in the markup. Keyboard tabbing and screen readers follow that source order, not the visual one, so a sighted user and a keyboard user reach these two regions in a different sequence.</p>
+          </article>
+
+          <article class="lesson-panel panel-05">
+            <header class="lesson-heading">
+              <div class="lesson-number">05</div>
+              <div>
+                <p class="overline">Container properties</p>
+                <h1>Align every item inside its cell</h1>
+                <p><code>justify-items</code> controls the inline axis; <code>align-items</code> controls the block axis.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>The items keep the same cells; only their alignment inside those cells changes.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div&gt;A&lt;/div&gt;
+  &lt;div&gt;B&lt;/div&gt;
+  &lt;div&gt;C&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="axis-key"><span><i class="axis-horizontal"></i> justify = horizontal in this writing mode</span><span><i class="axis-vertical"></i> align = vertical</span></div>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>Stretch is the default</p></div><pre><code>.container {
+<mark class="baseline">  justify-items: stretch;</mark>
+<mark class="baseline">  align-items: stretch;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Items fill their cells</p><div class="preview align-items-preview align-stretch"><i>A</i><i>B</i><i>C</i></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Center horizontally</span></div><pre><code>.container {
+<mark>  justify-items: center;</mark>
+  align-items: stretch;
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Width shrinks; height still stretches</p><div class="preview align-items-preview align-justify-center"><i>A</i><i>B</i><i>C</i></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Move vertically as well</span></div><pre><code>.container {
+  justify-items: center;
+<mark>  align-items: end;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Items now sit bottom-center inside each cell</p><div class="preview align-items-preview align-both"><i>A</i><i>B</i><i>C</i></div></div>
+              </section>
+              <section class="comparison-row state-change-three">
+                <div class="code-side"><div class="state-heading"><span>Set both axes at once</span></div><pre><code>.container {
+<mark>  place-items: end center;</mark>
+  /* align-items | justify-items */
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Items sit bottom-center in every cell</p><div class="preview align-items-preview align-place"><i>A</i><i>B</i><i>C</i></div></div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-06">
+            <header class="lesson-heading">
+              <div class="lesson-number">06</div>
+              <div>
+                <p class="overline">Container properties</p>
+                <h1>Align the entire grid in its container</h1>
+                <p>Content alignment works when fixed tracks are smaller than the grid container.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>Six items form a small fixed-size grid inside a larger container.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div&gt;1&lt;/div&gt;&lt;div&gt;2&lt;/div&gt;&lt;div&gt;3&lt;/div&gt;
+  &lt;div&gt;4&lt;/div&gt;&lt;div&gt;5&lt;/div&gt;&lt;div&gt;6&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>Tracks begin at the start</p></div><pre><code>.container {
+  grid-template-columns: repeat(3, 52px);
+<mark class="baseline">  justify-content: start;</mark>
+<mark class="baseline">  align-content: start;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Each fixed column track is 52px wide</p><div class="measurement-stage ruler-top-space"><span class="ruler ruler-x" style="--ruler-size: 52px; --ruler-start: 0px">52px</span><div class="preview align-content-preview content-start"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Distribute horizontal space</span></div><pre><code>.container {
+  grid-template-columns: repeat(3, 52px);
+<mark>  justify-content: space-between;</mark>
+  align-content: start;
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The 52px tracks spread apart; they do not become wider</p><div class="measurement-stage ruler-top-space"><span class="ruler ruler-x" style="--ruler-size: 52px; --ruler-start: 0px">52px</span><div class="preview align-content-preview content-between"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Move the grid vertically</span></div><pre><code>.container {
+  grid-template-columns: repeat(3, 52px);
+  justify-content: space-between;
+<mark>  align-content: end;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The 52px tracks now sit at the bottom</p><div class="measurement-stage ruler-top-space"><span class="ruler ruler-x" style="--ruler-size: 52px; --ruler-start: 0px">52px</span><div class="preview align-content-preview content-bottom"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-three">
+                <div class="code-side"><div class="state-heading"><span>Center both axes with shorthand</span></div><pre><code>.container {
+  grid-template-columns: repeat(3, 52px);
+<mark>  place-content: center;</mark>
+  /* align-content | justify-content */
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The fixed 52px tracks are centered as a group</p><div class="measurement-stage ruler-top-space"><span class="ruler ruler-x" style="--ruler-size: 52px; --ruler-start: calc(50% - 84.4px)">52px</span><div class="preview align-content-preview content-center"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div></div></div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-07">
+            <header class="lesson-heading">
+              <div class="lesson-number">07</div>
+              <div>
+                <p class="overline">Container properties</p>
+                <h1>Size tracks Grid creates automatically</h1>
+                <p>Overflowing items create implicit tracks. Use <code>grid-auto-rows</code> and <code>grid-auto-columns</code> to size them.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>There are more items than the explicit grid has room for.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div&gt;1&lt;/div&gt;&lt;div&gt;2&lt;/div&gt;&lt;div&gt;3&lt;/div&gt;
+  &lt;div&gt;4&lt;/div&gt;&lt;div&gt;5&lt;/div&gt;&lt;div&gt;6&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>Only one row is explicit</p></div><pre><code>.container {
+  grid-template-columns: repeat(2, 1fr);
+<mark class="baseline">  grid-template-rows: 48px;</mark>
+}
+/* items 3–6 create more rows */</code></pre></div>
+                <div class="result-side"><p class="result-label">Only the solid first row has the explicit 48px height</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y" style="--ruler-size: 48px; --ruler-start: 0px">48px</span><div class="preview implicit-preview implicit-auto"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Size every implicit row</span></div><pre><code>.container {
+  grid-template-rows: 48px;
+<mark>  grid-auto-rows: 30px 64px;</mark>
+  /* the pattern repeats */
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The implicit row pattern alternates 30px, then 64px</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y" style="--ruler-size: 48px; --ruler-start: 0px">48px</span><span class="ruler ruler-y" style="--ruler-size: 30px; --ruler-start: calc(48px + 0.4rem)">30px</span><span class="ruler ruler-y" style="--ruler-size: 64px; --ruler-start: calc(78px + 0.8rem)">64px</span><div class="preview implicit-preview implicit-rows"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Create implicit columns instead</span></div><pre><code>.container {
+  grid-template-columns: 72px;
+<mark>  grid-auto-flow: column;</mark>
+<mark>  grid-auto-columns: 96px;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The explicit column is 72px; new columns are 96px</p><div class="measurement-stage ruler-top-space"><span class="ruler ruler-x" style="--ruler-size: 72px; --ruler-start: calc(50% - 138.4px)">72px</span><span class="ruler ruler-x" style="--ruler-size: 96px; --ruler-start: calc(50% - 60px)">96px</span><div class="preview implicit-preview implicit-columns"><i>1</i><i>2</i><i>3</i></div></div></div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-08">
+            <header class="lesson-heading">
+              <div class="lesson-number">08</div>
+              <div>
+                <p class="overline">Container properties</p>
+                <h1>Choose how unplaced items flow</h1>
+                <p><code>grid-auto-flow</code> controls the auto-placement algorithm. Dense packing may change visual order.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>Grid places these unpositioned items in source order.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div&gt;1&lt;/div&gt;&lt;div&gt;2&lt;/div&gt;&lt;div&gt;3&lt;/div&gt;
+  &lt;div&gt;4&lt;/div&gt;&lt;div&gt;5&lt;/div&gt;&lt;div&gt;6&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>Fill each row first</p></div><pre><code>.container {
+  grid-template: repeat(2, 52px) / repeat(3, 1fr);
+<mark class="baseline">  grid-auto-flow: row;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Each of the two explicit rows is 52px tall</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y" style="--ruler-size: 52px; --ruler-start: 0px">52px</span><span class="ruler ruler-y" style="--ruler-size: 52px; --ruler-start: calc(52px + 0.4rem)">52px</span><div class="preview flow-preview flow-row"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Fill each column first</span></div><pre><code>.container {
+  grid-template: repeat(2, 52px) / repeat(3, 1fr);
+<mark>  grid-auto-flow: column;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The 52px rows stay the same; only placement order changes</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y" style="--ruler-size: 52px; --ruler-start: 0px">52px</span><span class="ruler ruler-y" style="--ruler-size: 52px; --ruler-start: calc(52px + 0.4rem)">52px</span><div class="preview flow-preview flow-column"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Backfill earlier holes</span></div><pre><code>.container {
+<mark>  grid-auto-flow: row dense;</mark>
+}
+.wide { grid-column: span 2; }
+/* span 2 = occupy two tracks; dense can reorder items visually */</code></pre></div>
+                <div class="result-side"><p class="result-label">Small later items backfill holes in the same 52px rows</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y" style="--ruler-size: 52px; --ruler-start: 0px">52px</span><span class="ruler ruler-y" style="--ruler-size: 52px; --ruler-start: calc(52px + 0.4rem)">52px</span><div class="preview flow-preview flow-dense"><i class="wide">1</i><i class="wide">2</i><i>3</i><i>4</i></div></div></div>
+              </section>
+            </div>
+
+            <p class="a11y-note"><b>Keep in mind:</b> <code>dense</code> packs items into earlier gaps purely for visual fit, which can move them ahead of where they sit in the HTML. Keyboard and screen-reader navigation still follows source order, so a sighted user may see item 3 rendered before item 1 while everyone else still reaches item 1 first.</p>
+          </article>
+
+          <article class="lesson-panel panel-09">
+            <header class="lesson-heading">
+              <div class="lesson-number">09</div>
+              <div>
+                <p class="overline">Container shorthand</p>
+                <h1>Define a grid in one declaration</h1>
+                <p>The <code>grid</code> shorthand can define explicit tracks or combine explicit tracks with automatic flow.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>The shorthand changes the grid definition, not the markup.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div&gt;1&lt;/div&gt;&lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;&lt;div&gt;4&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>Write both longhands</p></div><pre><code>.container {
+<mark class="baseline">  grid-template-rows: 48px 80px;</mark>
+<mark class="baseline">  grid-template-columns: 1fr 2fr;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The first row is 48px; the second is 80px</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y" style="--ruler-size: 48px; --ruler-start: 0px">48px</span><span class="ruler ruler-y" style="--ruler-size: 80px; --ruler-start: calc(48px + 0.4rem)">80px</span><div class="preview master-grid-preview master-original"><i>1</i><i>2</i><i>3</i><i>4</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Use rows / columns</span></div><pre><code>.container {
+<mark>  grid: 48px 80px / 1fr 2fr;</mark>
+}
+/* same layout, shorter declaration */</code></pre></div>
+                <div class="result-side"><p class="result-label">The shorthand preserves the same 48px and 80px rows</p><div class="measurement-stage ruler-left-space"><span class="ruler ruler-y" style="--ruler-size: 48px; --ruler-start: 0px">48px</span><span class="ruler ruler-y" style="--ruler-size: 80px; --ruler-start: calc(48px + 0.4rem)">80px</span><div class="preview master-grid-preview master-original"><i>1</i><i>2</i><i>3</i><i>4</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Combine a row with auto-flow columns</span></div><pre><code>.container {
+<mark>  grid: 72px / auto-flow 96px;</mark>
+}
+/* one row; implicit 96px columns */</code></pre></div>
+                <div class="result-side"><p class="result-label">One 72px row; every generated column is 96px wide</p><div class="measurement-stage ruler-left-space ruler-top-space"><span class="ruler ruler-y" style="--ruler-size: 72px; --ruler-start: 0px">72px</span><span class="ruler ruler-x" style="--ruler-size: 96px; --ruler-start: calc(50% - 177.4px)">96px</span><div class="preview master-grid-preview master-auto"><i>1</i><i>2</i><i>3</i></div></div></div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-10">
+            <header class="lesson-heading">
+              <div class="lesson-number">10</div>
+              <div>
+                <p class="overline">Item properties</p>
+                <h1>Place an item with four grid lines</h1>
+                <p>Start properties choose the first line; end properties choose the line after the item.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>The class belongs to one direct child of the grid container.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div class="item"&gt;item&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="line-legend"><span>column lines → 1 · 2 · 3 · 4</span><span>row lines → 1 · 2 · 3 · 4</span></div>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>Auto-placed in one cell</p></div><pre><code>.item {
+<mark class="baseline">  grid-column-start: auto;</mark>
+<mark class="baseline">  grid-row-start: auto;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The item occupies the first available cell</p><div class="preview placement-preview"><i class="placed-auto">item</i></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Span the first two columns</span></div><pre><code>.item {
+<mark>  grid-column-start: 1;</mark>
+<mark>  grid-column-end: 3;</mark>
+  grid-row-start: 1;
+  grid-row-end: 2;
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Column line 1 to line 3 covers two tracks</p><div class="preview placement-preview"><i class="placed-wide">item</i></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Span a two-by-two area</span></div><pre><code>.item {
+  grid-column-start: 1;
+  grid-column-end: 3;
+<mark>  grid-row-start: 2;</mark>
+<mark>  grid-row-end: 4;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Four lines surround the final grid area</p><div class="preview placement-preview"><i class="placed-area">item</i></div></div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-11">
+            <header class="lesson-heading">
+              <div class="lesson-number">11</div>
+              <div>
+                <p class="overline">Item shorthands</p>
+                <h1>Place items with fewer declarations</h1>
+                <p><code>grid-column</code>, <code>grid-row</code>, and <code>grid-area</code> combine line placement values.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>All three shorthand examples place the same item.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div class="item"&gt;item&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>Use start and end longhands</p></div><pre><code>.item {
+<mark class="baseline">  grid-column-start: 1;</mark>
+<mark class="baseline">  grid-column-end: 3;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The item covers two columns</p><div class="preview shortcut-preview"><i class="shortcut-wide">item</i></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Use column and row shorthands</span></div><pre><code>.item {
+<mark>  grid-column: 2 / span 2;</mark>
+<mark>  grid-row: 1 / 3;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label"><code>span 2</code> means cover two tracks</p><div class="preview shortcut-preview"><i class="shortcut-column-row">item</i></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Set all four lines at once</span></div><pre><code>.item {
+<mark>  grid-area: 2 / 1 / 4 / 4;</mark>
+  /* row-start / column-start /
+     row-end / column-end */
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">One shorthand describes the complete area</p><div class="preview shortcut-preview"><i class="shortcut-area">item</i></div></div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-12">
+            <header class="lesson-heading">
+              <div class="lesson-number">12</div>
+              <div>
+                <p class="overline">Item properties</p>
+                <h1>Override alignment for one item</h1>
+                <p>Self-alignment changes one item without affecting its siblings.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>Only item B receives the <code>special-item</code> class.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div&gt;A&lt;/div&gt;
+  &lt;div class="special-item"&gt;B&lt;/div&gt;
+  &lt;div&gt;C&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>Inherit the container alignment</p></div><pre><code>.special-item {
+<mark class="baseline">  justify-self: auto;</mark>
+<mark class="baseline">  align-self: auto;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">All three items stretch</p><div class="preview self-preview self-auto"><i>A</i><i class="special">B</i><i>C</i></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Move only B horizontally</span></div><pre><code>.special-item {
+<mark>  justify-self: end;</mark>
+  align-self: auto;
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Only B shrinks and moves to the inline end</p><div class="preview self-preview self-justify"><i>A</i><i class="special">B</i><i>C</i></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Move only B vertically</span></div><pre><code>.special-item {
+  justify-self: end;
+<mark>  align-self: end;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">B now sits at the bottom-right of its cell</p><div class="preview self-preview self-both"><i>A</i><i class="special">B</i><i>C</i></div></div>
+              </section>
+              <section class="comparison-row state-change-three">
+                <div class="code-side"><div class="state-heading"><span>Set both axes with shorthand</span></div><pre><code>.special-item {
+<mark>  place-self: end center;</mark>
+  /* align-self | justify-self */
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">B sits bottom-center in its cell</p><div class="preview self-preview self-place"><i>A</i><i class="special">B</i><i>C</i></div></div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-13">
+            <header class="lesson-heading">
+              <div class="lesson-number">13</div>
+              <div>
+                <p class="overline">Sizing functions + nested grids</p>
+                <h1>Make grids adapt to available space</h1>
+                <p>Combine <code>repeat()</code>, <code>minmax()</code>, <code>auto-fit</code>/<code>auto-fill</code>, and <code>subgrid</code> for resilient components.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>A cards container holds reusable card elements.</p></div>
+              <pre><code>&lt;div class="cards"&gt;
+  &lt;article class="card"&gt;...&lt;/article&gt;
+  &lt;article class="card"&gt;...&lt;/article&gt;
+  &lt;article class="card"&gt;...&lt;/article&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>A fixed number of flexible tracks</p></div><pre><code>.cards {
+<mark class="baseline">  grid-template-columns: repeat(3, 1fr);</mark>
+}
+/* always exactly three columns */</code></pre></div>
+                <div class="result-side"><p class="result-label"><code>fr</code> shares remaining space equally</p><div class="preview responsive-preview responsive-fixed"><i>1</i><i>2</i><i>3</i></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Clamp a track between a minimum and a maximum</span></div><pre><code>.cards {
+<mark>  grid-template-columns: 70px minmax(60px, 1fr);</mark>
+}
+/* minmax(min, max): never smaller than min, never larger than max */</code></pre></div>
+                <div class="result-side"><p class="result-label">The second column has grown well past its 60px floor — the ruler marks where it would refuse to go any smaller</p><div class="measurement-stage ruler-top-space"><span class="ruler ruler-x ruler-minimum" style="--ruler-size: 60px; --ruler-start: 78px">min 60px</span><div class="preview minmax-intro-preview"><i>70px</i><i>minmax(60px, 1fr)</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Let the number of columns adapt</span></div><pre><code>.cards {
+<mark>  grid-template-columns:</mark>
+<mark>    repeat(auto-fit, minmax(100px, 1fr));</mark>
+}
+/* as many 100px+ columns as fit */</code></pre></div>
+                <div class="result-side"><p class="result-label">Each track may grow, but the ruler shows its 100px minimum</p><div class="measurement-stage ruler-top-space"><span class="ruler ruler-x ruler-minimum" style="--ruler-size: 100px; --ruler-start: 0px">min 100px</span><div class="preview responsive-preview responsive-auto"><i>1</i><i>2</i><i>3</i><i>4</i></div></div></div>
+              </section>
+              <section class="comparison-row state-change-three">
+                <div class="code-side"><div class="state-heading"><span>Fewer items than tracks that fit</span></div><pre><code>.cards {
+<mark>  grid-template-columns:</mark>
+<mark>    repeat(auto-fill, minmax(80px, 1fr));</mark>
+}
+/* swap auto-fill for auto-fit below to compare */</code></pre></div>
+                <div class="result-side">
+                  <p class="result-label">auto-fill keeps the empty track; auto-fit collapses it and stretches the items</p>
+                  <div class="responsive-compare">
+                    <div class="responsive-compare-item">
+                      <p class="compare-tag">auto-fill</p>
+                      <div class="compare-frame"><div class="preview responsive-preview responsive-fill"><i>1</i><i>2</i></div></div>
+                    </div>
+                    <div class="responsive-compare-item">
+                      <p class="compare-tag">auto-fit</p>
+                      <div class="compare-frame"><div class="preview responsive-preview responsive-fit-narrow"><i>1</i><i>2</i></div></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section class="comparison-row state-change-four">
+                <div class="code-side"><div class="state-heading"><span>Align nested card rows</span></div><pre><code>.cards {
+<mark>  grid-template-rows: auto 1fr auto;</mark>
+}
+.card {
+<mark>  display: grid;</mark>
+<mark>  grid-row: span 3;</mark>
+<mark>  grid-template-rows: subgrid;</mark>
+}
+/* .card spans all 3 parent rows, then reuses their sizes */</code></pre></div>
+                <div class="result-side"><p class="result-label">Titles, copy, and actions align across cards</p><div class="preview subgrid-preview"><article><b>Short title</b><p>One line.</p><span class="card-action">Action</span></article><article><b>A longer title that wraps</b><p>Two lines of supporting copy here.</p><span class="card-action">Action</span></article></div></div>
+              </section>
+            </div>
+          </article>
+
+          <article class="lesson-panel panel-14">
+            <header class="lesson-heading">
+              <div class="lesson-number">14</div>
+              <div>
+                <p class="overline">Item properties</p>
+                <h1>Count grid lines from the end</h1>
+                <p>Negative integers count backward from the last line. <code>-1</code> is always the final line, even after the grid gains or loses tracks.</p>
+              </div>
+            </header>
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>The class belongs to one direct child of the grid container.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div class="item"&gt;item&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+            <div class="line-legend"><span>3 columns → lines 1·2·3·4 (or -4·-3·-2·-1)</span><span>5 columns → lines 1…6 (or -6…-1)</span></div>
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side"><div class="state-heading"><span>Starting point</span><p>Span to a hardcoded line</p></div><pre><code>.container {
+  grid-template-columns: repeat(3, 1fr);
+}
+.item {
+<mark class="baseline">  grid-column: 1 / 4;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Line 4 is the last line in a 3-column grid, so the item reaches the edge</p><div class="preview negative-lines-preview cols-3"><i class="span-fixed-end">item</i></div></div>
+              </section>
+              <section class="comparison-row state-change-one">
+                <div class="code-side"><div class="state-heading"><span>Use -1 instead of the literal last line</span></div><pre><code>.item {
+<mark>  grid-column: 1 / -1;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">Same result: -1 always means the final line, here line 4</p><div class="preview negative-lines-preview cols-3"><i class="span-last-line">item</i></div></div>
+              </section>
+              <section class="comparison-row state-change-two">
+                <div class="code-side"><div class="state-heading"><span>Grow to five columns, keep the hardcoded line</span></div><pre><code>.container {
+<mark>  grid-template-columns: repeat(5, 1fr);</mark>
+}
+.item {
+  grid-column: 1 / 4;
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">The item still stops at line 4 — now only 3 of 5 columns, leaving a gap</p><div class="preview negative-lines-preview cols-5"><i class="span-fixed-end">item</i></div></div>
+              </section>
+              <section class="comparison-row state-change-three">
+                <div class="code-side"><div class="state-heading"><span>Same five columns, with -1</span></div><pre><code>.container {
+  grid-template-columns: repeat(5, 1fr);
+}
+.item {
+<mark>  grid-column: 1 / -1;</mark>
+}</code></pre></div>
+                <div class="result-side"><p class="result-label">-1 now means line 6: the item reaches the new edge with no change to its own rule</p><div class="preview negative-lines-preview cols-5"><i class="span-last-line">item</i></div></div>
+              </section>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
