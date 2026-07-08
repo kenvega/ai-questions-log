@@ -23,7 +23,7 @@
               <p class="brand-subtitle">Learn by changing one thing</p>
             </div>
           </div>
-          <p class="header-note"><span>15</span> guided exercises · plain CSS</p>
+          <p class="header-note"><span>16</span> guided exercises · plain CSS</p>
         </div>
       </header>
 
@@ -32,19 +32,20 @@
           <nav class="lesson-nav" aria-label="Choose a CSS Grid exercise">
             <a href="#lesson-00"><span>00</span><b>Grid terms</b><small>container, item, line, track, cell, area</small></a>
             <a href="#lesson-01"><span>01</span><b>display</b><small>makes an element a grid container</small></a>
-            <a href="#lesson-02"><span>02</span><b>grid-template-columns/rows</b><small>size each column and row upfront</small></a>
-            <a href="#lesson-03"><span>03</span><b>gap</b><small>space out tracks without margins</small></a>
-            <a href="#lesson-04"><span>04</span><b>grid-template-areas</b><small>name regions to sketch a layout</small></a>
-            <a href="#lesson-05"><span>05</span><b>justify/align-items</b><small>align items inside their cells</small></a>
-            <a href="#lesson-06"><span>06</span><b>justify/align-content</b><small>position the grid within its box</small></a>
-            <a href="#lesson-07"><span>07</span><b>grid-auto-rows/columns</b><small>size the extra tracks Grid creates</small></a>
-            <a href="#lesson-08"><span>08</span><b>grid-auto-flow</b><small>control how leftover items flow</small></a>
-            <a href="#lesson-09"><span>09</span><b>grid</b><small>set rows, columns + flow at once</small></a>
-            <a href="#lesson-10"><span>10</span><b>grid-column/row-start/end</b><small>pin an item to exact line numbers</small></a>
-            <a href="#lesson-11"><span>11</span><b>grid-column/row/area</b><small>combine line values into one rule</small></a>
-            <a href="#lesson-12"><span>12</span><b>justify/align-self</b><small>realign just one item, not all</small></a>
-            <a href="#lesson-13"><span>13</span><b>minmax()/auto-fit</b><small>build grids that adapt to space</small></a>
-            <a href="#lesson-14"><span>14</span><b>grid-column: 1 / -1</b><small>count lines backward from the end</small></a>
+            <a href="#lesson-02"><span>02</span><b>The fr unit</b><small>share leftover space between tracks</small></a>
+            <a href="#lesson-03"><span>03</span><b>grid-template-columns/rows</b><small>size each column and row upfront</small></a>
+            <a href="#lesson-04"><span>04</span><b>gap</b><small>space out tracks without margins</small></a>
+            <a href="#lesson-05"><span>05</span><b>grid-template-areas</b><small>name regions to sketch a layout</small></a>
+            <a href="#lesson-06"><span>06</span><b>justify/align-items</b><small>align items inside their cells</small></a>
+            <a href="#lesson-07"><span>07</span><b>justify/align-content</b><small>position the grid within its box</small></a>
+            <a href="#lesson-08"><span>08</span><b>grid-auto-rows/columns</b><small>size the extra tracks Grid creates</small></a>
+            <a href="#lesson-09"><span>09</span><b>grid-auto-flow</b><small>control how leftover items flow</small></a>
+            <a href="#lesson-10"><span>10</span><b>grid</b><small>set rows, columns + flow at once</small></a>
+            <a href="#lesson-11"><span>11</span><b>grid-column/row-start/end</b><small>pin an item to exact line numbers</small></a>
+            <a href="#lesson-12"><span>12</span><b>grid-column/row/area</b><small>combine line values into one rule</small></a>
+            <a href="#lesson-13"><span>13</span><b>justify/align-self</b><small>realign just one item, not all</small></a>
+            <a href="#lesson-14"><span>14</span><b>minmax()/auto-fit</b><small>build grids that adapt to space</small></a>
+            <a href="#lesson-15"><span>15</span><b>grid-column: 1 / -1</b><small>count lines backward from the end</small></a>
           </nav>
 
           <p class="sidebar-source">
@@ -70,6 +71,7 @@
           <span class="lesson-target" id="lesson-12" aria-hidden="true"></span>
           <span class="lesson-target" id="lesson-13" aria-hidden="true"></span>
           <span class="lesson-target" id="lesson-14" aria-hidden="true"></span>
+          <span class="lesson-target" id="lesson-15" aria-hidden="true"></span>
 
           <article class="lesson-panel panel-00">
             <header class="lesson-heading">
@@ -287,6 +289,95 @@ row lines:    1 → 2</code></pre>
             <header class="lesson-heading">
               <div class="lesson-number">02</div>
               <div>
+                <p class="overline">Sizing tracks</p>
+                <h1>Share space with the <code>fr</code> unit</h1>
+                <p>The <code>fr</code> unit divides leftover space after fixed tracks are sized. It replaces percentages for flexible grid layouts.</p>
+              </div>
+            </header>
+
+            <section class="lesson-html">
+              <div><p class="overline">HTML used below</p><p>The same four children sit inside every grid below.</p></div>
+              <pre><code>&lt;div class="container"&gt;
+  &lt;div&gt;A&lt;/div&gt;&lt;div&gt;B&lt;/div&gt;
+  &lt;div&gt;C&lt;/div&gt;&lt;div&gt;D&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </section>
+
+            <div class="comparison-stack">
+              <section class="comparison-row state-original">
+                <div class="code-side">
+                  <div class="state-heading"><span>Starting point</span><p>Fixed-width columns</p></div>
+                  <pre><code>.container {
+  display: grid;
+<mark class="baseline">  grid-template-columns: 120px 120px;</mark>
+}</code></pre>
+                </div>
+                <div class="result-side">
+                  <p class="result-label">Each column is exactly 120px — leftover space is wasted</p>
+                  <div class="measurement-stage ruler-top-space">
+                    <span class="ruler ruler-x" style="--ruler-size: 120px; --ruler-start: 0px">120px</span>
+                    <span class="ruler ruler-x" style="--ruler-size: 120px; --ruler-start: 128px">120px</span>
+                    <div class="preview fr-preview fr-fixed"><i>A</i><i>B</i><i>C</i><i>D</i></div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="comparison-row state-change-one">
+                <div class="code-side">
+                  <div class="state-heading"><span>Give each column one equal share</span></div>
+                  <pre><code>.container {
+  display: grid;
+<mark>  grid-template-columns: 1fr 1fr;</mark>
+}
+/* 1fr + 1fr = each gets 50% of the space */</code></pre>
+                </div>
+                <div class="result-side">
+                  <p class="result-label">Both columns stretch equally to fill the container</p>
+                  <div class="preview fr-preview fr-equal"><i>A</i><i>B</i><i>C</i><i>D</i></div>
+                </div>
+              </section>
+
+              <section class="comparison-row state-change-two">
+                <div class="code-side">
+                  <div class="state-heading"><span>Give the second column twice the share</span></div>
+                  <pre><code>.container {
+  display: grid;
+<mark>  grid-template-columns: 1fr 2fr;</mark>
+}
+/* total fractions: 3 → col 1 gets 1/3, col 2 gets 2/3 */</code></pre>
+                </div>
+                <div class="result-side">
+                  <p class="result-label">The second column is twice as wide as the first</p>
+                  <div class="preview fr-preview fr-weighted"><i>1fr</i><i>2fr</i><i>1fr</i><i>2fr</i></div>
+                </div>
+              </section>
+
+              <section class="comparison-row state-change-three">
+                <div class="code-side">
+                  <div class="state-heading"><span>Mix a fixed track with fr</span></div>
+                  <pre><code>.container {
+  display: grid;
+<mark>  grid-template-columns: 100px 1fr;</mark>
+}
+/* the 100px is removed first; fr splits the rest */</code></pre>
+                </div>
+                <div class="result-side">
+                  <p class="result-label">The fixed column keeps 100px; fr takes whatever remains</p>
+                  <div class="measurement-stage ruler-top-space">
+                    <span class="ruler ruler-x" style="--ruler-size: 100px; --ruler-start: 0px">100px</span>
+                    <div class="preview fr-preview fr-mixed"><i>100px</i><i>1fr</i><i>100px</i><i>1fr</i></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <p class="a11y-note"><b>Key idea:</b> <code>fr</code> distributes <em>remaining</em> space — it subtracts fixed sizes and gaps first, then divides what is left. This is why <code>1fr</code> and <code>50%</code> are not the same: percentages ignore gaps and can overflow, while <code>fr</code> accounts for them automatically.</p>
+          </article>
+
+          <article class="lesson-panel panel-03">
+            <header class="lesson-heading">
+              <div class="lesson-number">03</div>
+              <div>
                 <p class="overline">Container properties</p>
                 <h1>Define explicit columns and rows</h1>
                 <p><code>grid-template-columns</code> and <code>grid-template-rows</code> size the tracks you create intentionally.</p>
@@ -340,9 +431,9 @@ row lines:    1 → 2</code></pre>
             </div>
           </article>
 
-          <article class="lesson-panel panel-03">
+          <article class="lesson-panel panel-04">
             <header class="lesson-heading">
-              <div class="lesson-number">03</div>
+              <div class="lesson-number">04</div>
               <div>
                 <p class="overline">Container properties</p>
                 <h1>Add space between tracks</h1>
@@ -386,9 +477,9 @@ row lines:    1 → 2</code></pre>
             </div>
           </article>
 
-          <article class="lesson-panel panel-04">
+          <article class="lesson-panel panel-05">
             <header class="lesson-heading">
-              <div class="lesson-number">04</div>
+              <div class="lesson-number">05</div>
               <div>
                 <p class="overline">Container + item properties</p>
                 <h1>Sketch layouts with named areas</h1>
@@ -442,9 +533,9 @@ row lines:    1 → 2</code></pre>
             <p class="a11y-note"><b>Keep in mind:</b> this last layout shows <code>main</code> above <code>nav</code>, but the HTML order above never changed — <code>nav</code> still comes before <code>main</code> in the markup. Keyboard tabbing and screen readers follow that source order, not the visual one, so a sighted user and a keyboard user reach these two regions in a different sequence.</p>
           </article>
 
-          <article class="lesson-panel panel-05">
+          <article class="lesson-panel panel-06">
             <header class="lesson-heading">
-              <div class="lesson-number">05</div>
+              <div class="lesson-number">06</div>
               <div>
                 <p class="overline">Container properties</p>
                 <h1>Align every item inside its cell</h1>
@@ -492,9 +583,9 @@ row lines:    1 → 2</code></pre>
             </div>
           </article>
 
-          <article class="lesson-panel panel-06">
+          <article class="lesson-panel panel-07">
             <header class="lesson-heading">
-              <div class="lesson-number">06</div>
+              <div class="lesson-number">07</div>
               <div>
                 <p class="overline">Container properties</p>
                 <h1>Align the entire grid in its container</h1>
@@ -544,9 +635,9 @@ row lines:    1 → 2</code></pre>
             </div>
           </article>
 
-          <article class="lesson-panel panel-07">
+          <article class="lesson-panel panel-08">
             <header class="lesson-heading">
-              <div class="lesson-number">07</div>
+              <div class="lesson-number">08</div>
               <div>
                 <p class="overline">Container properties</p>
                 <h1>Size tracks Grid creates automatically</h1>
@@ -588,9 +679,9 @@ row lines:    1 → 2</code></pre>
             </div>
           </article>
 
-          <article class="lesson-panel panel-08">
+          <article class="lesson-panel panel-09">
             <header class="lesson-heading">
-              <div class="lesson-number">08</div>
+              <div class="lesson-number">09</div>
               <div>
                 <p class="overline">Container properties</p>
                 <h1>Choose how unplaced items flow</h1>
@@ -632,9 +723,9 @@ row lines:    1 → 2</code></pre>
             <p class="a11y-note"><b>Keep in mind:</b> <code>dense</code> packs items into earlier gaps purely for visual fit, which can move them ahead of where they sit in the HTML. Keyboard and screen-reader navigation still follows source order, so a sighted user may see item 3 rendered before item 1 while everyone else still reaches item 1 first.</p>
           </article>
 
-          <article class="lesson-panel panel-09">
+          <article class="lesson-panel panel-10">
             <header class="lesson-heading">
-              <div class="lesson-number">09</div>
+              <div class="lesson-number">10</div>
               <div>
                 <p class="overline">Container shorthand</p>
                 <h1>Define a grid in one declaration</h1>
@@ -673,9 +764,9 @@ row lines:    1 → 2</code></pre>
             </div>
           </article>
 
-          <article class="lesson-panel panel-10">
+          <article class="lesson-panel panel-11">
             <header class="lesson-heading">
-              <div class="lesson-number">10</div>
+              <div class="lesson-number">11</div>
               <div>
                 <p class="overline">Item properties</p>
                 <h1>Place an item with four grid lines</h1>
@@ -718,9 +809,9 @@ row lines:    1 → 2</code></pre>
             </div>
           </article>
 
-          <article class="lesson-panel panel-11">
+          <article class="lesson-panel panel-12">
             <header class="lesson-heading">
-              <div class="lesson-number">11</div>
+              <div class="lesson-number">12</div>
               <div>
                 <p class="overline">Item shorthands</p>
                 <h1>Place items with fewer declarations</h1>
@@ -759,9 +850,9 @@ row lines:    1 → 2</code></pre>
             </div>
           </article>
 
-          <article class="lesson-panel panel-12">
+          <article class="lesson-panel panel-13">
             <header class="lesson-heading">
-              <div class="lesson-number">12</div>
+              <div class="lesson-number">13</div>
               <div>
                 <p class="overline">Item properties</p>
                 <h1>Override alignment for one item</h1>
@@ -808,9 +899,9 @@ row lines:    1 → 2</code></pre>
             </div>
           </article>
 
-          <article class="lesson-panel panel-13">
+          <article class="lesson-panel panel-14">
             <header class="lesson-heading">
-              <div class="lesson-number">13</div>
+              <div class="lesson-number">14</div>
               <div>
                 <p class="overline">Sizing functions + nested grids</p>
                 <h1>Make grids adapt to available space</h1>
@@ -883,9 +974,9 @@ row lines:    1 → 2</code></pre>
             </div>
           </article>
 
-          <article class="lesson-panel panel-14">
+          <article class="lesson-panel panel-15">
             <header class="lesson-heading">
-              <div class="lesson-number">14</div>
+              <div class="lesson-number">15</div>
               <div>
                 <p class="overline">Item properties</p>
                 <h1>Count grid lines from the end</h1>

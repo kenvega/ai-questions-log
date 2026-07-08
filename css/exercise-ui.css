@@ -691,7 +691,8 @@ pre mark.baseline {
 #lesson-11:target ~ .panel-11,
 #lesson-12:target ~ .panel-12,
 #lesson-13:target ~ .panel-13,
-#lesson-14:target ~ .panel-14 {
+#lesson-14:target ~ .panel-14,
+#lesson-15:target ~ .panel-15 {
   display: block;
 }
 
@@ -710,7 +711,8 @@ pre mark.baseline {
 .learning-shell:has(#lesson-11:target) .lesson-nav a[href="#lesson-11"],
 .learning-shell:has(#lesson-12:target) .lesson-nav a[href="#lesson-12"],
 .learning-shell:has(#lesson-13:target) .lesson-nav a[href="#lesson-13"],
-.learning-shell:has(#lesson-14:target) .lesson-nav a[href="#lesson-14"] {
+.learning-shell:has(#lesson-14:target) .lesson-nav a[href="#lesson-14"],
+.learning-shell:has(#lesson-15:target) .lesson-nav a[href="#lesson-15"] {
   color: var(--green-dark);
   background: var(--lime);
   border-color: rgb(24 92 68 / 0.18);
@@ -729,7 +731,8 @@ pre mark.baseline {
 .learning-shell:has(#lesson-11:target) .lesson-nav a[href="#lesson-00"],
 .learning-shell:has(#lesson-12:target) .lesson-nav a[href="#lesson-00"],
 .learning-shell:has(#lesson-13:target) .lesson-nav a[href="#lesson-00"],
-.learning-shell:has(#lesson-14:target) .lesson-nav a[href="#lesson-00"] {
+.learning-shell:has(#lesson-14:target) .lesson-nav a[href="#lesson-00"],
+.learning-shell:has(#lesson-15:target) .lesson-nav a[href="#lesson-00"] {
   color: var(--muted);
   background: transparent;
   border-color: transparent;
@@ -748,7 +751,8 @@ pre mark.baseline {
 #lesson-11:target ~ .panel-00,
 #lesson-12:target ~ .panel-00,
 #lesson-13:target ~ .panel-00,
-#lesson-14:target ~ .panel-00 {
+#lesson-14:target ~ .panel-00,
+#lesson-15:target ~ .panel-00 {
   display: none;
 }
 

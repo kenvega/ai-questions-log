@@ -246,7 +246,32 @@
   font-size: 0.68rem;
 }
 
-/* 02 — explicit columns and rows -------------------------------- */
+/* 02 — the fr unit ---------------------------------------------- */
+
+.fr-preview {
+  display: grid;
+  grid-template-rows: repeat(2, 54px);
+  align-self: center;
+  gap: 0.45rem;
+}
+
+.fr-fixed {
+  grid-template-columns: 120px 120px;
+}
+
+.fr-equal {
+  grid-template-columns: 1fr 1fr;
+}
+
+.fr-weighted {
+  grid-template-columns: 1fr 2fr;
+}
+
+.fr-mixed {
+  grid-template-columns: 100px 1fr;
+}
+
+/* 03 — explicit columns and rows -------------------------------- */
 
 .tracks-preview {
   display: grid;
