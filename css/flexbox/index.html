@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A quick, interactive reference for understanding CSS Flexbox properties."
+    />
+    <title>Flexbox Field Guide</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Flexbox property reference">
+        <a class="brand" href="#flex-direction" aria-label="Flexbox Field Guide home">
+          <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>
+            <strong>Flexbox</strong>
+            <small>field guide</small>
+          </span>
+        </a>
+
+        <div class="property-tabs" role="tablist" aria-label="Property owner">
+          <button
+            class="tab-button is-active"
+            id="parent-tab"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="property-list"
+            data-group="parent"
+          >
+            Parent
+          </button>
+          <button
+            class="tab-button"
+            id="children-tab"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="property-list"
+            data-group="children"
+          >
+            Children
+          </button>
+        </div>
+
+        <div class="nav-intro">
+          <p id="group-label">Properties on the container</p>
+          <span id="property-count">3 properties</span>
+        </div>
+
+        <nav
+          class="property-list"
+          id="property-list"
+          role="tabpanel"
+          aria-labelledby="parent-tab"
+          aria-label="Parent properties"
+        ></nav>
+
+        <div class="sidebar-note">
+          <span aria-hidden="true">↳</span>
+          <p>
+            Pick a property, then change its value to see what CSS is doing.
+          </p>
+        </div>
+
+        <p class="source-link">
+          Technical reference:
+          <a
+            href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/"
+            target="_blank"
+            rel="noreferrer"
+          >CSS-Tricks ↗</a>
+        </p>
+      </aside>
+
+      <main class="workspace" id="main-content" tabindex="-1">
+        <header class="lesson-header">
+          <div>
+            <p class="eyebrow" id="property-owner">Parent property</p>
+            <h1 id="property-title">flex-direction</h1>
+          </div>
+          <span class="lesson-index" id="lesson-index" aria-label="Lesson 2 of 3">02 / 03</span>
+        </header>
+
+        <p class="plain-description" id="property-description">
+          Chooses the direction items travel inside the container.
+        </p>
+
+        <section class="demo-section" aria-labelledby="demo-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">See it happen</p>
+              <h2 id="demo-title">Change the value</h2>
+            </div>
+            <p class="current-rule" id="current-rule">flex-direction: row;</p>
+          </div>
+
+          <div class="value-controls" id="value-controls" aria-label="Choose a property value"></div>
+
+          <div class="demo-canvas" id="demo-canvas">
+            <span class="axis-label axis-label-main" id="main-axis-label">main axis →</span>
+            <span class="axis-label axis-label-cross" id="cross-axis-label">cross axis ↓</span>
+            <div class="demo-container" id="demo-container" aria-label="Live Flexbox demonstration">
+              <div class="flex-item item-one"><span>1</span><small>alpha</small></div>
+              <div class="flex-item item-two" id="focus-item"><span>2</span><small>beta</small></div>
+              <div class="flex-item item-three"><span>3</span><small>gamma</small></div>
+            </div>
+          </div>
+
+          <p class="demo-caption" id="demo-caption">
+            The main axis runs from left to right when the value is <code>row</code>.
+          </p>
+        </section>
+
+        <section class="explanation-grid" aria-label="Property explanation">
+          <article class="code-card">
+            <div class="card-heading">
+              <span>CSS</span>
+              <span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+            <pre><code id="code-example">.container {
+  display: flex;
+  flex-direction: row;
+}</code></pre>
+          </article>
+
+          <article class="meaning-card">
+            <p class="section-kicker">In plain English</p>
+            <h2 id="meaning-title">It sets the main axis.</h2>
+            <p id="meaning-copy">
+              Row values move items sideways. Column values stack them vertically. Adding
+              <code>-reverse</code> flips the starting edge.
+            </p>
+            <div class="memory-tip">
+              <span aria-hidden="true">✦</span>
+              <p><strong>Remember:</strong> <span id="memory-copy">direction changes where “start” and “end” live.</span></p>
+            </div>
+          </article>
+        </section>
+
+        <footer class="lesson-footer">
+          <p><span id="footer-owner">Parent</span> properties affect every direct child.</p>
+          <button type="button" id="next-property">Next property <span aria-hidden="true">→</span></button>
+        </footer>
+      </main>
+    </div>
+
+    <noscript>
+      <p class="noscript-message">This reference needs JavaScript enabled so the live examples can change.</p>
+    </noscript>
+  </body>
+</html>
